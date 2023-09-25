@@ -1,0 +1,2 @@
+Fonctions explanations:
+	https://tiswww.case.edu/php/chet/readline/readline.html
