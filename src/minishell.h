@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/25 14:49:05 by miguel           ###   ########.fr       */
+/*   Updated: 2023/09/25 15:28:32 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,11 @@ void	show_parameters(const char *parameters);
 void	get_command_arguments(const char *input,
 			char *command, char ***arguments);
 void	execute_command(t_data *l);
+
+/* echo */
+void	ft_echo(t_data *data);
+
+/* pwd */
+char	*ft_pwd();
 
 #endif

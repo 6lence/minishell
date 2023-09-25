@@ -6,7 +6,7 @@
 #    By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/08 10:13:49 by ashalagi          #+#    #+#              #
-#    Updated: 2023/09/14 15:10:02 by ashalagi         ###   ########.fr        #
+#    Updated: 2023/09/25 11:08:57 by ashalagi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ SRC = ft_isalpha.c \
 	ft_strrchr.c \
 	ft_realloc.c \
 	ft_memalloc.c \
+	ft_strcmp.c \
 	get_next_line_bonus.c \
 	get_next_line_utils_bonus.c 
 

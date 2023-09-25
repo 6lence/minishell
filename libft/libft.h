@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:14:02 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/14 15:09:24 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/09/25 11:08:31 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 void	*ft_memalloc(size_t size);
 void	*ft_realloc(void *ptr, size_t size);
+int		ft_strcmp(char *s1, char *s2);
 
 /* gnl */
 char	*get_next_line(int fd);
