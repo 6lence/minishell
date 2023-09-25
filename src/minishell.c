@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/20 09:21:06 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/09/25 14:49:43 by miguel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,54 +16,48 @@
 #include <stdlib.h>
 
 // Function to read a line of text from the terminal
-char *readline()
+char	*readline(void)
 {
-    char *line = NULL;
-    size_t len = 0;
-    size_t index = 0;
-    char c;
+	char	*line;
+	size_t	len;
+	size_t	index;
+	char	c;
 
-    //printf("Enter parameters: ");
-    //STDIN_FILENO used to read a single character from the standard input (stdin) into the variable c.
-	//It reads one character at a time from the keyboard input
-    write(STDOUT_FILENO, "\033[1;32mWelcome to minishell\033[0m\n", 32);
+	write(STDOUT_FILENO, "\033[1;32mWelcome to minishell\033[0m\n", 32);
 	while (read(STDIN_FILENO, &c, 1) > 0 && c != '\n')
-    {
-        if (index == len)
-        {
-            len += 64; // Increase the buffer size as needed
-            char *new_line = ft_realloc(line, len);
-            if (new_line == NULL)
-            {
-                //print an error message if a memory allocation error occurs
-				//during the dynamic memory allocation process with malloc or realloc
+	{
+		if (index == len)
+		{
+			len += 64; // Increase the buffer size as needed
+			char *new_line = ft_realloc(line, len);
+			if (new_line == NULL)
+			{
 				perror("Memory allocation error");
-                exit(EXIT_FAILURE);
-            }
-            line = new_line;
-        }
-        line[index++] = c;
-    }
-    if (index == 0)
-    {
-        // Handle EOF(end of file) without any input
-        return NULL;
-    }
-    // Null-terminate the line
-    if (index == len)
-    {
-        len++;
-        char *new_line = ft_realloc(line, len);
-        if (new_line == NULL)
-        {
-            perror("Memory allocation error");
-            exit(EXIT_FAILURE);
-        }
-        line = new_line;
-    }
-    line[index] = '\0';
-
-    return line;
+				exit(EXIT_FAILURE);
+			}
+			line = new_line;
+		}
+		line[index++] = c;
+	}
+	if (index == 0)
+	{
+	    // Handle EOF(end of file) without any input
+		return (NULL);
+	}
+	// Null-terminate the line
+	if (index == len)
+	{
+		len++;
+		char *new_line = ft_realloc(line, len);
+		if (new_line == NULL)
+		{
+			perror("Memory allocation error");
+			exit(EXIT_FAILURE);
+		}
+		line = new_line;
+	}
+	line[index] = '\0';
+	return (line);
 }
 
 // Function to display the given parameters
@@ -96,51 +90,45 @@ void show_parameters(const char *parameters)
     }
 }
 
-int main(int ac, char **av)
+void	ft_free_all(t_data *l)
 {
-    int i;
-	int j;
+	int	i;
 
-    if (ac > 1)
-    {
-        i = 1;
-        while (i < ac)
-        {
-            show_parameters(av[i]);
-            i++;
-        }
-    }
-    else
-    {
-        char *parameters = readline();
-        
-        // Parse user input to get the command and arguments
-        char *command;
-        char **arguments;
-        parse_input(parameters, &command, &arguments);
-        
-        // Check if a command was provided
-        if (command)
-		{
-            printf("Command: %s\n", command);
+	if (l->params)
+		free(l->params);
+	if (l->command)
+		free(l->command);
+	i = 0;
+	while (l->arguments[i])
+		free(l->arguments[i]);
+	if (l->arguments)
+		free(l->arguments);
+}
 
-            // Print the arguments
-            if (arguments)
-			{
-                printf("Arguments:\n");
-                j = 0;
-                while (arguments[j] != NULL)
-				{
-                    printf("  %s\n", arguments[j]);
-                    j++;
-                }
-            }
-			// Execute the command with its arguments
-            execute_command(command, arguments);
-        }
-        free(parameters);
-    }
-    return EXIT_SUCCESS;
+void	init(t_data *l)
+{
+	l->params = readline();
+	get_command_arguments(l->params, l->command, l->arguments);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_data	*l;
+
+	if (ac > 1)
+	{
+		perror("Arguments cannot be put with the executable");
+		exit(EXIT_FAILURE);
+	}
+	l->envp = envp;
+	l->stop_main = 1;
+	while (l->stop_main)
+	{
+		init(l);
+		execute_command(l);
+		ft_free_all(l);
+	}
+	return (0);
 }
 
 

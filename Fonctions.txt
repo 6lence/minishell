@@ -1,2 +1,3 @@
-Fonctions explanations:
+readline/rl_ functions explanations:
 	https://tiswww.case.edu/php/chet/readline/readline.html
+

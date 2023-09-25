@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/16 15:30:42 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/09/25 14:49:05 by miguel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,22 @@
 
 # include "../libft/libft.h"
 
+typedef struct s_data
+{
+	int		envp;
+	int		stop_main;
+	char	**params;
+	char	*command;
+	char	**arguments;
+}		t_data;
+
 /* minishell */
-char *readline();
-void show_parameters(const char *parameters);
+char	*readline(void);
+void	show_parameters(const char *parameters);
 
 /* parsing */
-void parse_input(const char *input, char **command, char ***arguments);
-void execute_command(const char *command, char *const arguments[]);
+void	get_command_arguments(const char *input,
+			char *command, char ***arguments);
+void	execute_command(t_data *l);
 
 #endif
