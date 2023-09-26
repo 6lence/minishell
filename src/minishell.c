@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/25 14:49:43 by miguel           ###   ########.fr       */
+/*   Updated: 2023/09/26 11:38:13 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,52 +15,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Function to read a line of text from the terminal
-char	*readline(void)
-{
-	char	*line;
-	size_t	len;
-	size_t	index;
-	char	c;
-
-	write(STDOUT_FILENO, "\033[1;32mWelcome to minishell\033[0m\n", 32);
-	while (read(STDIN_FILENO, &c, 1) > 0 && c != '\n')
-	{
-		if (index == len)
-		{
-			len += 64; // Increase the buffer size as needed
-			char *new_line = ft_realloc(line, len);
-			if (new_line == NULL)
-			{
-				perror("Memory allocation error");
-				exit(EXIT_FAILURE);
-			}
-			line = new_line;
-		}
-		line[index++] = c;
-	}
-	if (index == 0)
-	{
-	    // Handle EOF(end of file) without any input
-		return (NULL);
-	}
-	// Null-terminate the line
-	if (index == len)
-	{
-		len++;
-		char *new_line = ft_realloc(line, len);
-		if (new_line == NULL)
-		{
-			perror("Memory allocation error");
-			exit(EXIT_FAILURE);
-		}
-		line = new_line;
-	}
-	line[index] = '\0';
-	return (line);
-}
-
 // Function to display the given parameters
+/*
 void show_parameters(const char *parameters)
 {
     char **tokens;
@@ -89,6 +45,7 @@ void show_parameters(const char *parameters)
         free(tokens);
     }
 }
+*/
 
 void	ft_free_all(t_data *l)
 {
@@ -108,24 +65,30 @@ void	ft_free_all(t_data *l)
 void	init(t_data *l)
 {
 	l->params = readline();
-	get_command_arguments(l->params, l->command, l->arguments);
+	get_command_arguments(l->params, &l->command, &l->arguments);
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	t_data	*l;
 
+	(void)av;
 	if (ac > 1)
 	{
-		perror("Arguments cannot be put with the executable");
+		perror("You cannot execute minishell with arguments.");
 		exit(EXIT_FAILURE);
 	}
+	l->in = dup(STDIN_FILENO);
+	l->out = dup(STDOUT_FILENO);
 	l->envp = envp;
 	l->stop_main = 1;
+	printf("\033[1;32mWelcome to minishell\033[0m\n");
 	while (l->stop_main)
 	{
 		init(l);
-		execute_command(l);
+		if (l->params == NULL)
+			return (0);
+		ft_big_execute(l);
 		ft_free_all(l);
 	}
 	return (0);
