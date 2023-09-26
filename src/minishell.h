@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/26 11:37:43 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:58:54 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,21 @@
 
 # include "../libft/libft.h"
 
+typedef struct s_signal
+{
+	int	stop;
+}		t_signal;
+
 typedef struct s_data
 {
-	int		envp;
-	int		stop_main;
-	char	**params;
-	char	*command;
-	char	**arguments;
-	int		in;
-	int		out;
+	int			envp;
+	int			stop_main;
+	char		**params;
+	char		*command;
+	char		**arguments;
+	int			in;
+	int			out;
+	t_signal	sig;
 }		t_data;
 
 /* minishell */

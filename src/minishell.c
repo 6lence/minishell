@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/26 11:38:13 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:56:45 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,22 +78,19 @@ int	main(int ac, char **av, char **envp)
 		perror("You cannot execute minishell with arguments.");
 		exit(EXIT_FAILURE);
 	}
-	l->in = dup(STDIN_FILENO);
-	l->out = dup(STDOUT_FILENO);
 	l->envp = envp;
 	l->stop_main = 1;
 	printf("\033[1;32mWelcome to minishell\033[0m\n");
 	while (l->stop_main)
 	{
 		init(l);
+		ft_big_execute(l);
 		if (l->params == NULL)
 			return (0);
-		ft_big_execute(l);
 		ft_free_all(l);
 	}
 	return (0);
 }
-
 
 /*
 ./minishell /bin/ls -l
@@ -101,9 +98,6 @@ int	main(int ac, char **av, char **envp)
 ./minishell /bin/nonexistentcommand
 
 */
-
-
-
 
 /*
 int main(int argc, char **argv)
