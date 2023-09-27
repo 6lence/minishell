@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/25 14:11:37 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/25 14:29:20 by ashalagi         ###   ########.fr       */
+/*   Created: 2023/09/26 17:00:56 by ashalagi          #+#    #+#             */
+/*   Updated: 2023/09/26 17:01:11 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../src/minishell.h"
+#include "minishell.h"
 
 int ft_cd(char **arguments)
 {
