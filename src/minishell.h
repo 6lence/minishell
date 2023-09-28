@@ -6,7 +6,11 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/09/28 16:17:04 by ashalagi         ###   ########.fr       */
+=======
+/*   Updated: 2023/09/28 14:43:41 by mescobar         ###   ########.fr       */
+>>>>>>> c09c30ef369c2e757a7df70c6be00e49cd00ba29
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +36,14 @@
 
 # include "../libft/libft.h"
 
+typedef struct s_params
+{
+	struct s_params	*prev;
+	char			*str;
+	int				pos;
+	struct s_params	*next;
+}					t_params;
+
 typedef struct s_signal
 {
 	int	stop;
@@ -39,14 +51,17 @@ typedef struct s_signal
 
 typedef struct s_data
 {
-	int			envp;
+	char		**envp;
 	int			stop_main;
 	char		**params;
 	char		*command;
 	char		**arguments;
+	char		*path;
+	DIR			*dir;
 	int			in;
 	int			out;
-	t_signal	sig;
+	t_params	*list;
+	t_signal	*sig;
 }		t_data;
 
 /* minishell */
@@ -54,8 +69,10 @@ void	show_parameters(const char *parameters);
 
 /* parsing */
 void	get_command_arguments(const char *input,
-			char *command, char ***arguments);
+			char *command, char **arguments);
 void	execute_command(t_data *l);
+int		ft_direrror(t_data *l);
+int		ft_chained_args(t_data *l);
 
 /* echo */
 void	ft_echo(t_data *data);

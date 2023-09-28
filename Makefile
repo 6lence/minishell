@@ -1,6 +1,9 @@
 # Define your source files and target executable
 SRC_DIR := ./src
-SRC_FILES := minishell.c parsing.c
+SRC_FILES :=	minishell.c \
+				parsing.c \
+				ft_errors.c \
+
 OBJ_DIR := ./obj
 EXECUTABLE := minishell
 
