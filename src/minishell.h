@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 13:36:11 by miguel           ###   ########.fr       */
+/*   Updated: 2023/09/28 14:09:07 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@
 
 typedef struct s_params
 {
-	struct params	prev;
-	char			*arg;
-	struct params	next;
+	struct s_params	*prev;
+	char			*str;
+	struct s_params	*next;
 }					t_params;
 
 typedef struct s_signal
@@ -51,7 +51,8 @@ typedef struct s_data
 	char		*params;
 	char		*command;
 	char		**arguments;
-	DIR			dir;
+	char		*path;
+	DIR			*dir;
 	int			in;
 	int			out;
 	t_params	list;
@@ -63,8 +64,9 @@ void	show_parameters(const char *parameters);
 
 /* parsing */
 void	get_command_arguments(const char *input,
-			char **command, char ***arguments);
+			char *command, char **arguments);
 void	execute_command(t_data *l);
+int		ft_direrror(t_data *l);
 
 /* echo */
 void	ft_echo(t_data *data);

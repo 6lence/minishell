@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 13:36:13 by miguel           ###   ########.fr       */
+/*   Updated: 2023/09/28 14:09:06 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,35 @@
 int	ft_access_verif(t_data *l)
 {
 	int		i;
+	int		j;
 	char	**path;
 	char	*join;
 
-	path = ft_split(ft_strnstr("PATH", l->envp,
-				ft_lstlen(l->envp)), ':');
-	while (path[i])
+	i = 0;
+	while (l->envp[i])
 	{
-		join = ft_strjoin(path[i], l->command);
-		if (access(join, 0) == 0)
-			return (1);
+		path = ft_split(ft_strnstr("PATH", l->envp[i],
+					ft_strlen(l->envp[i])), ':');
+		j = 0;
+		while (path[j])
+		{
+			join = ft_strjoin(path[j], l->command);
+			if (access(join, 0) != 0)
+			{
+				l->path = path[j];
+				return (0);
+			}
+			j++;
+		}
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 int	ft_big_execute(t_data *l)
 {
-	l->dir = opendir(l->command);
-	if (!l->dir)
-		return (ft_direrror(l));
-	else if (!ft_access_verif)
-		return (printf("Command '%s' not found.", l->command));
+	(void)l;
+	return (0);
 }
 
 void	ft_free_all(t_data *l)
@@ -54,13 +61,18 @@ void	ft_free_all(t_data *l)
 		free(l->arguments);
 }
 
-eint	init(t_data *l)
+int	init(t_data *l)
 {
 	l->params = readline("minishell->");
 	if (!l->params)
 		return (1);
 	add_history(l->params);
-	get_command_arguments(l->params, &l->command, &l->arguments);
+	get_command_arguments(l->params, l->command, l->arguments);
+	l->dir = opendir(l->command);
+	if (!l->dir)
+		return (ft_direrror(l));
+	else if (ft_access_verif(l) != 0)
+		return (printf("Command '%s' not found.", l->command));
 	l->in = dup(STDIN_FILENO);
 	l->out = dup(STDOUT_FILENO);
 	return (0);
@@ -76,12 +88,13 @@ int	main(int ac, char **av, char **envp)
 		perror("You cannot execute minishell with arguments.");
 		exit(EXIT_FAILURE);
 	}
+	l = ft_calloc(sizeof(t_data), 1);
 	l->envp = envp;
 	l->stop_main = 1;
 	printf("\033[1;32mWelcome to minishell\033[0m\n");
 	while (l->stop_main)
 	{
-		if (init(l) == 1)
+		if (init(l) != 0)
 			break ;
 		ft_big_execute(l);
 		ft_free_all(l);
