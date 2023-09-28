@@ -6,7 +6,7 @@
 /*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by miguel            #+#    #+#             */
-/*   Updated: 2023/09/25 14:49:01 by miguel           ###   ########.fr       */
+/*   Updated: 2023/09/28 13:36:12 by miguel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // Function to parse user input and return command and arguments
 void	get_command_arguments(const char *input,
-			char *command, char ***arguments)
+			char **command, char ***arguments)
 {
 	char	**tokens;
 
@@ -43,7 +43,7 @@ void	execute_command(t_data *l)
 	}
 	if (child_pid == 0)
 	{
-		path = ft_strjoin("/usr/bin", l->command);
+		path = ft_strjoin(, l->command);
 		if (access(path, 0) == 0)
 			execve(path, l->command, l->envp);
 		else
@@ -56,3 +56,5 @@ void	execute_command(t_data *l)
 	if (WIFEXITED(status))
 		printf("Child process exited with status %d\n", WEXITSTATUS(status));
 }
+
+

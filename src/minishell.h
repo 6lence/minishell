@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/26 11:58:54 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/09/28 13:36:11 by miguel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@
 
 # include "../libft/libft.h"
 
+typedef struct s_params
+{
+	struct params	prev;
+	char			*arg;
+	struct params	next;
+}					t_params;
+
 typedef struct s_signal
 {
 	int	stop;
@@ -39,13 +46,15 @@ typedef struct s_signal
 
 typedef struct s_data
 {
-	int			envp;
+	char		**envp;
 	int			stop_main;
-	char		**params;
+	char		*params;
 	char		*command;
 	char		**arguments;
+	DIR			dir;
 	int			in;
 	int			out;
+	t_params	list;
 	t_signal	sig;
 }		t_data;
 
@@ -54,7 +63,7 @@ void	show_parameters(const char *parameters);
 
 /* parsing */
 void	get_command_arguments(const char *input,
-			char *command, char ***arguments);
+			char **command, char ***arguments);
 void	execute_command(t_data *l);
 
 /* echo */

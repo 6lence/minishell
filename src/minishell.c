@@ -3,49 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/26 11:56:45 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/09/28 13:36:13 by miguel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-// Function to display the given parameters
-/*
-void show_parameters(const char *parameters)
+int	ft_access_verif(t_data *l)
 {
-    char **tokens;
-    int i; // Declare and initialize loop counter
+	int		i;
+	char	**path;
+	char	*join;
 
-	i = 0;
-    // Represents a single parameter obtained from the input string,
-    // which may contain multiple parameters separated by spaces.
-    tokens = ft_split(parameters, ' ');
-    if (tokens)
-    {
-        // Use a while loop to iterate through tokens and print parameters
-        while (tokens[i] != NULL)
-        {
-            printf("Parameter: %s\n", tokens[i]);
-            i++; // Increment the loop counter
-        }
-        i = 0; // Reset the loop counter for freeing memory
-        // Use another while loop to free the memory allocated for tokens
-        while (tokens[i] != NULL)
-        {
-            free(tokens[i]);
-            i++; // Increment the loop counter
-        }
-
-        free(tokens);
-    }
+	path = ft_split(ft_strnstr("PATH", l->envp,
+				ft_lstlen(l->envp)), ':');
+	while (path[i])
+	{
+		join = ft_strjoin(path[i], l->command);
+		if (access(join, 0) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
 }
-*/
+
+int	ft_big_execute(t_data *l)
+{
+	l->dir = opendir(l->command);
+	if (!l->dir)
+		return (ft_direrror(l));
+	else if (!ft_access_verif)
+		return (printf("Command '%s' not found.", l->command));
+}
 
 void	ft_free_all(t_data *l)
 {
@@ -62,10 +54,16 @@ void	ft_free_all(t_data *l)
 		free(l->arguments);
 }
 
-void	init(t_data *l)
+eint	init(t_data *l)
 {
-	l->params = readline();
+	l->params = readline("minishell->");
+	if (!l->params)
+		return (1);
+	add_history(l->params);
 	get_command_arguments(l->params, &l->command, &l->arguments);
+	l->in = dup(STDIN_FILENO);
+	l->out = dup(STDOUT_FILENO);
+	return (0);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -83,71 +81,14 @@ int	main(int ac, char **av, char **envp)
 	printf("\033[1;32mWelcome to minishell\033[0m\n");
 	while (l->stop_main)
 	{
-		init(l);
+		if (init(l) == 1)
+			break ;
 		ft_big_execute(l);
-		if (l->params == NULL)
-			return (0);
 		ft_free_all(l);
 	}
+	rl_clear_history();
 	return (0);
 }
-
-/*
-./minishell /bin/ls -l
-./minishell /bin/echo Hello, world!
-./minishell /bin/nonexistentcommand
-
-*/
-
-/*
-int main(int argc, char **argv)
-{
-    // Check if the user provided a command
-    if (argc < 2)
-    {
-        fprintf(stderr, "Usage: %s <command> [arguments...]\n", argv[0]);
-        exit(EXIT_FAILURE);
-    }
-
-    // Construct the argument list for execve
-    char **args = argv + 1; // Skip the program name
-
-    // Create a child process
-    pid_t child_pid = fork();
-
-    if (child_pid == -1)
-    {
-        perror("fork");
-        exit(EXIT_FAILURE);
-    }
-
-    if (child_pid == 0)
-    {
-        // This code runs in the child process
-        // Execute the command
-        if (execve(args[0], args, NULL) == -1)
-        {
-            // If execve returns, an error occurred
-            perror("execve");
-            exit(EXIT_FAILURE);
-        }
-    }
-    else
-    {
-        // This code runs in the parent process
-        // Wait for the child process to complete
-        int status;
-        waitpid(child_pid, &status, 0);
-
-        if (WIFEXITED(status))
-        {
-            printf("Child process exited with status %d\n", WEXITSTATUS(status));
-        }
-    }
-
-    return EXIT_SUCCESS;
-}
-*/
 
 /*
 • Afficher un prompt en l’attente d’une nouvelle commande.
