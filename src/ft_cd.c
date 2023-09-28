@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 17:00:56 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 10:33:22 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/09/28 16:25:39 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,6 @@ int main()
         NULL
     };
 
-    // Initialize your data structure
     t_data data;
     data.params = malloc((sizeof(char *) * (sizeof(envp) / sizeof(envp[0]))) + 1);
     if (!data.params)
