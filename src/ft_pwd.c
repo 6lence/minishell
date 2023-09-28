@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 14:35:13 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/27 11:42:29 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/09/28 07:58:50 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char *ft_pwd()
     char *buf = NULL;
     size_t size;
 
-	size = 0;
+	size = 64;
     if (getcwd(NULL, 0) == NULL)
 	{
         perror("getcwd");
@@ -37,3 +37,25 @@ char *ft_pwd()
     }
     return buf;
 }
+
+/*
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    char *currentDirectory = ft_pwd();
+
+    if (currentDirectory != NULL)
+    {
+        printf("Current Directory: %s\n", currentDirectory);
+        free(currentDirectory);
+    }
+    else
+    {
+        printf("Failed to retrieve current directory.\n");
+    }
+
+    return 0;
+}
+*/

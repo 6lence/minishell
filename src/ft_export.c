@@ -6,38 +6,38 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/27 11:42:34 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/09/28 13:17:04 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Function to print all environment variables
-void print_env_variables(char **envp)
+void remove_env_variable(char **envp, int index);
+
+// Function to find the index of an environment variable
+int find_env_variable(char **envp, const char *var_name)
 {
     int index = 0;
 
     while (envp[index] != NULL)
     {
-        char *env_variable = envp[index];
-
-        if (ft_strchr(env_variable, '='))
+        if (ft_strncmp(envp[index], var_name, ft_strlen(var_name)) == 0 && envp[index][strlen(var_name)] == '=')
         {
-            printf("%s\n", env_variable);
+            return index;
         }
         index++;
     }
+    return -1;
 }
 
-// Function to remove an environment variable by shifting the array
-void remove_env_variable(char **envp, int index)
+// Function to unset an environment variable
+void unset_env_variable(char **envp, const char *var_name)
 {
-    free(envp[index]);
+    int index = find_env_variable(envp, var_name);
 
-    while (envp[index] != NULL)
+    if (index != -1)
     {
-        envp[index] = envp[index + 1];
-        index++;
+        remove_env_variable(envp, index);
     }
 }
 
@@ -55,7 +55,7 @@ void add_env_variable(char ***envp, char *argument)
     if (!new_envp)
     {
         // Handle memory allocation error
-        fprintf(stderr, "Memory allocation error\n");
+        fprintf(stderr, "Memory allocation error\n"); 
         exit(1);
     }
 
@@ -63,6 +63,50 @@ void add_env_variable(char ***envp, char *argument)
     new_envp[envp_len + 1] = NULL;
     *envp = new_envp;
 }
+
+// Function to print all environment variables
+void print_env_variables(char **envp)
+{
+    int index = 0;
+
+    while (envp[index] != NULL)
+    {
+        char *env_variable = envp[index];
+
+        if (ft_strchr(env_variable, '='))
+        {
+            printf("%s\n", env_variable);
+        }
+        index++;
+    }
+}
+void remove_env_variable(char **envp, int index)
+{
+    free(envp[index]);
+
+    // Shift elements in the array to fill the gap
+    while (envp[index + 1] != NULL)
+    {
+        envp[index] = envp[index + 1];
+        index++;
+    }
+
+    envp[index] = NULL; // Mark the end of the array
+}
+
+/*
+// Function to remove an environment variable by shifting the array
+void remove_env_variable(char **envp, int index)
+{
+    free(envp[index]);
+
+    while (envp[index] != NULL)
+    {
+        envp[index] = envp[index + 1];
+        index++;
+    }
+}
+*/
 
 // Function to add or update an environment variable
 void handle_env_variable(char ***envp, const char *var_name, char *var_value, char *argument)
@@ -75,6 +119,7 @@ void handle_env_variable(char ***envp, const char *var_name, char *var_value, ch
     if (index != -1)
     {
         free((*envp)[index]);
+//        (*envp)[index] = argument;
         (*envp)[index] = ft_strdup(argument);
     }
     else
@@ -99,8 +144,8 @@ void ft_export(t_data *data)
     {
         while (data->arguments[i] != NULL)
         {
-            var_name = data->arguments[i];
-            var_value = ft_strchr(var_name, '=');
+            *var_name = data->arguments[i];
+            *var_value = ft_strchr(var_name, '=');
             if (var_value == NULL)
             {
                 // Handle the unset command
@@ -115,3 +160,29 @@ void ft_export(t_data *data)
         }
     }
 }
+
+
+int main()
+{
+    // Create a sample environment variable array
+    char *envp[] = {
+        "VAR1=value1",
+        "VAR2=value2",
+        "VAR3=value3",
+        NULL
+    };
+
+    // Initialize your data structure
+    t_data data;
+    data.params = envp;
+    data.arguments = (char *[]){"export", "VAR4=newvalue", "VAR5=", NULL}; // Sample arguments
+
+    // Call your ft_export function
+    ft_export(&data);
+
+    // Print the updated environment variables
+    print_env_variables(data.params);
+
+    return 0;
+}
+
