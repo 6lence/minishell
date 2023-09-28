@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/08 10:13:49 by ashalagi          #+#    #+#              #
-#    Updated: 2023/09/25 11:08:57 by ashalagi         ###   ########.fr        #
+#    Updated: 2023/09/28 14:40:10 by mescobar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,16 +52,6 @@ SRC = ft_isalpha.c \
 	get_next_line_bonus.c \
 	get_next_line_utils_bonus.c 
 
-BONUS_SRC = ft_lstnew.c \
-	ft_lstadd_front.c \
-	ft_lstsize.c \
-	ft_lstlast.c \
-	ft_lstadd_back.c \
-	ft_lstdelone.c \
-	ft_lstclear.c \
-	ft_lstiter.c \
-	ft_lstmap.c 
-
 CC = gcc
 
 AR = ar rcs
@@ -76,9 +66,6 @@ all: ${NAME}
 
 ${NAME}: ${OBJ}
 	@${AR} ${NAME} ${OBJ}
-
-bonus: ${BONUS_OBJ}
-	${AR} ${NAME} ${BONUS_OBJ}
 
 clean:
 	@rm -rf ${OBJ} ${BONUS_OBJ}

@@ -5,12 +5,51 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/25 12:34:37 by miguel            #+#    #+#             */
-/*   Updated: 2023/09/28 14:08:11 by mescobar         ###   ########.fr       */
+/*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
+/*   Updated: 2023/09/28 14:43:39 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static t_params	*ft_lstlast(t_params *a)
+{
+	t_params	*tmp;
+
+	tmp = a;
+	while (tmp->next)
+		tmp = tmp->next;
+	return (tmp);
+}
+
+int	ft_chained_args(t_data *l)
+{
+	t_params	*new;
+	int			i;
+
+	i = 0;
+	l->list = NULL;
+	while (i++ < ft_lstlen())
+	{
+		new = malloc(sizeof(t_params));
+		if (!new)
+			return (1);
+		new->str = l->params[i];
+		new->pos = i;
+		new->next = NULL;
+		if (l->list)
+		{
+			new->prev = l->list;
+			ft_lstlast(l->list)->next = new;
+		}
+		else
+		{
+			new->prev = NULL;
+			l->list = new;
+		}
+	}
+	return (0);
+}
 
 // Function to parse user input and return command and arguments
 void	get_command_arguments(const char *input,

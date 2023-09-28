@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 14:09:06 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/09/28 14:43:08 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_access_verif(t_data *l)
 
 int	ft_big_execute(t_data *l)
 {
-	(void)l;
+	execute_command(l);
 	return (0);
 }
 
@@ -63,10 +63,11 @@ void	ft_free_all(t_data *l)
 
 int	init(t_data *l)
 {
-	l->params = readline("minishell->");
+	l->params = ft_split(readline("minishell->"), ' ');
 	if (!l->params)
 		return (1);
 	add_history(l->params);
+	ft_chained_args(l);
 	get_command_arguments(l->params, l->command, l->arguments);
 	l->dir = opendir(l->command);
 	if (!l->dir)
@@ -141,4 +142,3 @@ int	main(int ac, char **av, char **envp)
     - exit sans aucune option
 
 */
-

@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 14:09:07 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/09/28 14:43:41 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_params
 {
 	struct s_params	*prev;
 	char			*str;
+	int				pos;
 	struct s_params	*next;
 }					t_params;
 
@@ -48,15 +49,15 @@ typedef struct s_data
 {
 	char		**envp;
 	int			stop_main;
-	char		*params;
+	char		**params;
 	char		*command;
 	char		**arguments;
 	char		*path;
 	DIR			*dir;
 	int			in;
 	int			out;
-	t_params	list;
-	t_signal	sig;
+	t_params	*list;
+	t_signal	*sig;
 }		t_data;
 
 /* minishell */
@@ -67,6 +68,7 @@ void	get_command_arguments(const char *input,
 			char *command, char **arguments);
 void	execute_command(t_data *l);
 int		ft_direrror(t_data *l);
+int		ft_chained_args(t_data *l);
 
 /* echo */
 void	ft_echo(t_data *data);
