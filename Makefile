@@ -3,6 +3,7 @@ SRC_DIR := ./src
 SRC_FILES :=	minishell.c \
 				parsing.c \
 				ft_errors.c \
+				ft_lstutils.c \
 
 OBJ_DIR := ./obj
 EXECUTABLE := minishell
@@ -12,7 +13,7 @@ OBJ_FILES := $(addprefix $(OBJ_DIR)/,$(SRC_FILES:.c=.o))
 
 # Compiler and compiler flags
 CC := gcc
-CFLAGS := -Wall -Werror -Wextra -g
+CFLAGS := -Wall -Werror -Wextra -g -lreadline 
 
 # Additional dependencies
 LFT := ./libft/libft.a

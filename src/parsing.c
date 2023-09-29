@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/09/28 14:43:39 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/09/29 13:22:42 by miguel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static t_params	*ft_lstlast(t_params *a)
-{
-	t_params	*tmp;
-
-	tmp = a;
-	while (tmp->next)
-		tmp = tmp->next;
-	return (tmp);
-}
 
 int	ft_chained_args(t_data *l)
 {
@@ -29,12 +19,12 @@ int	ft_chained_args(t_data *l)
 
 	i = 0;
 	l->list = NULL;
-	while (i++ < ft_lstlen())
+	while (i++ < ft_lstlen(l))
 	{
 		new = malloc(sizeof(t_params));
 		if (!new)
 			return (1);
-		new->str = l->params[i];
+		new->str = l->params_split[i];
 		new->pos = i;
 		new->next = NULL;
 		if (l->list)

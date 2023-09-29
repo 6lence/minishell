@@ -6,7 +6,7 @@
 /*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/29 09:25:37 by miguel           ###   ########.fr       */
+/*   Updated: 2023/09/29 13:23:07 by miguel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_big_execute(t_data *l)
 void	ft_free_all(t_data *l)
 {
 	int	i;
-
+	
 	if (l->params)
 		free(l->params);
 	if (l->command)
@@ -63,9 +63,10 @@ void	ft_free_all(t_data *l)
 
 int	init(t_data *l)
 {
-	l->params = ft_split(readline("minishell->"), ' ');
+	l->params = readline("minishell->");
 	if (!l->params)
 		return (1);
+	l->params_split = ft_split(l->params, ' ');
 	add_history(l->params);
 	ft_chained_args(l);
 	get_command_arguments(l->params, l->command, l->arguments);
