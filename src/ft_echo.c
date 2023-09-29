@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:10:15 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/25 15:30:33 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/09/28 09:37:58 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,20 @@ void ft_echo(t_data *data)
     }
 }
 
+/*
+int main()
+{
+    // Create a sample data structure
+    t_data data;
+    char *arguments[] = {"echo", "-n", "Hello,", "world!", NULL};
+    data.arguments = arguments;
 
+    // Call the ft_echo function
+    ft_echo(&data);
+
+    return 0;
+}
+*/
 
 
 

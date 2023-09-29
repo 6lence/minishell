@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/09 15:00:28 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/02/16 13:33:54 by ashalagi         ###   ########.fr       */
+/*   Created: 2023/09/28 16:11:33 by ashalagi          #+#    #+#             */
+/*   Updated: 2023/09/28 16:11:59 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+char	*ft_strstr(const char *haystack, const char *needle)
 {
-	int		len;
-	t_list	*res;
+	size_t	i;
+	size_t	k;
 
-	if (!lst || !f)
-		return (NULL);
-	len = ft_lstsize(lst) - 1;
-	if (!((f)(lst->content)))
-		return (NULL);
-	res = ft_lstnew((f)(lst->content));
-	lst = lst->next;
-	while (len)
+	i = 0;
+	if (needle[i] == 0)
+		return ((char *)haystack);
+	while (haystack[i])
 	{
-		if (!(f)(lst->content))
+		k = 0;
+		while (haystack[i + k] == needle[k] && haystack[i + k])
 		{
-			ft_lstclear(&res, del);
-			return (NULL);
+			if (needle[k + 1] == 0)
+				return ((char *)&haystack[i]);
+			++k;
 		}
-		ft_lstadd_back(&res, ft_lstnew((f)(lst->content)));
-		lst = lst->next;
-		--len;
+		++i;
 	}
-	return (res);
+	return (0);
 }

@@ -1,24 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*   ft_errors.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/09 14:59:44 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/02/16 12:09:29 by ashalagi         ###   ########.fr       */
+/*   Created: 2023/09/28 13:39:58 by mescobar          #+#    #+#             */
+/*   Updated: 2023/09/28 14:33:13 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstiter(t_list *lst, void (*f)(void *))
+int	ft_direrror(t_data *l)
 {
-	if (!f)
-		return ;
-	while (lst)
-	{
-		(f)(lst->content);
-		lst = lst->next;
-	}
+	(void)l;
+	return (1);
 }

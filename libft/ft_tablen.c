@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
+/*   ft_tablen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/09 14:52:56 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/02/16 12:07:38 by ashalagi         ###   ########.fr       */
+/*   Created: 2023/09/28 16:09:38 by ashalagi          #+#    #+#             */
+/*   Updated: 2023/09/28 16:10:10 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstadd_front(t_list **lst, t_list *new)
+size_t	ft_tablen(char **table)
 {
-	if (!new)
-		return ;
-	new->next = *lst;
-	*lst = new;
+	size_t	nb;
+
+	nb = 0;
+	while (table[nb])
+	{
+		++nb;
+	}
+	return (nb);
 }

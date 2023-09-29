@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 10:38:07 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/26 10:49:24 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/09/27 17:00:18 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,3 +29,17 @@ void ft_env(t_data *data)
         index++;
     }
 }
+
+/*
+#include <stdio.h> 
+
+int main()
+{
+    t_data data;
+    data.params = (char *[]){"PATH=/usr/bin", "USER=john", "HOME=/home/john", NULL}; 
+
+    ft_env(&data);
+
+    return 0;
+}
+*/
