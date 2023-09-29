@@ -6,7 +6,7 @@
 /*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 13:36:11 by miguel           ###   ########.fr       */
+/*   Updated: 2023/09/29 09:09:09 by miguel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_data
 	DIR			dir;
 	int			in;
 	int			out;
+	int			exit_code;
 	t_params	list;
 	t_signal	sig;
 }		t_data;
