@@ -34,10 +34,10 @@
 
 typedef struct s_params
 {
-	struct params	*prev;
+	struct s_params	*prev;
 	char			*str;
 	int				pos;
-	struct params	*next;
+	struct s_params	*next;
 }					t_params;
 
 typedef struct s_signal

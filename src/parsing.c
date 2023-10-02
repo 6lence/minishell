@@ -30,7 +30,7 @@ int	ft_chained_args(t_data *l)
 		if (l->list)
 		{
 			new->prev = l->list;
-			ft_lstlast(l->list)->next = new;
+			ft_lstlast(l)->next = new;
 		}
 		else
 		{
