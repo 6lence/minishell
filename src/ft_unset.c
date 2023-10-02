@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:15:03 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 16:16:44 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:12:27 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void ft_unset(t_data *data, char *arguments[])
     }
 }
 
+/*
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -138,3 +139,4 @@ int main(int argc, char *argv[])
 
     return data.exit_code;
 }
+*/

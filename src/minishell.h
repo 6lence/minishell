@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/29 13:22:38 by miguel           ###   ########.fr       */
+/*   Updated: 2023/10/02 10:52:30 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_data
 	DIR			*dir;
 	int			in;
 	int			out;
+	int			exit_code;
 	t_params	*list;
 	t_signal	sig;
 }		t_data;
@@ -72,11 +73,36 @@ void	execute_command(t_data *l);
 int		ft_chained_args(t_data *l);
 void	ft_pipe_presence(t_data *l);
 
-/* echo */
-void	ft_echo(t_data *data);
+/* ft_cd */
+void	print_env_variables(char **envp);
+int		find_env_variable(char **envp, const char *var_name);
+void	add_env_variable(char ***envp, char *argument);
+void	handle_env_variable(char ***envp, const char *var_name, char *var_value, char *argument)
+void	ft_cd(t_data *data);
+
+/* ft_echo */
+void			ft_echo(t_data *data);
+static size_t	check_n(char **args);
+void			ft_echo(t_data *data);
+
+/* ft_env */
+void	ft_env(t_data *data);
+
+/* ft_exit */
+int		ft_count_arguments(char **arguments);
+void	ft_exit(t_data *data);
+
+/* ft_export */
+
 
 /* pwd */
 char	*ft_pwd(void);
+
+/* ft_unset */
+int			is_proper_env(const char *env_name);
+static char	**getenvvar(const char *name);
+int			ft_unsetenv(const char *name);
+void		ft_unset(t_data *data, char *arguments[]);
 
 /* lstutils */
 t_params	*ft_lstlast(t_data *l);

@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 17:00:56 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 16:25:39 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/02 10:19:43 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void print_env_variables(char **envp)
 {
     int index = 0;
 
-    while (envp[index] != NULL)
+    while (envp[index])
     {
         char *env_variable = envp[index];
 

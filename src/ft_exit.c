@@ -6,13 +6,11 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:14:04 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 16:17:57 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/02 11:11:34 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../src/minishell.h"
-
-// int exit_code; add to structure !!!!!!!!!!!!!
 
 int ft_count_arguments(char **arguments)
 {
@@ -59,7 +57,7 @@ void ft_exit(t_data *data)
     // Set the stop flag to terminate the main shell loop
     data->stop_main = 1;
 }
-
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -79,3 +77,4 @@ int main()
 
     return 0;
 }
+*/
