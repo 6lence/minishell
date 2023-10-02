@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 13:17:04 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/02 13:49:11 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,23 @@ int find_env_variable(char **envp, const char *var_name)
     return -1;
 }
 
-// Function to unset an environment variable
-void unset_env_variable(char **envp, const char *var_name)
+void unset_env_variable(char ***envp, const char *var_name)
 {
-    int index = find_env_variable(envp, var_name);
+    int index = find_env_variable(*envp, var_name);
 
     if (index != -1)
     {
-        remove_env_variable(envp, index);
+        free((*envp)[index]); // Free the memory of the environment variable
+        // Shift elements in the array to fill the gap
+        while ((*envp)[index + 1] != NULL)
+        {
+            (*envp)[index] = (*envp)[index + 1];
+            index++;
+        }
+        (*envp)[index] = NULL; // Mark the end of the array
     }
 }
+
 
 // Function to add a new environment variable
 void add_env_variable(char ***envp, char *argument)
@@ -94,20 +101,6 @@ void remove_env_variable(char **envp, int index)
     envp[index] = NULL; // Mark the end of the array
 }
 
-/*
-// Function to remove an environment variable by shifting the array
-void remove_env_variable(char **envp, int index)
-{
-    free(envp[index]);
-
-    while (envp[index] != NULL)
-    {
-        envp[index] = envp[index + 1];
-        index++;
-    }
-}
-*/
-
 // Function to add or update an environment variable
 void handle_env_variable(char ***envp, const char *var_name, char *var_value, char *argument)
 {
@@ -128,38 +121,40 @@ void handle_env_variable(char ***envp, const char *var_name, char *var_value, ch
     }
 }
 
-// Function to handle the 'export' command
 void ft_export(t_data *data)
 {
-    int i = 1;
+    int i;
     char *var_name;
     char *var_value;
 
+    i = 1;
     if (data->arguments[1] == NULL)
     {
         // If no arguments are provided, print all environment variables
-        print_env_variables(data->params);
+        print_env_variables(data->envp);
     }
     else
     {
         while (data->arguments[i] != NULL)
         {
-            *var_name = data->arguments[i];
-            *var_value = ft_strchr(var_name, '=');
+            var_name = ft_strdup(data->arguments[i]);
+            var_value = ft_strchr(var_name, '=');
             if (var_value == NULL)
             {
                 // Handle the unset command
-                unset_env_variable(data->params, var_name);
+                unset_env_variable(&data->envp, var_name);
             }
             else
             {
                 // Handle adding or updating a variable
-                handle_env_variable(&(data->params), var_name, var_value, data->arguments[i]);
+                handle_env_variable(&(data->envp), var_name, var_value, data->arguments[i]);
             }
+            free(var_name); // Free the allocated memory
             i++;
         }
     }
 }
+
 
 
 int main()
@@ -174,15 +169,36 @@ int main()
 
     // Initialize your data structure
     t_data data;
-    data.params = envp;
+    data.envp = envp; // Use the envp field for your environment variables
     data.arguments = (char *[]){"export", "VAR4=newvalue", "VAR5=", NULL}; // Sample arguments
 
     // Call your ft_export function
     ft_export(&data);
 
     // Print the updated environment variables
-    print_env_variables(data.params);
+    printf("Updated environment variables:\n");
+    for (int i = 0; data.envp[i] != NULL; i++) {
+        printf("%s\n", data.envp[i]);
+    }
 
     return 0;
 }
 
+
+
+
+
+
+/*
+// Function to remove an environment variable by shifting the array
+void remove_env_variable(char **envp, int index)
+{
+    free(envp[index]);
+
+    while (envp[index] != NULL)
+    {
+        envp[index] = envp[index + 1];
+        index++;
+    }
+}
+*/
