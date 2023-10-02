@@ -42,7 +42,10 @@ int	ft_access_verif(t_data *l)
 
 int	ft_big_execute(t_data *l)
 {
-	execute_command(l);
+	if (l->pipe == 1)
+		execute_pipe(l);
+	else
+		execute_command(l);
 	return (0);
 }
 
@@ -77,6 +80,7 @@ int	init(t_data *l)
 		return (printf("Command '%s' not found.", l->command));
 	l->in = dup(STDIN_FILENO);
 	l->out = dup(STDOUT_FILENO);
+	ft_pipe_presence(l);
 	return (0);
 }
 
@@ -106,9 +110,9 @@ int	main(int ac, char **av, char **envp)
 }
 
 /*
-• Afficher un prompt en l’attente d’une nouvelle commande.
-• Posséder un historique fonctionnel.
-• Chercher et lancer le bon exécutable (en se basant sur la variable d’environnement
+ ✔	• Afficher un prompt en l’attente d’une nouvelle commande.
+ ✔	• Posséder un historique fonctionnel.
+ ✔	• Chercher et lancer le bon exécutable (en se basant sur la variable d’environnement
   PATH, ou sur un chemin relatif ou absolu).
 • Ne pas utiliser plus d’une variable globale. Réfléchissez-y car vous devrez justifier
   son utilisation.

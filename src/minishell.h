@@ -54,6 +54,7 @@ typedef struct s_data
 	char		*command;
 	char		**arguments;
 	char		*path;
+	int			pipe;
 	DIR			*dir;
 	int			in;
 	int			out;
@@ -68,8 +69,8 @@ void	show_parameters(const char *parameters);
 void	get_command_arguments(const char *input,
 			char *command, char **arguments);
 void	execute_command(t_data *l);
-int		ft_direrror(t_data *l);
 int		ft_chained_args(t_data *l);
+void	ft_pipe_presence(t_data *l);
 
 /* echo */
 void	ft_echo(t_data *data);
@@ -81,5 +82,8 @@ char	*ft_pwd(void);
 t_params	*ft_lstlast(t_data *l);
 t_params	*ft_lstfirst(t_data *l);
 int		ft_lstlen(t_data *l);
+
+/* errors */
+int		ft_direrror(t_data *l);
 
 #endif

@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+void	ft_pipe_presence(t_data *l)
+{
+	t_params	*tmp;
+
+	l->pipe = 0;
+	tmp = l->list;
+	while (tmp->prev->pos != 0)
+		tmp = tmp->prev;
+	while (tmp->next)
+	{
+		if (tmp->str[0] == '|')
+			l->pipe = 1;
+		tmp = tmp->next;
+	}
+}
+
 int	ft_chained_args(t_data *l)
 {
 	t_params	*new;
