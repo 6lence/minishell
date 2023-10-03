@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/03 09:32:15 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/03 10:22:00 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ void	ft_cd(t_data *data);
 
 /* ft_echo */
 void			ft_echo(t_data *data);
-static size_t	check_n(char **args);
-void			ft_echo(t_data *data);
 
 /* ft_env */
 void	ft_env(t_data *data);
@@ -100,7 +98,7 @@ char	*ft_pwd(void);
 
 /* ft_unset */
 int			is_proper_env(const char *env_name);
-static char	**getenvvar(const char *name);
+//static char	**getenvvar(const char *name);
 int			ft_unsetenv(const char *name);
 void		ft_unset(t_data *data, char *arguments[]);
 
