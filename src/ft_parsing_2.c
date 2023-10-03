@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:29:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/03 16:55:12 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:12:19 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,12 @@ char	**ft_search_path(t_data *l)
 	while (l->envp[i])
 	{
 		line = ft_pathcmp(l->envp[i], "PATH");
+		if (line != NULL)
+			break ;
 		i++;
 	}
 	tmp = ft_split(line, ':');
-	free(line);
+	if (line && line[0])
+		free(line);
 	return (tmp);
 }

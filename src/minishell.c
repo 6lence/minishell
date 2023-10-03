@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/03 16:54:39 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:01:36 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	ft_access_verif(t_data *l)
 	char	*join;
 
 	path = ft_search_path(l);
+	exit(EXIT_FAILURE);
 	j = 0;
 	while (path[j])
 	{
