@@ -6,12 +6,12 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 15:08:49 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/02 13:42:14 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/03 09:03:35 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-/*
+
 void	*ft_realloc(void *ptr, size_t size)
 {
 	void	*new_ptr;
@@ -35,7 +35,7 @@ void	*ft_realloc(void *ptr, size_t size)
 	}
 	return ((unsigned char *)malloc(sizeof(ptr) * size));
 }
-*/
+/*
 void *ft_realloc(void *ptr, size_t size)
 {
     void *new_ptr;
@@ -61,3 +61,4 @@ void *ft_realloc(void *ptr, size_t size)
     // If ptr is NULL, allocate memory for the new pointer
     return malloc(size);
 }
+*/

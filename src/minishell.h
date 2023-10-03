@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/02 13:55:00 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/03 09:32:15 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	ft_pipe_presence(t_data *l);
 void	print_env_variables(char **envp);
 int		find_env_variable(char **envp, const char *var_name);
 void	add_env_variable(char ***envp, char *argument);
-void	handle_env_variable(char ***envp, const char *var_name, char *var_value, char *argument)
+void	handle_env_variable(char ***envp, const char *var_name, char *var_value, char *argument);
 void	ft_cd(t_data *data);
 
 /* ft_echo */
