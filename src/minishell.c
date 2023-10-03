@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/02 13:48:48 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:54:39 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,25 @@
 
 int	ft_access_verif(t_data *l)
 {
-	int		i;
 	int		j;
 	char	**path;
 	char	*join;
 
-	i = 0;
-	while (l->envp[i])
+	path = ft_search_path(l);
+	j = 0;
+	while (path[j])
 	{
-		path = ft_split(ft_strnstr("PATH", l->envp[i],
-					ft_strlen(l->envp[i])), ':');
-		j = 0;
-		while (path[j])
+		join = ft_strjoin(path[j], ft_lst_elem(l->list, 0)->str);
+		if (access(join, 0) != 0)
 		{
-			join = ft_strjoin(path[j], l->command);
-			if (access(join, 0) != 0)
-			{
-				l->path = path[j];
-				return (0);
-			}
-			j++;
+			l->path = path[j];
+			j = 0;
+			while (path[j])
+				free(path[j]);
+			free(path);
+			return (0);
 		}
-		i++;
+		j++;
 	}
 	return (1);
 }
@@ -43,8 +40,8 @@ int	ft_access_verif(t_data *l)
 int	ft_big_execute(t_data *l)
 {
 	if (l->pipe == 1)
-		execute_pipe(l);
-	else
+		ft_pipe(l);
+	else if (l->path)
 		execute_command(l);
 	return (0);
 }
@@ -66,18 +63,16 @@ void	ft_free_all(t_data *l)
 
 int	init(t_data *l)
 {
-	l->params = readline("minishell->");
+	l->params = readline("minishell-> ");
 	if (!l->params)
 		return (1);
 	l->params_split = ft_split(l->params, ' ');
 	add_history(l->params);
 	ft_chained_args(l);
-	get_command_arguments(l->params, l->command, l->arguments);
-	l->dir = opendir(l->command);
-	if (!l->dir)
-		return (ft_direrror(l));
-	else if (ft_access_verif(l) != 0)
+	l->dir = opendir(ft_lst_elem(l->list, 0)->str);
+	if (ft_access_verif(l) != 0)
 		return (printf("Command '%s' not found.", l->command));
+	printf("here\n");
 	l->in = dup(STDIN_FILENO);
 	l->out = dup(STDOUT_FILENO);
 	ft_pipe_presence(l);

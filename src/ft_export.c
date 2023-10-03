@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/03 09:37:15 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/03 10:39:37 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,11 @@ int is_valid_env_variable(const char *str)
     {
         return FALSE;
     }
-
     // Check if the string contains only valid characters
     for (int i = 1; str[i] != '\0'; i++)
     {
         if (!ft_isalnum(str[i]) && str[i] != '_')
-        {
-            return FALSE;
-        }
     }
-
     return TRUE;
 }
 
@@ -49,9 +44,7 @@ void print_env_variables(char **envp)
         char *env_variable = envp[index];
 
         if (ft_strchr(env_variable, '='))
-        {
             printf("%s\n", env_variable);
-        }
         index++;
     }
 }
@@ -112,7 +105,6 @@ void ft_export(t_data *data)
             *var_value = '\0'; // Terminate the variable name
             var_value++;       // Move to the value part
         }
-
         if (is_valid_env_variable(arg))
         {
             int index = find_env_variable(data->envp, var_name);
@@ -132,7 +124,6 @@ void ft_export(t_data *data)
             // Print an error message for invalid environment variable
             fprintf(stderr, "export: not a valid identifier: %s\n", arg);
         }
-
         i++;
     }
 }

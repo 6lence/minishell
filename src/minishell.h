@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/03 10:22:00 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:53:57 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,15 @@ typedef struct s_data
 	int			in;
 	int			out;
 	int			exit_code;
+	int			new_fd[2];
+	int			old_fd[2];
 	t_params	*list;
 	t_signal	sig;
 }		t_data;
 
 /* minishell */
 void	show_parameters(const char *parameters);
+void    ft_pipe(t_data *l);	
 
 /* parsing */
 void	get_command_arguments(const char *input,
@@ -72,6 +75,8 @@ void	get_command_arguments(const char *input,
 void	execute_command(t_data *l);
 int		ft_chained_args(t_data *l);
 void	ft_pipe_presence(t_data *l);
+/* parsing_ 2 */
+char	**ft_search_path(t_data *l);
 
 /* ft_cd */
 void	print_env_variables(char **envp);
@@ -103,9 +108,11 @@ int			ft_unsetenv(const char *name);
 void		ft_unset(t_data *data, char *arguments[]);
 
 /* lstutils */
-t_params	*ft_lstlast(t_data *l);
-t_params	*ft_lstfirst(t_data *l);
-int		ft_lstlen(t_data *l);
+t_params	*ft_lstlast(t_params *l);
+t_params	*ft_lstfirst(t_params *l);
+int			ft_lstlen(t_params *l);
+void		ft_lstprint(t_params *l);
+t_params	*ft_lst_elem(t_params *l, int pos);
 
 /* errors */
 int		ft_direrror(t_data *l);

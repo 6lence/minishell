@@ -3,36 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstutils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 11:22:45 by miguel            #+#    #+#             */
-/*   Updated: 2023/09/29 13:22:40 by miguel           ###   ########.fr       */
+/*   Updated: 2023/10/03 16:16:57 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_params	*ft_lstlast(t_data *l)
+t_params	*ft_lstlast(t_params *l)
 {
 	t_params	*tmp;
 
-	tmp = l->list;
+	tmp = l;
 	while (tmp->next)
 		tmp = tmp->next;
 	return (tmp);
 }
 
-t_params	*ft_lstfirst(t_data *l)
+t_params	*ft_lstfirst(t_params *l)
 {
 	t_params	*tmp;
 
-	tmp = l->list;
+	tmp = l;
 	while (tmp->prev)
 		tmp = tmp->prev;
 	return (tmp);
 }
 
-int	ft_lstlen(t_data *l)
+int	ft_lstlen(t_params *l)
 {
 	return (ft_lstlast(l)->pos);
+}
+
+void	ft_lstprint(t_params *l)
+{
+	t_params	*tmp;
+
+	tmp = l;
+	while (tmp)
+	{
+		printf("%s\n", tmp->str);
+		tmp = tmp->next;
+	}
+}
+
+t_params	*ft_lst_elem(t_params *l, int pos)
+{
+	t_params	*tmp;
+	int			i;
+
+	i = 0;
+	tmp = l;
+	while (i < pos)
+	{
+		tmp = tmp->next;
+	}
+	return (tmp);
 }

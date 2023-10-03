@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/02 13:48:51 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:53:35 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,26 @@ void	ft_pipe_presence(t_data *l)
 	}
 }
 
+int	ft_params_len(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 int	ft_chained_args(t_data *l)
 {
 	t_params	*new;
 	int			i;
+	int			params;
 
 	i = 0;
 	l->list = NULL;
-	while (i++ < ft_lstlen(l))
+	params = ft_params_len(l->params_split);
+	while (i < params)
 	{
 		new = malloc(sizeof(t_params));
 		if (!new)
@@ -46,13 +58,14 @@ int	ft_chained_args(t_data *l)
 		if (l->list)
 		{
 			new->prev = l->list;
-			ft_lstlast(l)->next = new;
+			ft_lstlast(l->list)->next = new;
 		}
 		else
 		{
 			new->prev = NULL;
 			l->list = new;
 		}
+		i++;
 	}
 	return (0);
 }
