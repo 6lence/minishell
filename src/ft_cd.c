@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 17:00:56 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/02 10:19:43 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/04 10:53:34 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,18 @@ void handle_env_variable(char ***envp, const char *var_name, char *var_value, ch
     }
 }
 
-void ft_cd(t_data *data)
+int ft_cd(t_data *data)
 {
     char *new_dir = data->arguments[1];
 
     if (new_dir == NULL)
     {
         // If no directory is provided, go to the home directory
-        new_dir = getenv("HOME");
+        int index = find_env_variable(data->envp, "HOME");
+        if (index != -1)
+        {
+            new_dir = data->envp[index] + 5; // skip "HOME="
+        }
     }
 
     if (new_dir)
@@ -103,33 +107,25 @@ void ft_cd(t_data *data)
         {
             // Handle the case when the directory doesn't exist
             perror("cd");
+            return (-1);
         }
         else
         {
             // Update the PWD (Present Working Directory) environment variable
-            char *cwd = getcwd(NULL, 0);
-            if (cwd)
-            {
-                int index = find_env_variable(data->params, "PWD");
-                if (index != -1)
-                {
-                    free(data->params[index]); // Free the old PWD value
-                    data->params[index] = ft_strdup(ft_strjoin("PWD=", cwd));
-                }
-                else
-                {
-                    // PWD not found, add it to the environment
-                    add_env_variable(&(data->params), ft_strjoin("PWD=", cwd));
-                }
-                free(cwd);
-            }
+            char cwd[1024];
+            getcwd(cwd, sizeof(cwd));
+            char *new_pwd = ft_strjoin("PWD=", cwd);
+            handle_env_variable(&(data->envp), "PWD", new_pwd, new_pwd);
         }
     }
     else
     {
         ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
+        return (-1);
     }
+    return (0);
 }
+
 /*
 int main()
 {

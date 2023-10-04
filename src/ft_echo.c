@@ -6,11 +6,11 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:10:15 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 09:37:58 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/04 10:38:56 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../src/minishell.h"
+#include "minishell.h"
 
 // function to handle the -n option
 static size_t check_n(char **args)
@@ -35,13 +35,16 @@ static size_t check_n(char **args)
     return (i);
 }
 
-void ft_echo(t_data *data)
+int ft_echo(t_data *data)
 {
     int newline;
     int i;
 
     newline = 1; // Flag to print a newline at the end
     i = check_n(data->arguments);
+    
+    if (i > 1) // if i is greater than 1, it means -n option is present
+        newline = 0;
 
     if (data->arguments[1] == NULL)
     {
@@ -66,6 +69,7 @@ void ft_echo(t_data *data)
     {
         write(STDOUT_FILENO, "\n", 1);
     }
+    return (0);
 }
 
 /*

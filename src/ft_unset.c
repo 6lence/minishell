@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:15:03 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/02 11:12:27 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/04 10:54:27 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int			ft_unsetenv(const char *name)
 }
 
 // Function to handle the 'unset' command
-void ft_unset(t_data *data, char *arguments[])
+int ft_unset(t_data *data, char *arguments[])
 {
     int error_flag = 0;
     int word_i = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/04 08:44:41 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/04 11:01:09 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ int		find_env_variable(char **envp, const char *var_name);
 void	add_env_variable(char ***envp, char *argument);
 void	handle_env_variable(char ***envp, const char *var_name,
 			char *var_value, char *argument);
-void	ft_cd(t_data *data);
+int	ft_cd(t_data *data);
 
 /* ft_echo */
-void	ft_echo(t_data *data);
+int	ft_echo(t_data *data);
 
 /* ft_env */
 void	ft_env(t_data *data);
@@ -103,9 +103,8 @@ char	*ft_pwd(void);
 
 /* ft_unset */
 int		is_proper_env(const char *env_name);
-//static char	**getenvvar(const char *name);
 int		ft_unsetenv(const char *name);
-void	ft_unset(t_data *data, char *arguments[]);
+int	ft_unset(t_data *data, char *arguments[]);
 
 /* lstutils */
 t_params	*ft_lstlast(t_params *l);
