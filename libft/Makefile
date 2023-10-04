@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+         #
+#    By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/08 10:13:49 by ashalagi          #+#    #+#              #
-#    Updated: 2023/09/28 14:40:10 by mescobar         ###   ########.fr        #
+#    Updated: 2023/10/03 11:56:26 by ashalagi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRC = ft_isalpha.c \
 	ft_realloc.c \
 	ft_memalloc.c \
 	ft_strcmp.c \
+	ft_tablen.c \
 	get_next_line_bonus.c \
 	get_next_line_utils_bonus.c 
 

@@ -3,301 +3,156 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/03 10:39:37 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/04 09:37:14 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#include <ctype.h>
+#include "minishell.h"
 
-// Define constants for true and false
-#define TRUE 1
-#define FALSE 0
-
-// Function to check if a string is a valid environment variable name
-int is_valid_env_variable(const char *str)
+static void	print_envp(char **envp)
 {
-    // Check if the string is empty or starts with a digit
-    if (str == NULL || !ft_isalpha(str[0]))
-    {
-        return FALSE;
-    }
-    // Check if the string contains only valid characters
-    for (int i = 1; str[i] != '\0'; i++)
-    {
-        if (!ft_isalnum(str[i]) && str[i] != '_')
-    }
-    return TRUE;
+	int		i;
+
+	i = 0;
+	while (envp[i])
+	{
+		ft_putendl_fd(envp[i], 1);
+		i++;
+	}
 }
 
-// Function to print all environment variables
-void print_env_variables(char **envp)
+static int	valid_env_name(char *arg)
 {
-    int index = 0;
+	int		i;
 
-    while (envp[index] != NULL)
-    {
-        char *env_variable = envp[index];
-
-        if (ft_strchr(env_variable, '='))
-            printf("%s\n", env_variable);
-        index++;
-    }
+	if (!ft_isalpha(arg[0]) && arg[0] != '_')
+		return (0);
+	i = 1;
+	while (arg[i])
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-// Function to find the index of an environment variable
-int find_env_variable(char **envp, const char *var_name)
+static void	add_or_update_env(t_data *data, char *arg)
 {
-    int index = 0;
+	int		i;
+	char	*new_env;
+	char	**new_envp;
 
-    while (envp[index] != NULL)
-    {
-        if (ft_strncmp(envp[index], var_name, ft_strlen(var_name)) == 0 && envp[index][strlen(var_name)] == '=')
-        {
-            return index;
-        }
-        index++;
-    }
-    return -1;
+	i = -1;
+	while (data->envp[++i])
+		if (ft_strncmp(data->envp[i], arg, ft_strlen(arg)) == 0 &&
+			data->envp[i][ft_strlen(arg)] == '=')
+			return ;
+	new_env = ft_strjoin(arg, "=");
+	new_envp = (char **)malloc(sizeof(char *) * (i + 2));
+	i = -1;
+	while (data->envp[++i])
+		new_envp[i] = ft_strdup(data->envp[i]);
+	new_envp[i] = new_env;
+	new_envp[i + 1] = NULL;
+	free(data->envp); // Free old envp here, you might need to free its elements too
+	data->envp = new_envp;
 }
 
-// Function to add a new environment variable
-void add_env_variable(char ***envp, char *argument)
+void	ft_export(t_data *data)
 {
-    int envp_len = 0;
-
-    while ((*envp)[envp_len] != NULL)
-    {
-        envp_len++;
-    }
-
-    char **new_envp = ft_realloc(*envp, (envp_len + 2) * sizeof(char *));
-    if (!new_envp)
-    {
-        // Handle memory allocation error
-        fprintf(stderr, "Memory allocation error\n"); 
-        exit(1);
-    }
-
-    new_envp[envp_len] = ft_strdup(argument);
-    new_envp[envp_len + 1] = NULL;
-    *envp = new_envp;
+	if (!(data->arguments[1])) // If no argument after ft_export
+	{
+		print_envp(data->envp);
+		return ;
+	}
+	if (!valid_env_name(data->arguments[1]))
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(data->arguments[1], 2);
+		ft_putendl_fd("': not a valid identifier", 2);
+		return ;
+	}
+	add_or_update_env(data, data->arguments[1]);
 }
 
-// Function to handle the 'export' command
-void ft_export(t_data *data)
+#include "minishell.h"
+
+static void free_envp(char **envp)
 {
     int i;
 
-    i = 1;
-    while (data->arguments[i] != NULL)
+    i = 0;
+    while (envp[i])
     {
-        char *arg = data->arguments[i];
-        char *var_name = arg;
-        char *var_value = ft_strchr(arg, '=');
-
-        if (var_value != NULL)
-        {
-            *var_value = '\0'; // Terminate the variable name
-            var_value++;       // Move to the value part
-        }
-        if (is_valid_env_variable(arg))
-        {
-            int index = find_env_variable(data->envp, var_name);
-
-            if (index != -1)
-            {
-                free(data->envp[index]); // Free the old environment variable value
-                data->envp[index] = ft_strdup(arg); // Update the environment variable
-            }
-            else
-            {
-                add_env_variable(&(data->envp), arg); // Add the new environment variable
-            }
-        }
-        else
-        {
-            // Print an error message for invalid environment variable
-            fprintf(stderr, "export: not a valid identifier: %s\n", arg);
-        }
+        free(envp[i]);
         i++;
     }
+    free(envp);
 }
 
-
-/*
-void remove_env_variable(char **envp, int index);
-
-// Function to find the index of an environment variable
-int find_env_variable(char **envp, const char *var_name)
+int main(void)
 {
-    int index = 0;
-
-    while (envp[index] != NULL)
-    {
-        if (ft_strncmp(envp[index], var_name, ft_strlen(var_name)) == 0 && envp[index][strlen(var_name)] == '=')
-        {
-            return index;
-        }
-        index++;
-    }
-    return -1;
-}
-
-void unset_env_variable(char ***envp, const char *var_name)
-{
-    int index = find_env_variable(*envp, var_name);
-
-    if (index != -1)
-    {
-        free((*envp)[index]); // Free the memory of the environment variable
-        // Shift elements in the array to fill the gap
-        while ((*envp)[index + 1] != NULL)
-        {
-            (*envp)[index] = (*envp)[index + 1];
-            index++;
-        }
-        (*envp)[index] = NULL; // Mark the end of the array
-    }
-}
-
-
-// Function to add a new environment variable
-void add_env_variable(char ***envp, char *argument)
-{
-    int envp_len = 0;
-
-    while ((*envp)[envp_len] != NULL)
-    {
-        envp_len++;
-    }
-
-    char **new_envp = ft_realloc(*envp, (envp_len + 2) * sizeof(char *));
-    if (!new_envp)
-    {
-        // Handle memory allocation error
-        fprintf(stderr, "Memory allocation error\n"); 
-        exit(1);
-    }
-
-    new_envp[envp_len] = ft_strdup(argument);
-    new_envp[envp_len + 1] = NULL;
-    *envp = new_envp;
-}
-
-// Function to print all environment variables
-void print_env_variables(char **envp)
-{
-    int index = 0;
-
-    while (envp[index] != NULL)
-    {
-        char *env_variable = envp[index];
-
-        if (ft_strchr(env_variable, '='))
-        {
-            printf("%s\n", env_variable);
-        }
-        index++;
-    }
-}
-void remove_env_variable(char **envp, int index)
-{
-    free(envp[index]);
-
-    // Shift elements in the array to fill the gap
-    while (envp[index + 1] != NULL)
-    {
-        envp[index] = envp[index + 1];
-        index++;
-    }
-
-    envp[index] = NULL; // Mark the end of the array
-}
-
-// Function to add or update an environment variable
-void handle_env_variable(char ***envp, const char *var_name, char *var_value, char *argument)
-{
-    int index;
-    *var_value = '\0'; // Terminate the variable name
-    var_value++;       // Move to the value part
-    index = find_env_variable(*envp, var_name);
-
-    if (index != -1)
-    {
-        free((*envp)[index]);
-//        (*envp)[index] = argument;
-        (*envp)[index] = ft_strdup(argument);
-    }
-    else
-    {
-        add_env_variable(envp, argument);
-    }
-}
-
-void ft_export(t_data *data)
-{
-    int i;
-    char *var_name;
-    char *var_value;
-
-    i = 1;
-    if (data->arguments[1] == NULL)
-    {
-        // If no arguments are provided, print all environment variables
-        print_env_variables(data->envp);
-    }
-    else
-    {
-        while (data->arguments[i] != NULL)
-        {
-            var_name = ft_strdup(data->arguments[i]);
-            var_value = ft_strchr(var_name, '=');
-            if (var_value == NULL)
-            {
-                // Handle the unset command
-                unset_env_variable(&data->envp, var_name);
-            }
-            else
-            {
-                // Handle adding or updating a variable
-                handle_env_variable(&(data->envp), var_name, var_value, data->arguments[i]);
-            }
-            free(var_name); // Free the allocated memory
-            i++;
-        }
-    }
-}
-*/
-
-
-int main()
-{
-    // Create a sample environment variable array
-    char *envp[] = {
-        "VAR1=value1",
-        "VAR2=value2",
-        "VAR3=value3",
-        NULL
-    };
-
-    // Initialize your data structure
     t_data data;
-    data.envp = envp; // Use the envp field for your environment variables
-    data.arguments = (char *[]){"export", "VAR4=newvalue", "VAR5=", NULL}; // Sample arguments
 
-    // Call your ft_export function
-    ft_export(&data);
+    // Initialization of data
+    data.envp = (char **)malloc(sizeof(char *) * 4); // Example environment
+    if (!data.envp)
+        return (1); // Handle memory allocation failure
+    data.envp[0] = ft_strdup("USER=root");
+    data.envp[1] = ft_strdup("HOME=/root");
+    data.envp[2] = ft_strdup("SHELL=/bin/bash");
+    data.envp[3] = NULL;
 
-    // Print the updated environment variables
-    printf("Updated environment variables:\n");
-    for (int i = 0; data.envp[i] != NULL; i++) {
-        printf("%s\n", data.envp[i]);
+    // No arguments: should print the environment
+    data.arguments = (char **)malloc(sizeof(char *) * 2);
+    if (!data.arguments)
+    {
+        free_envp(data.envp);
+        return (1); // Handle memory allocation failure
     }
+    data.arguments[0] = ft_strdup("ft_export");
+    data.arguments[1] = NULL;
+    ft_export(&data);
+    free(data.arguments[0]);
+    free(data.arguments);
 
-    return 0;
+    // With valid argument: should add or update environment variable
+    data.arguments = (char **)malloc(sizeof(char *) * 3);
+    if (!data.arguments)
+    {
+        free_envp(data.envp);
+        return (1); // Handle memory allocation failure
+    }
+    data.arguments[0] = ft_strdup("ft_export");
+    data.arguments[1] = ft_strdup("PATH=/usr/local/bin");
+    data.arguments[2] = NULL;
+    ft_export(&data);
+    free(data.arguments[0]);
+    free(data.arguments[1]);
+    free(data.arguments);
+
+    // Invalid argument: should print error message
+    data.arguments = (char **)malloc(sizeof(char *) * 3);
+    if (!data.arguments)
+    {
+        free_envp(data.envp);
+        return (1); // Handle memory allocation failure
+    }
+    data.arguments[0] = ft_strdup("ft_export");
+    data.arguments[1] = ft_strdup("1INVALID=argument");
+    data.arguments[2] = NULL;
+    ft_export(&data);
+    free(data.arguments[0]);
+    free(data.arguments[1]);
+    free(data.arguments);
+
+    // Cleanup
+    free_envp(data.envp);
+    return (0);
 }

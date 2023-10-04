@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:14:02 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 14:40:24 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/03 11:56:10 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	ft_putnbr_fd(int n, int fd);
 void	*ft_memalloc(size_t size);
 void	*ft_realloc(void *ptr, size_t size);
 int		ft_strcmp(char *s1, char *s2);
+size_t	ft_tablen(char **table);
 
 /* gnl */
 char	*get_next_line(int fd);
