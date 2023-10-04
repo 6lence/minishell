@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/03 16:53:57 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/04 08:44:41 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_data
 
 /* minishell */
 void	show_parameters(const char *parameters);
-void    ft_pipe(t_data *l);	
+void	ft_pipe(t_data *l);	
 
 /* parsing */
 void	get_command_arguments(const char *input,
@@ -82,11 +82,12 @@ char	**ft_search_path(t_data *l);
 void	print_env_variables(char **envp);
 int		find_env_variable(char **envp, const char *var_name);
 void	add_env_variable(char ***envp, char *argument);
-void	handle_env_variable(char ***envp, const char *var_name, char *var_value, char *argument);
+void	handle_env_variable(char ***envp, const char *var_name,
+			char *var_value, char *argument);
 void	ft_cd(t_data *data);
 
 /* ft_echo */
-void			ft_echo(t_data *data);
+void	ft_echo(t_data *data);
 
 /* ft_env */
 void	ft_env(t_data *data);
@@ -97,15 +98,14 @@ void	ft_exit(t_data *data);
 
 /* ft_export */
 
-
 /* pwd */
 char	*ft_pwd(void);
 
 /* ft_unset */
-int			is_proper_env(const char *env_name);
+int		is_proper_env(const char *env_name);
 //static char	**getenvvar(const char *name);
-int			ft_unsetenv(const char *name);
-void		ft_unset(t_data *data, char *arguments[]);
+int		ft_unsetenv(const char *name);
+void	ft_unset(t_data *data, char *arguments[]);
 
 /* lstutils */
 t_params	*ft_lstlast(t_params *l);
