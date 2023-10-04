@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/04 09:47:31 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/04 13:07:56 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	add_or_update_env(t_data *data, char *arg)
 	data->envp = new_envp;
 }
 
-void	ft_export(t_data *data)
+int ft_export(t_data *data)
 {
 	if (!(data->arguments[1])) // If no argument after ft_export
 	{
@@ -77,10 +77,10 @@ void	ft_export(t_data *data)
 		return ;
 	}
 	add_or_update_env(data, data->arguments[1]);
+    return (0);
 }
 
-#include "minishell.h"
-
+/*
 static void free_envp(char **envp)
 {
     int i;
@@ -154,3 +154,4 @@ int main(void)
     free_envp(data.envp);
     return (0);
 }
+*/

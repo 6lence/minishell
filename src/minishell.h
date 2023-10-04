@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/04 11:01:09 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/04 13:08:19 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_signal
 typedef struct s_data
 {
 	char		**envp;
+	int			envp_allocated;
 	int			stop_main;
 	char		*params;
 	char		**params_split;
@@ -75,6 +76,7 @@ void	get_command_arguments(const char *input,
 void	execute_command(t_data *l);
 int		ft_chained_args(t_data *l);
 void	ft_pipe_presence(t_data *l);
+
 /* parsing_ 2 */
 char	**ft_search_path(t_data *l);
 
@@ -84,7 +86,7 @@ int		find_env_variable(char **envp, const char *var_name);
 void	add_env_variable(char ***envp, char *argument);
 void	handle_env_variable(char ***envp, const char *var_name,
 			char *var_value, char *argument);
-int	ft_cd(t_data *data);
+int		ft_cd(t_data *data);
 
 /* ft_echo */
 int	ft_echo(t_data *data);
@@ -97,14 +99,19 @@ int		ft_count_arguments(char **arguments);
 void	ft_exit(t_data *data);
 
 /* ft_export */
+static void	print_envp(char **envp);
+static int	valid_env_name(char *arg);
+static void	add_or_update_env(t_data *data, char *arg);
+int			ft_export(t_data *data);
 
 /* pwd */
 char	*ft_pwd(void);
 
 /* ft_unset */
 int		is_proper_env(const char *env_name);
-int		ft_unsetenv(const char *name);
-int	ft_unset(t_data *data, char *arguments[]);
+char	**ft_getenvvar(t_data *data, const char *name);
+int		ft_unsetenv(t_data *data, const char *name);
+int		ft_unset(t_data *data, char *arguments[]);
 
 /* lstutils */
 t_params	*ft_lstlast(t_params *l);

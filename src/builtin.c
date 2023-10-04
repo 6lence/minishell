@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_commands.c                                   :+:      :+:    :+:   */
+/*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:21:48 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/04 11:01:57 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/04 13:37:00 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		execute_builtin(t_data *data)
 	if (ft_strcmp(data->command, "env") == 0)
 		ft_env(data->envp); // Adjusted based on assumed ft_env signature
 	if (ft_strcmp(data->command, "export") == 0)
-		result = ft_export(data->arguments, data->envp); // Adjusted based on assumed ft_export signature
+		result = ft_export(data->arguments); // Adjusted based on assumed ft_export signature
 	if (ft_strcmp(data->command, "unset") == 0)
 		result = ft_unset(data->arguments, data->envp); // Adjusted based on assumed ft_unset signature
 	return (result);

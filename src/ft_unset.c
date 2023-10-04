@@ -6,137 +6,200 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:15:03 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/04 10:54:27 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/04 12:59:41 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../src/minishell.h"
+#include "minishell.h"
 #include <stddef.h> // For NULL definition
 
-// Function to check if the argument is a proper environment variable name
 int is_proper_env(const char *env_name)
 {
-    int	i;
+    int i;
 
-	i = 0;
+    if (env_name == NULL || env_name[0] == '\0')
+    {
+        return 0; // Return false for NULL or empty strings
+    }
+    i = 0;
     while (env_name[i])
     {
         if (!(ft_isalnum((unsigned char)env_name[i]) || env_name[i] == '_'))
         {
-            return 0; // Not a proper environment variable name
+            return 0; // Return false for invalid characters
         }
         i++;
     }
-    return 1; // Proper environment variable name
+    return 1; // Return true for valid env variable names
 }
 
-static char	**getenvvar(const char *name)
+char **ft_getenvvar(t_data *data, const char *name)
 {
-	extern char **environ;
-	int			i;
-	int			j;
+    int i;
+    int j;
+    int name_len;
 
-	if (name)
-	{
-		i = 0;
-		while (environ[i])
-		{
-			j = 0;
-			while (name[j] && environ[i][j] && name[j] == environ[i][j])
-				++j;
-			if (environ[i][j] != '=' || name[j])
-				++i;
-			else
-			{
-				++j;
-				return (&environ[i]);
-			}
-		}
-	}
-	return (NULL);
+    if (!name || !data || !data->envp)
+        return NULL;
+
+    i = 0;
+    name_len = ft_strlen(name);
+    while (data->envp[i])
+    {
+        j = 0;
+        while (name[j] && data->envp[i][j] && name[j] == data->envp[i][j])
+            ++j;
+        if (data->envp[i][j] == '=' && j == name_len)
+            return &data->envp[i];
+        ++i;
+    }
+    return NULL;
 }
 
-// Function to remove/unset an environment variable
-int			ft_unsetenv(const char *name)
+int ft_unsetenv(t_data *data, const char *name)
 {
-	extern char	**environ;
-	char		**dst;
-	char		**src;
-	int			tlen;
+    char **target;
+    char **new_envp;
+    int i;
+    int j;
 
-	if (!name || !*name || ft_strstr(name, "="))
-		return (-1);
-	else
-	{
-		if (!(dst = getenvvar(name)))
-			return (0);
-		src = dst + 1;
-		tlen = ft_tablen(src);
-		ft_memmove(dst, src, sizeof(char*) * tlen);
-		dst[tlen] = NULL;
-		return (0);
-	}
+    if (!name || !data || !data->envp)
+        return -1;
+
+    target = ft_getenvvar(data, name);
+    if (!target)
+        return 0; // The environment variable does not exist
+
+    // Count the number of environment variables
+    i = 0;
+    while (data->envp[i])
+        ++i;
+
+    // Allocate memory for new environment array
+    new_envp = (char **)malloc(sizeof(char *) * i);
+    if (!new_envp)
+        return -1; // Memory allocation failed
+
+    // Copy all variables except the target one
+    i = 0;
+    j = 0;
+    while (data->envp[i])
+    {
+        if (&data->envp[i] != target)
+            new_envp[j++] = data->envp[i];
+        ++i;
+    }
+    new_envp[j] = NULL; // Null-terminate the new environment array
+    if (data->envp_allocated) // Check if data->envp was dynamically allocated
+    {
+        free(data->envp); // Only free data->envp if it was dynamically allocated
+        data->envp_allocated = 0; // Reset the allocation flag
+    }
+    data->envp = new_envp; // Assign the new environment array to data->envp
+    data->envp_allocated = 1; // Set the allocation flag to true
+    return 0;
 }
 
-// Function to handle the 'unset' command
 int ft_unset(t_data *data, char *arguments[])
 {
-    int error_flag = 0;
-    int word_i = 1;
+    int error_flag;
+    int word_i;
     char *key;
     char *error_message;
 
+    error_flag = 0; // Initialize error_flag to false (0)
+    word_i = 1; // Start with the first argument
+    // Ensure arguments is not NULL before dereferencing
+    if (!arguments)
+    {               // Handle error appropriately; for now, simply return
+        return -1; // or set the error_flag and error_message as needed
+    }
+
     while (arguments[word_i] != NULL)
     {
+        // Check if each argument is a valid environment variable name
         if (!is_proper_env(arguments[word_i]))
         {
-            error_flag = 1;
+            error_flag = 1; // Set error flag to true (1)
             error_message = "unset: invalid argument\n";
             write(STDERR_FILENO, error_message, ft_strlen(error_message));
-            word_i++;
-            continue;
         }
         else
         {
+            // Process valid environment variable names
             key = arguments[word_i];
-            // Code to remove/unset the environment variable with 'key'
-            // You need to implement this part based on your environment variable handling logic
-            // For example, you can use the unsetenv() function to remove the variable.
-            if (ft_unsetenv(key) != 0)
-			{
-                perror("unsetenv");
+            if (ft_unsetenv(data, key) != 0)
+            { // Check the return value of ft_unsetenv
+                // Handle error appropriately; for now, set error_flag and print an error message
                 error_flag = 1;
+                error_message = "Error: unable to unset environment variable\n";
+                write(STDERR_FILENO, error_message, ft_strlen(error_message));
             }
-            word_i++;
         }
+        word_i++; // Move to the next argument
     }
-    // Set the exit code based on the error_flag
-    if (error_flag)
-    {
-        data->exit_code = EXIT_FAILURE;
-    }
-    else
+    // Set exit_code based on error_flag
+    if (error_flag == 0)
     {
         data->exit_code = EXIT_SUCCESS;
     }
+    else
+    {
+        data->exit_code = EXIT_FAILURE;
+    }
+    return data->exit_code; // Return the exit code
 }
 
 /*
-#include <stdio.h>
-#include <stdlib.h>
-
-int main(int argc, char *argv[])
+int main(void)
 {
     t_data data;
-    data.exit_code = 0;
+    char *args[] = {"unset", "HOME", NULL};
+    char *new_env[] = {"USER=root", "HOME=/root", "SHELL=/bin/bash", NULL};
+    int i;
 
-    if (argc < 2)
+    // Initialize t_data struct
+    data.envp = new_env;
+    data.arguments = args;
+    data.envp_allocated = 0;
+
+    // Testing getenvvar
+    char **var = ft_getenvvar(&data, "HOME");
+    if (var && *var)
+        printf("Found variable: %s\n", *var);
+    else
+        printf("Variable not found.\n");
+
+    // Testing ft_unsetenv
+    int res = ft_unsetenv(&data, "HOME");
+    if (res == 0)
     {
-        printf("Usage: %s <variable1> <variable2> ...\n", argv[0]);
-        return 1;
+        printf("ft_unsetenv successful. New environment:\n");
+        i = 0;
+        while (data.envp[i])
+        {
+            printf("%s\n", data.envp[i]);
+            i++;
+        }
     }
-    ft_unset(&data, argv);
+    else
+    {
+        printf("ft_unsetenv operation failed.\n");
+    }
 
-    return data.exit_code;
+    // Testing ft_unset
+    ft_unset(&data, args);
+    printf("ft_unset called. New environment:\n");
+    i = 0;
+    while (data.envp[i])
+    {
+        printf("%s\n", data.envp[i]);
+        i++;
+    }
+
+    // Clean up and freeing allocated memory if needed
+    // For instance, if you dynamically allocate memory for the envp array or its elements, ensure to free it appropriately.
+
+    return 0;
 }
 */

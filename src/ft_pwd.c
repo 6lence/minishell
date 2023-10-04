@@ -6,37 +6,47 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 14:35:13 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/09/28 07:58:50 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/04 13:43:36 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../src/minishell.h"
+#include "minishell.h"
 
 char *ft_pwd()
 {
-    char *buf = NULL;
+    char *buf;
     size_t size;
 
-	size = 64;
-    if (getcwd(NULL, 0) == NULL)
-	{
-        perror("getcwd");
-        return NULL;
-    }
+    size = 1024;
     buf = (char *)malloc(size);
     if (buf == NULL)
-	{
+    {
         perror("malloc");
         return NULL;
     }
     if (getcwd(buf, size) == NULL)
-	{
+    {
         perror("getcwd");
         free(buf);
         return NULL;
     }
     return buf;
 }
+
+/*
+//need to free the buffer when done
+//if system support, possible simplify the function by directly using getcwd(NULL, 0)
+char *ft_pwd()
+{
+    char *buf = getcwd(NULL, 0);
+    if (buf == NULL)
+    {
+        perror("getcwd");
+    }
+    return buf;
+}
+
+*/
 
 /*
 #include <stdio.h>
