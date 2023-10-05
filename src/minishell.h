@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/04 13:08:19 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/05 10:02:13 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,6 @@ int		ft_count_arguments(char **arguments);
 void	ft_exit(t_data *data);
 
 /* ft_export */
-static void	print_envp(char **envp);
-static int	valid_env_name(char *arg);
-static void	add_or_update_env(t_data *data, char *arg);
 int			ft_export(t_data *data);
 
 /* pwd */
