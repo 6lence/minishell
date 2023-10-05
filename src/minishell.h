@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/05 10:02:13 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:10:32 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	ft_pipe_presence(t_data *l);
 
 /* parsing_ 2 */
 char	**ft_search_path(t_data *l);
+int		ft_args(t_params *l);
 
 /* ft_cd */
 void	print_env_variables(char **envp);

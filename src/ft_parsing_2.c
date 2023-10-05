@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:29:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/03 17:12:19 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:22:27 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,22 @@ char	**ft_search_path(t_data *l)
 		i++;
 	}
 	tmp = ft_split(line, ':');
-	if (line && line[0])
-		free(line);
 	return (tmp);
+}
+
+int	ft_args(t_params *l)
+{
+	int			i;
+	t_params	*tmp;
+
+	i = 0;
+	tmp = l;
+	while (tmp)
+	{
+		if (tmp->str[0] == '|')
+			break ;
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
 }

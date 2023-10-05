@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/04 11:28:55 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:16:01 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,32 @@ int	ft_access_verif(t_data *l)
 	int		j;
 	char	**path;
 	char	*join;
+	char	*command;
 
 	path = ft_search_path(l);
-	exit(EXIT_FAILURE);
+	command = ft_strjoin("/", ft_lst_elem(l->list, 0)->str);
 	j = 0;
 	while (path[j])
 	{
-		join = ft_strjoin(path[j], ft_lst_elem(l->list, 0)->str);
-		if (access(join, 0) != 0)
+		join = ft_strjoin(path[j], command);
+		if (access(join, 0) == 0)
 		{
 			l->path = path[j];
 			j = 0;
 			while (path[j])
-				free(path[j]);
-			free(path);
+				free(path[j++]);
+			if (path)
+				free(path);
+			if (command)
+				free(command);
 			return (0);
 		}
+		if (join)
+			free(join);
 		j++;
 	}
+	if (command)
+		free(command);
 	return (1);
 }
 
@@ -49,17 +57,8 @@ int	ft_big_execute(t_data *l)
 
 void	ft_free_all(t_data *l)
 {
-	int	i;
-
 	if (l->params)
 		free(l->params);
-	if (l->command)
-		free(l->command);
-	i = 0;
-	while (l->arguments[i])
-		free(l->arguments[i]);
-	if (l->arguments)
-		free(l->arguments);
 }
 
 int	init(t_data *l)
@@ -72,8 +71,8 @@ int	init(t_data *l)
 	ft_chained_args(l);
 	l->dir = opendir(ft_lst_elem(l->list, 0)->str);
 	if (ft_access_verif(l) != 0)
-		return (printf("Command '%s' not found.", l->command));
-	printf("here\n");
+		return (printf("Command '%s' not found.\n",
+			 ft_lst_elem(l->list, 0)->str));
 	l->in = dup(STDIN_FILENO);
 	l->out = dup(STDOUT_FILENO);
 	ft_pipe_presence(l);
@@ -96,8 +95,7 @@ int	main(int ac, char **av, char **envp)
 	printf("\033[1;32mWelcome to minishell\033[0m\n");
 	while (l->stop_main)
 	{
-		if (init(l) != 0)
-			break ;
+		init(l);
 		ft_big_execute(l);
 		ft_free_all(l);
 	}

@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/03 16:53:35 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:08:37 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	ft_pipe_presence(t_data *l)
 
 	l->pipe = 0;
 	tmp = l->list;
-	while (tmp->prev->pos != 0)
-		tmp = tmp->prev;
 	while (tmp->next)
 	{
 		if (tmp->str[0] == '|')
@@ -90,8 +88,11 @@ void	get_command_arguments(const char *input,
 // Function to execute a command with its arguments
 void	execute_command(t_data *l)
 {
-	pid_t	child_pid;
-	int		status;
+	pid_t		child_pid;
+	int			status;
+	char		**arguments;
+	int			i;
+	t_params	*tmp;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -100,7 +101,17 @@ void	execute_command(t_data *l)
 		exit(EXIT_FAILURE);
 	}
 	if (child_pid == 0)
-		execve(l->path, l->arguments, l->envp);
+	{
+		arguments = ft_calloc(ft_args(l->list), sizeof(char *));
+		tmp = l->list;
+		i = 0;
+		while (arguments[i] && tmp)
+		{
+			arguments[i] = ft_strjoin(arguments[i], tmp->str);
+			tmp = tmp->next;
+		}
+		execve(l->path, arguments, l->envp);
+	}
 	waitpid(child_pid, &status, 0);
 	if (WIFEXITED(status))
 		printf("Child process exited with status %d\n", WEXITSTATUS(status));
