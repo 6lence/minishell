@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:07:45 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/03 14:55:06 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:56:50 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,22 +50,21 @@ int	ft_child(t_data *l, t_params *tmp, int i)
 
 void    ft_pipe(t_data *l)
 {
-	int			i;
 	int			last;
 	t_params	*tmp;
 
-	i = 0;
+	l->pos = 0;
 	tmp = l->list;
 	last = ft_lstlast(l->list)->pos;
-	while (i < last && tmp->next)
+	while (l->pos < last && tmp->next)
 	{
 		if (tmp->str[0] == '|')
-			i++;
+			l->pos++;
 		else
 		{
-			if (ft_child(l, tmp, i) == 1)
+			if (ft_child(l, tmp, l->pos) == 1)
 				return ;
-			i++;
+			l->pos++;
 		}
 		tmp = tmp->next;
 	}

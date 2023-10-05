@@ -6,6 +6,8 @@ SRC_FILES :=	minishell.c \
 				ft_errors.c \
 				ft_lstutils.c \
 				ft_execute_pipe.c \
+				ft_utils.c \
+				ft_free.c \
 
 OBJ_DIR := ./obj
 EXECUTABLE := minishell

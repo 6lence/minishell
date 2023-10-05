@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/05 11:10:32 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/05 17:17:40 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_data
 	char		*command;
 	char		**arguments;
 	char		*path;
+	int			pos;
 	int			pipe;
 	DIR			*dir;
 	int			in;
@@ -120,5 +121,6 @@ t_params	*ft_lst_elem(t_params *l, int pos);
 
 /* errors */
 int		ft_direrror(t_data *l);
+void	ft_free_all(t_data *l);
 
 #endif

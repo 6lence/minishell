@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/05 11:16:01 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/05 17:14:27 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 int	ft_access_verif(t_data *l)
 {
+	int		k;
 	int		j;
 	char	**path;
 	char	*join;
 	char	*command;
 
 	path = ft_search_path(l);
+	l->path = NULL;
 	command = ft_strjoin("/", ft_lst_elem(l->list, 0)->str);
 	j = 0;
 	while (path[j])
@@ -28,9 +30,11 @@ int	ft_access_verif(t_data *l)
 		if (access(join, 0) == 0)
 		{
 			l->path = path[j];
+			k = j;
 			j = 0;
-			while (path[j])
-				free(path[j++]);
+			while (path[j++])
+				if (k != j)
+					free(path[j]);
 			if (path)
 				free(path);
 			if (command)
@@ -51,14 +55,11 @@ int	ft_big_execute(t_data *l)
 	if (l->pipe == 1)
 		ft_pipe(l);
 	else if (l->path)
+	{
+		l->pos = 0;
 		execute_command(l);
+	}
 	return (0);
-}
-
-void	ft_free_all(t_data *l)
-{
-	if (l->params)
-		free(l->params);
 }
 
 int	init(t_data *l)
@@ -69,8 +70,11 @@ int	init(t_data *l)
 	l->params_split = ft_split(l->params, ' ');
 	add_history(l->params);
 	ft_chained_args(l);
-	l->dir = opendir(ft_lst_elem(l->list, 0)->str);
-	if (ft_access_verif(l) != 0)
+	if (!l->list || !l->list->str || !l->list->str[0])
+		return (0);
+	if (ft_lst_elem(l->list, 0))
+		l->dir = opendir(ft_lst_elem(l->list, 0)->str);
+	if (ft_access_verif(l) != 0 && l->list->str != NULL)
 		return (printf("Command '%s' not found.\n",
 			 ft_lst_elem(l->list, 0)->str));
 	l->in = dup(STDIN_FILENO);
@@ -95,7 +99,8 @@ int	main(int ac, char **av, char **envp)
 	printf("\033[1;32mWelcome to minishell\033[0m\n");
 	while (l->stop_main)
 	{
-		init(l);
+		if (init(l) != 0)
+			break ;
 		ft_big_execute(l);
 		ft_free_all(l);
 	}
