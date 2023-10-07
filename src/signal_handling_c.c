@@ -6,40 +6,117 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:16:57 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/05 21:12:22 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/06 12:31:48 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern t_data g_data; // Reference the global variable
-
-void handle_sigint(int sig_num, siginfo_t *info, void *ucontext)
+t_data *get_global_data(void)
 {
-    (void)info;
-    (void)ucontext;
-    if (sig_num == SIGINT)
-    {
-        // handle the SIGINT signal
-        // Manipulate s_data structure as needed
-        // set a flag in your structure indicating the signal was received
-        // global_data is a pointer to s_data structure
-        global_data->sig.stop = 1;
+    static t_data *data = NULL;
+    
+    if (data == NULL) {
+        data = (t_data *)malloc(sizeof(t_data));
+        if (!data) {
+            perror("Failed to allocate memory for global data");
+            exit(EXIT_FAILURE);
+        }
+        // Initialize data id needed
+        // ft_memset(data, 0, sizeof(t_data));
+        // Initialize other fields as necessary
+    }
+    return data;
+}
 
-        // Add any other handling code as needed
+
+void handle_sigint(int sig_num)
+{
+    t_data *data = get_global_data();
+    
+    if (sig_num == SIGINT && data != NULL)
+    {
+        data->sig.stop = 1;
         write(1, "\n", 1);
-        // Possibly print a new prompt or take other appropriate action
+        // Handle other necessary actions upon SIGINT
+        exit(0);
     }
 }
 
-void signal_ctrl_c(t_data *data)
+void signal_ctrl_c(void)
 {
     struct sigaction ctrl_c;
 
-    global_data = data; // assuming global_data is a global pointer to t_data
-
-    ctrl_c.sa_sigaction = handle_sigint;
-    ctrl_c.sa_flags = SA_SIGINFO; // Use SA_SIGINFO to use sa_sigaction instead of sa_handler
+    ctrl_c.sa_handler = handle_sigint;
+    ctrl_c.sa_flags = SA_RESTART;
     sigemptyset(&ctrl_c.sa_mask);
     sigaction(SIGINT, &ctrl_c, NULL);
 }
+
+
+
+
+void cleanup(void)
+{
+    t_data *data = get_global_data();
+    // Clean up any allocated resources within data here
+    // Then free data itself
+    free(data);
+}
+
+int main(void)
+{
+    t_data *data = get_global_data();
+
+    // Assume you have some initialization logic here
+    // Initialize data->sig.stop and other necessary fields
+
+    // Set up signal handler
+    signal_ctrl_c();
+
+    // Main loop for your shell
+    while (1)
+    {
+        // Check the signal flag and act upon it
+        if (data->sig.stop == 1)
+        {
+            // Handle the SIGINT here, reset the flag
+            data->sig.stop = 0;
+
+            // Example action: print a shell prompt
+            write(1, "$ ", 2);
+        }
+
+        // Wait for user input (simple example)
+        // You'd have your logic for reading and executing commands here
+        char *line = readline("$ ");
+        if (!line)
+        {
+            // Handle end of file (Ctrl+D)
+            printf("Exiting.\n");
+            cleanup();
+            exit(0);
+        }
+
+        // Example: act on the line
+        // You'd parse and execute the entered command here
+        printf("You entered: %s\n", line);
+        free(line);
+
+        // For testing, exit on a specific command (e.g., "exit")
+        if (strcmp(line, "exit") == 0)
+        {
+            cleanup();
+            exit(0);
+        }
+    }
+
+    // If you ever break out of the loop, ensure to clean up
+    cleanup();
+    return 0;
+}
+
+/*
+gcc -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include src/signal_handling_c.c -lreadline -o signal_handling_c
+
+*/
