@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/05 17:17:40 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/09 14:28:35 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ typedef struct s_data
 	int			stop_main;
 	char		*params;
 	char		**params_split;
-	char		*command;
-	char		**arguments;
 	char		*path;
 	int			pos;
 	int			pipe;

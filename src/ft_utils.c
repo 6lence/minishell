@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/05 17:14:25 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:52:03 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,28 @@ int	ft_pipe_here(char *str)
 
 char 	**ft_arguments(t_params *l)
 {
-	char		**res;
 	t_params	*tmp;
-	int			pipe;
+	char		**res;
 	int			i;
+	int			pos;
 
 	tmp = l;
-	if (tmp->str && tmp->str[0] == '|' && tmp->next)
-		tmp = tmp->next;
-	pipe = 0;
-	while (tmp->str && tmp->str[0] != '|')
-	{
-		tmp = tmp->next;
-		pipe++;
-	}
-	res = ft_calloc(pipe, sizeof(char *));
-	tmp = l;
 	i = 0;
-	while (i++ < pipe)
+	while (tmp && tmp->str[0] != '|')
 	{
-		res[i] = ft_strjoin(res[i], tmp->str);
+		i++;
 		tmp = tmp->next;
 	}
+	res = ft_calloc(i + 1, sizeof(char *));
+	pos = i;
+	tmp = ft_lst_elem(l, 0);
+	i = 1;
+	while (i < pos && tmp)
+	{
+		res[i++] = ft_strdup(tmp->str);
+		tmp = tmp->next;
+	}
+	res[i] = NULL;
 	return (res);
 }
 
@@ -75,6 +75,7 @@ char 	**ft_arguments(t_params *l)
 void	execute_command(t_data *l)
 {
 	pid_t		child_pid;
+	char		**args;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -83,7 +84,10 @@ void	execute_command(t_data *l)
 		exit(EXIT_FAILURE);
 	}
 	if (child_pid == 0)
-		execve(l->path, 
-			ft_arguments(ft_lst_elem(l->list, l->pos)), l->envp);
+	{
+		args = ft_arguments(ft_lst_elem(l->list, l->pos));
+		args[0] = ft_strdup(l->path);
+  		execve(l->path, args, l->envp);
+	}
 	waitpid(child_pid, 0, 0);
 }
