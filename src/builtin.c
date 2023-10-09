@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:21:48 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/05 07:38:20 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/09 13:36:04 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		is_builtin(char *command)
+int	is_builtin(char *command)
 {
 	if (ft_strcmp(command, "echo") == 0)
 		return (1); // command is a built-in command.
@@ -29,7 +29,7 @@ int		is_builtin(char *command)
 	return (0); //no match
 }
 
-int		execute_builtin(t_data *data)
+int	execute_builtin(t_data *data)
 {
 	int		result;
 
@@ -37,7 +37,7 @@ int		execute_builtin(t_data *data)
 	if (ft_strcmp(data->command, "echo") == 0)
 		result = ft_echo(data->arguments);
 	if (ft_strcmp(data->command, "cd") == 0)
-        result = ft_cd(data);
+		result = ft_cd(data);
 	if (ft_strcmp(data->command, "pwd") == 0)
 		result = ft_pwd();
 	if (ft_strcmp(data->command, "env") == 0)
@@ -48,8 +48,6 @@ int		execute_builtin(t_data *data)
 		result = ft_unset(data->arguments, data->envp);
 	return (result);
 }
-
-
 
 /*
 if (is_builtin(data->command))

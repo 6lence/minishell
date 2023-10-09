@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/04 13:07:56 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:05:24 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	add_or_update_env(t_data *data, char *arg)
 
 	i = -1;
 	while (data->envp[++i])
-		if (ft_strncmp(data->envp[i], arg, ft_strlen(arg)) == 0 &&
+		if (ft_strncmp(data->envp[i], arg, ft_strlen(arg)) == 0 && \
 			data->envp[i][ft_strlen(arg)] == '=')
 			return ;
 	new_env = ft_strjoin(arg, "=");
@@ -62,7 +62,7 @@ static void	add_or_update_env(t_data *data, char *arg)
 	data->envp = new_envp;
 }
 
-int ft_export(t_data *data)
+int	ft_export(t_data *data)
 {
 	if (!(data->arguments[1])) // If no argument after ft_export
 	{
@@ -77,7 +77,7 @@ int ft_export(t_data *data)
 		return ;
 	}
 	add_or_update_env(data, data->arguments[1]);
-    return (0);
+	return (0);
 }
 
 /*
