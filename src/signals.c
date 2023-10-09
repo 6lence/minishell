@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:16:37 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/09 09:58:52 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/09 10:28:16 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 t_data *get_global_data(void)
 {
     static t_data *data = NULL;
-    if (data == NULL) {
+    if (data == NULL)
+	{
         data = (t_data *)malloc(sizeof(t_data));
-        if (!data) {
+        if (!data)
+		{
             perror("Failed to allocate memory for global data");
             exit(EXIT_FAILURE);
         }
@@ -27,13 +29,16 @@ t_data *get_global_data(void)
     }
     return data;
 }
-void cleanup(void)
+
+void ft_cleanup(void)
 {
     t_data *data = get_global_data();
     // Clean up any allocated resources within data here
-    // Then free data itself
     free(data);
+    // Optionally, reset the global data to NULL, so that subsequent calls to get_global_data will initialize a new object
+    data = NULL;
 }
+
 void handle_sigint(int sig_num)
 {
     t_data *data = get_global_data();
@@ -67,8 +72,8 @@ void signal_ctrl_back_slash(void)
 }
 void handle_eof(void) // Ctrl+D
 {
-    printf("Exiting.\n");
-    cleanup();
+    printf("Exiting...\n");
+    ft_cleanup();
     exit(0);
 }
 void signal_ctrl_d(void)
@@ -99,14 +104,14 @@ int main(void)
         // For testing, exit on a specific command (e.g., "exit")
         if (strcmp(line, "exit") == 0)
         {
-            cleanup();
+            ft_cleanup();
             exit(0);
         }
         // Act on the entered line (execute command, etc.)
         printf("You entered: %s\n", line);
         free(line);
     }
-    cleanup(); // Cleanup resources on exit
+    ft_cleanup(); // Cleanup resources on exit
     return (0);
 }
 

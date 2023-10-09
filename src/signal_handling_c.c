@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:16:57 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/09 09:58:59 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/09 10:20:17 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 t_data *get_global_data(void)
 {
     static t_data *data = NULL;
-    if (data == NULL) {
+    if (data == NULL)
+	{
         data = (t_data *)malloc(sizeof(t_data));
-        if (!data) {
+        if (!data)
+		{
             perror("Failed to allocate memory for global data");
             exit(EXIT_FAILURE);
         }
@@ -56,7 +58,7 @@ void cleanup(void)
 int main(void)
 {
     t_data *data = get_global_data();
-    // Assume you have some initialization logic here
+    // initialization
     // Initialize data->sig.stop and other necessary fields
     // Set up signal handler
     signal_ctrl_c();
@@ -92,7 +94,7 @@ int main(void)
             exit(0);
         }
     }
-    // If you ever break out of the loop, ensure to clean up
+    // If break out of the loop, ensure to clean up
     cleanup();
     return 0;
 }
