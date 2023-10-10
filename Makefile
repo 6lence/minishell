@@ -17,7 +17,7 @@ OBJ_FILES := $(addprefix $(OBJ_DIR)/,$(SRC_FILES:.c=.o))
 
 # Compiler and compiler flags
 CC := gcc
-CFLAGS := -Wall -Werror -Wextra -g -lreadline
+CFLAGS := -Wall -Werror -Wextra -g
 
 # Additional dependencies
 LFT := ./libft/libft.a
@@ -34,7 +34,7 @@ $(LFT):
 	@make -s -C ./libft/ all
 
 $(EXECUTABLE): $(OBJ_FILES)
-	@$(CC) $(CFLAGS) $^ $(LIB) -o $@
+	@$(CC) $(CFLAGS) $^ $(LIB) -lreadline -o $@  # Moved -lreadline here
 	@echo "\033[32m✅ Done !\033[0m"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
