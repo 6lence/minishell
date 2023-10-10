@@ -17,7 +17,7 @@ OBJ_FILES := $(addprefix $(OBJ_DIR)/,$(SRC_FILES:.c=.o))
 
 # Compiler and compiler flags
 CC := gcc
-CFLAGS := -Wall -Werror -Wextra -g -lreadline 
+CFLAGS := -Wall -Werror -Wextra -g -lreadline
 
 # Additional dependencies
 LFT := ./libft/libft.a
