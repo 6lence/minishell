@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/09 15:52:03 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/10 12:56:46 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char 	**ft_arguments(t_params *l)
 	res = ft_calloc(i + 1, sizeof(char *));
 	pos = i;
 	tmp = ft_lst_elem(l, 0);
-	i = 1;
+	i = 0;
 	while (i < pos && tmp)
 	{
 		res[i++] = ft_strdup(tmp->str);
@@ -86,8 +86,11 @@ void	execute_command(t_data *l)
 	if (child_pid == 0)
 	{
 		args = ft_arguments(ft_lst_elem(l->list, l->pos));
-		args[0] = ft_strdup(l->path);
-  		execve(l->path, args, l->envp);
+		printf("%s\n", l->path);
+		int	i = 0;
+		while (args[i])
+			printf("%s\n", args[i++]);
+		execve(l->path, args, l->envp);
 	}
 	waitpid(child_pid, 0, 0);
 }
