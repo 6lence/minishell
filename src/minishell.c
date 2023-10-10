@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/05 17:14:27 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:25:58 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	ft_access_verif(t_data *l)
 	l->path = NULL;
 	command = ft_strjoin("/", ft_lst_elem(l->list, 0)->str);
 	j = 0;
+	k = -1;
 	while (path[j])
 	{
 		join = ft_strjoin(path[j], command);
@@ -31,23 +32,17 @@ int	ft_access_verif(t_data *l)
 		{
 			l->path = path[j];
 			k = j;
-			j = 0;
-			while (path[j++])
-				if (k != j)
-					free(path[j]);
-			if (path)
-				free(path);
-			if (command)
-				free(command);
-			return (0);
 		}
-		if (join)
-			free(join);
+		free(join);
+		if (k != j)
+			free(path[j]);
 		j++;
 	}
+	if (path)
+		free(path);
 	if (command)
 		free(command);
-	return (1);
+	return (k);
 }
 
 int	ft_big_execute(t_data *l)
@@ -62,6 +57,7 @@ int	ft_big_execute(t_data *l)
 	return (0);
 }
 
+//malloc ok in this function.
 int	init(t_data *l)
 {
 	l->params = readline("minishell-> ");
@@ -74,7 +70,7 @@ int	init(t_data *l)
 		return (0);
 	if (ft_lst_elem(l->list, 0))
 		l->dir = opendir(ft_lst_elem(l->list, 0)->str);
-	if (ft_access_verif(l) != 0 && l->list->str != NULL)
+	if (ft_access_verif(l) < 0 && l->list->str != NULL)
 		return (printf("Command '%s' not found.\n",
 			 ft_lst_elem(l->list, 0)->str));
 	l->in = dup(STDIN_FILENO);
