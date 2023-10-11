@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/10 12:58:02 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:42:03 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	ft_access_verif(t_data *l)
 			k = j;
 		}
 		free(join);
-		free(path[j]);
+		if (j != k)
+			free(path[j]);
 		j++;
 	}
 	if (path)
@@ -94,8 +95,7 @@ int	main(int ac, char **av, char **envp)
 	printf("\033[1;32mWelcome to minishell\033[0m\n");
 	while (l->stop_main)
 	{
-		if (init(l) != 0)
-			break ;
+		init(l);
 		ft_big_execute(l);
 		ft_free_all(l);
 	}

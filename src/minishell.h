@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/09 14:28:35 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:42:04 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_data
 
 /* minishell */
 void	show_parameters(const char *parameters);
-void	ft_pipe(t_data *l);	
+void	ft_pipe(t_data *l);
 
 /* parsing */
 void	get_command_arguments(const char *input,

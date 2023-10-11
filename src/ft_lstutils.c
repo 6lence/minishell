@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstutils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 11:22:45 by miguel            #+#    #+#             */
-/*   Updated: 2023/10/09 14:26:20 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:42:05 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_params	*ft_lstfirst(t_params *l)
 
 int	ft_lstlen(t_params *l)
 {
-	return (ft_lstlast(l)->pos);
+	return (ft_lstlast(l)->pos + 1);
 }
 
 void	ft_lstprint(t_params *l)
