@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/12 11:59:22 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/12 14:25:35 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ char	**ft_arguments(t_params *l)
 void	execute_command(t_data *l, t_params *tmp)
 {
 	pid_t		child_pid;
-	int			status;
 	char		**args;
 
 	child_pid = fork();
@@ -77,12 +76,7 @@ void	execute_command(t_data *l, t_params *tmp)
 				return ;
 		}
 		args = ft_arguments(tmp);
-		dprintf(2 ,"%s\n", l->path);
-		int	i = 0;
-		while (args[i])
-			dprintf(2, "%s\n", args[i++]);
-		dprintf(2, "\n");
 		execve(l->path, args, l->envp);
 	}
-	waitpid(child_pid, &status, 0);
+	wait(NULL);
 }
