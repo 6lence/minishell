@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/10 15:42:03 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/12 11:49:51 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_access_verif(t_data *l)
+int	ft_access_verif(t_data *l, t_params *tmp)
 {
 	int		k;
 	int		j;
@@ -22,7 +22,7 @@ int	ft_access_verif(t_data *l)
 
 	path = ft_search_path(l);
 	l->path = NULL;
-	command = ft_strjoin("/", ft_lst_elem(l->list, 0)->str);
+	command = ft_strjoin("/", tmp->str);
 	j = 0;
 	k = -1;
 	while (path[j])
@@ -49,10 +49,10 @@ int	ft_big_execute(t_data *l)
 {
 	if (l->pipe == 1)
 		ft_pipe(l);
-	else if (l->path)
+	else
 	{
 		l->pos = 0;
-		execute_command(l);
+		execute_command(l, l->list);
 	}
 	return (0);
 }
@@ -70,9 +70,6 @@ int	init(t_data *l)
 		return (0);
 	if (ft_lst_elem(l->list, 0))
 		l->dir = opendir(ft_lst_elem(l->list, 0)->str);
-	if (ft_access_verif(l) < 0 && l->list->str != NULL)
-		return (printf("Command '%s' not found.\n",
-			 ft_lst_elem(l->list, 0)->str));
 	l->in = dup(STDIN_FILENO);
 	l->out = dup(STDOUT_FILENO);
 	ft_pipe_presence(l);

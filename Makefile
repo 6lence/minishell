@@ -20,8 +20,8 @@ CC := gcc
 CFLAGS := -Wall -Werror -Wextra -g
 
 # Additional dependencies
-LFT := ./libft/libft.a
-LIB := -L./libft -lft
+LFT := ./ft_printf/libftprintf.a
+LIB := -L./ft_printf -lftprintf
 
 RM := rm -f
 
@@ -31,7 +31,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(LFT):
-	@make -s -C ./libft/ all
+	@make -s -C ./ft_printf/ all
 
 $(EXECUTABLE): $(OBJ_FILES)
 	@$(CC) $(CFLAGS) $^ $(LIB) -lreadline -o $@  # Moved -lreadline here
@@ -42,11 +42,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean:
 	@$(RM) -r $(OBJ_DIR)
-	@make -s -C ./libft/ clean
+	@make -s -C ./ft_printf/ clean
 
 fclean: clean
 	@$(RM) $(EXECUTABLE)
-	@make -s -C ./libft/ fclean
+	@make -s -C ./ft_printf/ fclean
 
 re: fclean all
 

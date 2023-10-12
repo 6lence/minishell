@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/10 15:42:04 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/12 11:56:28 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_data
 	char		*path;
 	int			pos;
 	int			pipe;
+	int			pipe_nb;
 	DIR			*dir;
 	int			in;
 	int			out;
@@ -68,11 +69,12 @@ typedef struct s_data
 /* minishell */
 void	show_parameters(const char *parameters);
 void	ft_pipe(t_data *l);
+int		ft_access_verif(t_data *l, t_params *tmp);
 
 /* parsing */
 void	get_command_arguments(const char *input,
 			char *command, char **arguments);
-void	execute_command(t_data *l);
+void	execute_command(t_data *l, t_params *tmp);
 int		ft_chained_args(t_data *l);
 void	ft_pipe_presence(t_data *l);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:14:04 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/09 15:02:13 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/12 09:33:01 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_exit(t_data *data)
 	{
 		data->exit_code = 0; // No argument provided, exit with a status of 0
 	}
-	data->stop_main = 1; // Set the stop flag to terminate the main shell loop
+	data->stop_main = 0; // Set the stop flag to terminate the main shell loop
 }
 /*
 #include <stdio.h>
