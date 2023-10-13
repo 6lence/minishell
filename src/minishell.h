@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/12 11:56:28 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/13 11:35:54 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_data
 	char		*params;
 	char		**params_split;
 	char		*path;
+	char		**arguments;
 	int			pos;
 	int			pipe;
 	int			pipe_nb;
@@ -82,16 +83,21 @@ void	ft_pipe_presence(t_data *l);
 char	**ft_search_path(t_data *l);
 int		ft_args(t_params *l);
 
+/* builtin */
+int		is_builtin(char *command);
+int		execute_builtin(t_data *l, t_params *tmp);
+char	**linked_list_to_array(t_params *tmp);
+
 /* ft_cd */
 void	print_env_variables(char **envp);
 int		find_env_variable(char **envp, const char *var_name);
 void	add_env_variable(char ***envp, char *argument);
 void	handle_env_variable(char ***envp, const char *var_name,
 			char *var_value, char *argument);
-int		ft_cd(t_data *data);
+int		ft_cd(t_data *l);
 
 /* ft_echo */
-int	ft_echo(t_data *data);
+int		ft_echo(t_data *l);
 
 /* ft_env */
 void	ft_env(t_data *data);

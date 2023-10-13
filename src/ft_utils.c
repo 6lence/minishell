@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/12 14:25:35 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/13 07:55:48 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,38 @@ char	**ft_arguments(t_params *l)
 	return (res);
 }
 
+void execute_command(t_data *l, t_params *tmp)
+{
+    char	**args;
+	pid_t	child_pid;
+
+    if (is_builtin(tmp->str))
+    {
+        execute_builtin(l, tmp); // Execute the built-in command directly
+        return; // Return after executing the built-in command
+    }
+    child_pid = fork();
+    if (child_pid == -1)
+    {
+        perror("fork");
+        exit(EXIT_FAILURE);
+    }
+
+    if (child_pid == 0)
+    {
+        if (ft_access_verif(l, tmp) < 0 && tmp->str != NULL)
+        {
+            dup2(l->out, 1);
+            printf("Command '%s' not found.\n", tmp->str);
+            return;
+        }
+        args = ft_arguments(tmp); // Convert linked list to array of arguments
+        execve(l->path, args, l->envp); // Execute the external command
+    }
+    wait(NULL); // Wait for the child process to finish
+}
+
+/*
 // Function to execute a command with its arguments
 void	execute_command(t_data *l, t_params *tmp)
 {
@@ -80,3 +112,4 @@ void	execute_command(t_data *l, t_params *tmp)
 	}
 	wait(NULL);
 }
+*/

@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 17:00:56 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/09 14:51:11 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/13 11:41:14 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,73 @@ void	handle_env_variable(char ***envp, const char *var_name, \
 	}
 }
 
-int	ft_cd(t_data *data)
+#include "minishell.h"
+
+int	ft_cd(t_data *l)
+{
+    char *new_dir;
+    char cwd[1024];
+    char *old_pwd;
+    char *new_pwd;
+    int index;
+
+    // Get the current working directory
+    getcwd(cwd, sizeof(cwd));
+
+    // Update the OLDPWD environment variable
+    old_pwd = ft_strjoin("OLDPWD=", cwd);
+    handle_env_variable(&(l->envp), "OLDPWD", old_pwd + 7, old_pwd);
+
+    new_dir = l->arguments[1];
+    if (new_dir == NULL)
+    {
+        // Change to the HOME directory if no argument is provided
+        index = find_env_variable(l->envp, "HOME");
+        if (index != -1)
+        {
+            new_dir = l->envp[index] + 5; // Skip "HOME="
+        }
+    }
+    if (new_dir)
+    {
+        if (chdir(new_dir) == -1)
+        {
+            // Print an error if the directory change fails
+            perror("cd");
+            free(old_pwd);
+            return (-1);
+        }
+    }
+    else
+    {
+        ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
+        free(old_pwd);
+        return (-1);
+    }
+    // Get and update the new current working directory
+    getcwd(cwd, sizeof(cwd));
+    new_pwd = ft_strjoin("PWD=", cwd);
+    handle_env_variable(&(l->envp), "PWD", new_pwd + 4, new_pwd);
+    free(old_pwd);
+    return (0);
+}
+
+
+/*
+int	ft_cd(t_data *l)
 {
 	char	*new_dir;
 	char	*new_pwd;
 	int		index;
 
-	new_dir = data->arguments[1];
+	new_dir = l->arguments[1];
 	if (new_dir == NULL)
 	{
         // If no directory is provided, go to the home directory
-		index = find_env_variable(data->envp, "HOME");
+		index = find_env_variable(l->envp, "HOME");
 		if (index != -1)
 		{
-			new_dir = data->envp[index] + 5; // skip "HOME="
+			new_dir = l->envp[index] + 5; // skip "HOME="
 		}
 	}
 	if (new_dir)
@@ -118,7 +171,7 @@ int	ft_cd(t_data *data)
 			char cwd[1024]; // Update the PWD (Present Working Directory) environment variable
 			getcwd(cwd, sizeof(cwd));
 			new_pwd = ft_strjoin("PWD=", cwd);
-			handle_env_variable(&(data->envp), "PWD", new_pwd, new_pwd);
+			handle_env_variable(&(l->envp), "PWD", new_pwd, new_pwd);
 		}
 	}
 	else
@@ -128,7 +181,7 @@ int	ft_cd(t_data *data)
 	}
 	return (0);
 }
-
+*/
 /*
 int main()
 {

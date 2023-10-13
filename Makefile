@@ -8,6 +8,14 @@ SRC_FILES :=	minishell.c \
 				ft_execute_pipe.c \
 				ft_utils.c \
 				ft_free.c \
+				builtin.c \
+				ft_cd.c \
+				ft_echo.c \
+				ft_env.c \
+				ft_exit.c \
+				ft_export.c \
+				ft_pwd.c \
+				ft_unset.c 
 
 OBJ_DIR := ./obj
 EXECUTABLE := minishell
@@ -20,8 +28,10 @@ CC := gcc
 CFLAGS := -Wall -Werror -Wextra -g
 
 # Additional dependencies
-LFT := ./ft_printf/libftprintf.a
-LIB := -L./ft_printf -lftprintf
+#LFT := ./ft_printf/libftprintf.a
+#LIB := -L./ft_printf -lftprintf
+LFT := ./libft/libft.a
+LIB := -L./libft -lft
 
 RM := rm -f
 
@@ -31,10 +41,11 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(LFT):
-	@make -s -C ./ft_printf/ all
+#	@make -s -C ./ft_printf/ all
+	@make -s -C ./libft/ all
 
 $(EXECUTABLE): $(OBJ_FILES)
-	@$(CC) $(CFLAGS) $^ $(LIB) -lreadline -o $@  # Moved -lreadline here
+	@$(CC) $(CFLAGS) $^ $(LIB) -lreadline -o $@ 
 	@echo "\033[32m✅ Done !\033[0m"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -42,11 +53,13 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean:
 	@$(RM) -r $(OBJ_DIR)
-	@make -s -C ./ft_printf/ clean
+#	@make -s -C ./ft_printf/ clean
+	@make -s -C ./libft/ clean
 
 fclean: clean
 	@$(RM) $(EXECUTABLE)
-	@make -s -C ./ft_printf/ fclean
+#	@make -s -C ./ft_printf/ fclean
+	@make -s -C ./libft/ fclean
 
 re: fclean all
 

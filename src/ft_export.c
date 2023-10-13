@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/09 15:05:24 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/13 09:11:08 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,14 @@ int	ft_export(t_data *data)
 	if (!(data->arguments[1])) // If no argument after ft_export
 	{
 		print_envp(data->envp);
-		return ;
+		return (0);
 	}
 	if (!valid_env_name(data->arguments[1]))
 	{
 		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(data->arguments[1], 2);
 		ft_putendl_fd("': not a valid identifier", 2);
-		return ;
+		return (-1); //error
 	}
 	add_or_update_env(data, data->arguments[1]);
 	return (0);
