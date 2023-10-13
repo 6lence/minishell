@@ -8,6 +8,8 @@ gdb ./minishell
 
 (gdb) run
 
+command
+
 (gdb) backtrace
 
 (gdb) print x
@@ -59,13 +61,17 @@ minishell-> pwd
 
 minishell-> env
 ... (list of environment variables) ...
-
+----------------------------------------------
 minishell-> export TEST_VAR=hello
 minishell-> echo $TEST_VAR
-hello
+Output: hello
 
 minishell-> unset TEST_VAR
 minishell-> echo $TEST_VAR
+
+Output:
+
+minishell-> unset NON_EXISTING_VAR
 
 minishell-> cd non_existent_directory
 cd: non_existent_directory: No such file or directory

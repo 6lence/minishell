@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/13 11:35:54 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:07:12 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_data
 	char		**envp;
 	int			envp_allocated;
 	int			stop_main;
+	char		**env_vars;
 	char		*params;
 	char		**params_split;
 	char		*path;
@@ -92,22 +93,22 @@ char	**linked_list_to_array(t_params *tmp);
 void	print_env_variables(char **envp);
 int		find_env_variable(char **envp, const char *var_name);
 void	add_env_variable(char ***envp, char *argument);
-void	handle_env_variable(char ***envp, const char *var_name,
-			char *var_value, char *argument);
+void	handle_env_variable(char ***envp, const char *var_name, char *argument);
 int		ft_cd(t_data *l);
 
 /* ft_echo */
 int		ft_echo(t_data *l);
 
 /* ft_env */
-void	ft_env(t_data *data);
+int	ft_env(t_data *l);
 
 /* ft_exit */
 int		ft_count_arguments(char **arguments);
 void	ft_exit(t_data *data);
 
 /* ft_export */
-int			ft_export(t_data *data);
+int		ft_export(t_data *data);
+int		array_length(char **array);
 
 /* pwd */
 char	*ft_pwd(void);

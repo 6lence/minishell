@@ -6,34 +6,35 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 10:38:07 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/09 14:48:22 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/13 14:38:56 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Function to print environment variables
-void	ft_env(t_data *data)
+int	ft_env(t_data *l)
 {
 	int		index;
 	char	*env_variable;
 
 	index = 0;
-	if (data == NULL || data->envp == NULL)
+	if (l == NULL || l->envp == NULL)
 	{
 		write(STDERR_FILENO, "Error: data or data->envp is NULL\n", 35);
-		return ;
+		return (-1);
 	}
     // Print all environment variables
-	while (data->envp[index] != NULL)
+	while (l->envp[index] != NULL)
 	{
-		env_variable = data->envp[index];
+		env_variable = l->envp[index];
 		if (env_variable != NULL && ft_strchr(env_variable, '='))
 		{
 			printf("%s\n", env_variable);
 		}
 		index++;
 	}
+	return (0);
 }
 
 /*

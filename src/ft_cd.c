@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 17:00:56 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/13 11:41:14 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/13 14:10:39 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,19 @@ void	print_env_variables(char **envp)
 	}
 }
 
+int find_env_variable(char **envp, const char *var_name) {
+    int index = 0;
+
+    while (envp[index] != NULL) {
+        if (ft_strncmp(envp[index], var_name, ft_strlen(var_name)) == 0 && envp[index][ft_strlen(var_name)] == '=') {
+            return (index);
+        }
+        index++;
+    }
+    return (-1);
+}
+
+/*
 // Function to find the index of an environment variable
 int	find_env_variable(char **envp, const char *var_name)
 {
@@ -47,7 +60,42 @@ int	find_env_variable(char **envp, const char *var_name)
 	}
 	return (-1);
 }
+*/
+void add_env_variable(char ***envp, char *argument)
+{
+    int envp_len;
+    char **new_envp;
 
+    envp_len = 0;
+    while ((*envp)[envp_len] != NULL) {
+        envp_len++;
+    }
+    new_envp = (char **)realloc(*envp, (envp_len + 2) * sizeof(char *));
+    if (!new_envp) {
+        fprintf(stderr, "Memory allocation error\n");
+        exit(1);
+    }
+    new_envp[envp_len] = ft_strdup(argument);
+    new_envp[envp_len + 1] = NULL;
+    *envp = new_envp;
+}
+
+void handle_env_variable(char ***envp, const char *var_name, char *argument)
+{
+    int index;
+
+    index = find_env_variable(*envp, var_name);
+    if (index != -1) {
+        // Do not duplicate the value, just update it
+    //    free((*envp)[index]); free segmentation fault
+        (*envp)[index] = ft_strdup(argument);
+    } else {
+        add_env_variable(envp, argument);
+    }
+}
+
+
+/*
 // Function to add a new environment variable
 void	add_env_variable(char ***envp, char *argument)
 {
@@ -82,14 +130,14 @@ void	handle_env_variable(char ***envp, const char *var_name, \
 	{
         // Do not duplicate the value, just update it
 		free((*envp)[index]);
-		(*envp)[index] = argument;
+		(*envp)[index] = ft_strdup(argument);
 	}
 	else
 	{
 		add_env_variable(envp, argument);
 	}
 }
-
+*/
 #include "minishell.h"
 
 int	ft_cd(t_data *l)
@@ -101,12 +149,15 @@ int	ft_cd(t_data *l)
     int index;
 
     // Get the current working directory
-    getcwd(cwd, sizeof(cwd));
-
+    if (!getcwd(cwd, sizeof(cwd)))
+    {
+        perror("getcwd");
+        return (-1);
+    }
     // Update the OLDPWD environment variable
     old_pwd = ft_strjoin("OLDPWD=", cwd);
-    handle_env_variable(&(l->envp), "OLDPWD", old_pwd + 7, old_pwd);
-
+    handle_env_variable(&(l->envp), "OLDPWD", old_pwd);
+    printf("OLDPWD updated: %s\n", old_pwd); // Debug print
     new_dir = l->arguments[1];
     if (new_dir == NULL)
     {
@@ -134,12 +185,22 @@ int	ft_cd(t_data *l)
         return (-1);
     }
     // Get and update the new current working directory
-    getcwd(cwd, sizeof(cwd));
+    if (!getcwd(cwd, sizeof(cwd)))
+    {
+        perror("getcwd");
+        return (-1);
+    }
+
     new_pwd = ft_strjoin("PWD=", cwd);
-    handle_env_variable(&(l->envp), "PWD", new_pwd + 4, new_pwd);
+    printf("PWD updated: %s\n", new_pwd); // Debug print
+
+    handle_env_variable(&(l->envp), "PWD", new_pwd);
     free(old_pwd);
+    free(new_pwd); // Ensure you free the memory allocated by ft_strjoin
+
     return (0);
 }
+
 
 
 /*
@@ -182,11 +243,12 @@ int	ft_cd(t_data *l)
 	return (0);
 }
 */
+
 /*
 int main()
 {
-    // Create a sample environment variable array
-    char *envp[] = {
+    char *envp[] =
+	{
         "HOME=/home/user",
         "PWD=/home/user",
         "VAR1=value1",
@@ -196,33 +258,49 @@ int main()
     };
 
     t_data data;
-    data.params = malloc((sizeof(char *) * (sizeof(envp) / sizeof(envp[0]))) + 1);
-    if (!data.params)
-    {
+    
+    // Calculate the number of environment variables
+    int env_count = 0;
+    while (envp[env_count] != NULL)
+	{
+        env_count++;
+    }
+    
+    // Allocate memory for the environment variables in data
+    data.envp = malloc(sizeof(char *) * (env_count + 1));
+    if (!data.envp)
+	{
         fprintf(stderr, "Memory allocation error\n");
         return 1;
     }
 
-    for (int i = 0; envp[i] != NULL; i++)
-    {
-        data.params[i] = ft_strdup(envp[i]);
+    // Copy the environment variables to data
+    for (int i = 0; i < env_count; i++)
+	{
+        data.envp[i] = ft_strdup(envp[i]);
+        if (!data.envp[i])
+		{ // Check for allocation errors
+            fprintf(stderr, "Memory allocation error\n");
+            return 1;
+        }
     }
-    data.params[sizeof(envp) / sizeof(envp[0])] = NULL;
+    data.envp[env_count] = NULL; // Null-terminate the array
 
-    data.arguments = (char *[]){"cd", "/tmp", NULL}; // Sample cd command with a directory argument
+    // Test arguments for the cd command
+    data.arguments = (char *[]){"cd", "/tmp", NULL};
 
-    // Call your ft_cd function
+    // Execute the cd command
     ft_cd(&data);
 
-    // Print the updated environment variables (including PWD)
-    print_env_variables(data.params);
+    // Print the updated environment variables
+    print_env_variables(data.envp);
 
-    // Clean up dynamically allocated memory
-    for (int i = 0; data.params[i] != NULL; i++)
-    {
-        free(data.params[i]);
+    // Clean up
+    for (int i = 0; data.envp[i] != NULL; i++)
+	{
+        free(data.envp[i]);
     }
-    free(data.params);
+    free(data.envp);
 
     return 0;
 }

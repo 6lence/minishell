@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:21:48 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/13 11:35:37 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/13 14:54:20 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,23 @@ int execute_builtin(t_data *l, t_params *tmp)
     else if (ft_strcmp(command, "cd") == 0)
         result = ft_cd(l);
     else if (ft_strcmp(command, "pwd") == 0)
-//    {
-//        char* pwd = ft_pwd();
-//        printf("%s\n", pwd);
-//        free(pwd);
-//        result = 0; //success
-//    }
-//    else if (ft_strcmp(command, "env") == 0)
-//        result = ft_env(l, arguments); // If ft_env needs arguments
-//    else if (ft_strcmp(command, "export") == 0)
-//        result = ft_export(l, arguments);
-//    else if (ft_strcmp(command, "unset") == 0)
-//        result = ft_unset(l, arguments);
+    {
+        char* pwd = ft_pwd();
+        printf("%s\n", pwd);
+        free(pwd);
+        result = 0; //success
+    }
+    else if (ft_strcmp(command, "env") == 0)
+        result = ft_env(l); // If ft_env needs arguments
+    else if (ft_strcmp(command, "export") == 0)
+        result = ft_export(l);
+    else if (ft_strcmp(command, "unset") == 0)
+        result = ft_unset(l, arguments);
     
     // Free the allocated memory for arguments
     free(arguments);
     
-    return result;
+    return (result);
 }
 
 
