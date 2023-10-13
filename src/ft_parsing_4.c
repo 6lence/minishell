@@ -1,63 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parsing_4.c                                     :+:      :+:    :+:   */
+/*   ft_parsing_5.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/13 15:01:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/13 15:38:04 by mescobar         ###   ########.fr       */
+/*   Created: 2023/10/13 15:15:56 by mescobar          #+#    #+#             */
+/*   Updated: 2023/10/13 15:34:38 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_spaces(char *str, int *i, int *words)
+void	ft_fill_simple(t_data *l, int *i, int *end, int *k)
 {
-	if (str[*i] == ' ')
+	if (l->params[*i] == 39)
 	{
 		*i++;
-		while (str[*i] != ' ')
-			*i++;
-		*words++;
+		while (l->params[*i] != 39)
+			*end++;
+		l->params_split[*k++] == ft_substr(l->params, *i, *end);
+		*i = *end;
 	}
 }
 
-void	ft_double(char *str, int *i, int *words)
+void	ft_fill_double(t_data *l, int *i, int *end, int *k)
 {
-	if (str[*i] == 39)
+	if (l->params[*i] == 34)
 	{
 		*i++;
-		while (str[*i] != 39)
-			*i++;
-		*words++;
+		while (l->params[*i] != 34)
+			*end++;
+		l->params_split[*k++] == ft_substr(l->params, *i, *end);
+		*i = *end;
 	}
 }
 
-void	ft_simple(char *str, int *i, int *words)
-{
-	if (str[*i] == 34)
-	{
-		*i++;
-		while (str[*i] != 34)
-			*i++;
-		*words++;
-	}
-}
-
-int	ft_words(t_data *l)
+void	ft_fill_split(t_data *l)
 {
 	int	i;
-	int	words;
+	int	k;
+	int	end;
 
 	i = 0;
-	words = 0;
+	end = 0;
+	k = 0;
 	while (l->params[i])
 	{
-		ft_simple(l->params, &i, &words);
-		ft_doubles(l->params, &i, &words);
-		ft_spaces(l->params, &i, &words);
-		i++;
+		while (l->params[i] != 34 || l->params != 39)
+		{
+			while (l->params[i + end] != ' '
+				&& l->params[i + end] != 34 && l->params[i + end] != 39)
+				end++;
+			l->params_split[k++] = ft_substr(l->params, i, end);
+			i = end;
+		}
+		ft_fill_simple(l, &i, &end, &k);
+		ft_fill_double(l, &i, &end, &k);
+		while (l->params[i] > 6 && l->params[i] < 14)
+			i++;
 	}
-	return (words);
 }

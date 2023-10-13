@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parsing.c                                       :+:      :+:    :+:   */
+/*   ft_parsing_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/13 15:34:41 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:02:31 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,13 @@ int	ft_chained_args(t_data *l)
 		}
 	}
 	return (0);
+}
+
+void	ft_parsing(t_data *l)
+{
+	l->params_split = ft_calloc(ft_words(l), sizeof(char *));
+	ft_fill_split(l);
+	if (l->params)
+		free(l->params);
+	ft_chained_args(l);
 }

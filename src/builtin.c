@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:21:48 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/13 14:54:20 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:01:25 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int execute_builtin(t_data *l, t_params *tmp)
     return (result);
 }
 
-
 char	**linked_list_to_array(t_params *tmp) 
 {
     int count = 0;
@@ -74,7 +73,6 @@ char	**linked_list_to_array(t_params *tmp)
         count++;
         current = current->next;
     }
-
     // Step 2: Allocate memory for the array
     char **args = (char **)malloc(sizeof(char *) * (count + 1));
     if (args == NULL) 
@@ -82,7 +80,6 @@ char	**linked_list_to_array(t_params *tmp)
         perror("malloc");
         exit(EXIT_FAILURE);
     }
-
     // Step 3: Assign strings to the array
     current = tmp;
     for (int i = 0; i < count; i++) 
@@ -90,10 +87,8 @@ char	**linked_list_to_array(t_params *tmp)
         args[i] = current->str;
         current = current->next;
     }
-
     // Step 4: Ensure the array is NULL-terminated
     args[count] = NULL;
-    
     return args;
 }
 /*
