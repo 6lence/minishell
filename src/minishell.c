@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/12 11:49:51 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:34:41 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,8 @@ int	init(t_data *l)
 	l->params = readline("minishell-> ");
 	if (!l->params)
 		return (1);
-	l->params_split = ft_split(l->params, ' ');
 	add_history(l->params);
-	ft_chained_args(l);
+	ft_parsing(l);
 	if (!l->list || !l->list->str || !l->list->str[0])
 		return (0);
 	if (ft_lst_elem(l->list, 0))

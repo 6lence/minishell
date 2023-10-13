@@ -1,43 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parsing_2.c                                     :+:      :+:    :+:   */
+/*   ft_parsing_3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 16:29:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/13 14:39:50 by mescobar         ###   ########.fr       */
+/*   Created: 2023/10/13 14:40:05 by mescobar          #+#    #+#             */
+/*   Updated: 2023/10/13 15:35:00 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_pathcmp(char *str, char *path)
+void	ft_parsing(t_data *l)
 {
-	size_t	i;
-
-	i = 0;
-	while (str[i] == path[i])
-		i++;
-	if (i == ft_strlen(path) && i - ft_strlen(path) == 0)
-		return (str);
-	return (NULL);
-}
-
-char	**ft_search_path(t_data *l)
-{
-	int		i;
-	char	**tmp;
-	char	*line;
-
-	i = 0;
-	while (l->envp[i])
-	{
-		line = ft_pathcmp(l->envp[i], "PATH");
-		if (line != NULL)
-			break ;
-		i++;
-	}
-	tmp = ft_split(line, ':');
-	return (tmp);
+	l->params_split = ft_calloc(ft_words(l), sizeof(char *));
+	ft_fill_split(l);
+	if (l->params)
+		free(l->params);
+	ft_chained_args(l);
 }
