@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/13 15:34:41 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:44:02 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_access_verif(t_data *l, t_params *tmp)
 	char	*join;
 	char	*command;
 
-	path = ft_search_path(l);
+	path = ft_search_path("PATH", l);
 	l->path = NULL;
 	command = ft_strjoin("/", tmp->str);
 	j = 0;

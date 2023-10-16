@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/13 16:02:31 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:15:52 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,7 @@ void	ft_parsing(t_data *l)
 	if (l->params)
 		free(l->params);
 	ft_chained_args(l);
+	ft_look_dollar(l);
+	ft_look_flash1(l);
+	ft_look_flash2(l);
 }

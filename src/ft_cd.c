@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 17:00:56 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/13 14:10:39 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:10:51 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ int	ft_cd(t_data *l)
     old_pwd = ft_strjoin("OLDPWD=", cwd);
     handle_env_variable(&(l->envp), "OLDPWD", old_pwd);
     printf("OLDPWD updated: %s\n", old_pwd); // Debug print
-    new_dir = l->arguments[1];
+    new_dir = ft_lst_elem(l->list, l->pos)->str;
     if (new_dir == NULL)
     {
         // Change to the HOME directory if no argument is provided

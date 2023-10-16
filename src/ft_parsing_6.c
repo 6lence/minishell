@@ -1,43 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parsing_2.c                                     :+:      :+:    :+:   */
+/*   ft_parsing_6.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 16:29:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/16 13:43:55 by mescobar         ###   ########.fr       */
+/*   Created: 2023/10/16 14:16:10 by mescobar          #+#    #+#             */
+/*   Updated: 2023/10/16 14:22:30 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_pathcmp(char *str, char *path)
+#ajouter variable au .h
+
+void	ft_flash_1(t_data *l)
 {
-	size_t	i;
+	char		*c;
+	t_params	*tmp;
 
-	i = 0;
-	while (str[i] == path[i])
-		i++;
-	if (i == ft_strlen(path) && i - ft_strlen(path) == 0)
-		return (str);
-	return (NULL);
-}
-
-char	**ft_search_path(char *str, t_data *l)
-{
-	int		i;
-	char	**tmp;
-	char	*line;
-
-	i = 0;
-	while (l->envp[i])
+	c = "<";
+	tmp = l->list;
+	while (tmp)
 	{
-		line = ft_pathcmp(l->envp[i], str);
-		if (line != NULL)
-			break ;
-		i++;
+		if (ft_strcmp(tmp->str, c) == 0)
+			ft_redirect_input(tmp, l);
+		tmp = tmp->next;
 	}
-	tmp = ft_split(line, ':');
-	return (tmp);
 }

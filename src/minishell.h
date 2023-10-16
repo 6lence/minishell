@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/13 15:07:12 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/16 16:02:49 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ typedef struct s_data
 	int			in;
 	int			out;
 	int			exit_code;
+	int			input;
+	int			output;
 	int			new_fd[2];
 	int			old_fd[2];
 	t_params	*list;
@@ -81,7 +83,7 @@ int		ft_chained_args(t_data *l);
 void	ft_pipe_presence(t_data *l);
 
 /* parsing_ 2 */
-char	**ft_search_path(t_data *l);
+char	**ft_search_path(char *str, t_data *l);
 int		ft_args(t_params *l);
 
 /* builtin */

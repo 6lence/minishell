@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:07:45 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/12 14:26:01 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/16 16:02:04 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	ft_child(t_data *l, t_params *tmp, int i, int tours)
 	}
 	if (i == 0)
 	{
+		if (l->input)
+			dup2(l->input, 0);
 		dup2(l->new_fd[1], 1);
 		execute_command(l, tmp);
 		close(l->new_fd[1]);
@@ -39,7 +41,10 @@ int	ft_child(t_data *l, t_params *tmp, int i, int tours)
 	else
 	{
 		dup2(l->old_fd[0], 0);
-		dup2(l->out, 1);
+		if (l->output)
+			dup2(l->output, 1);
+		else
+			dup2(l->out, 1);
 		execute_command(l, tmp);
 		close(l->old_fd[0]);
 	}
