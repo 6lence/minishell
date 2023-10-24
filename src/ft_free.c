@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:13:35 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/09 14:51:09 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/24 10:47:29 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,7 @@ void	ft_free_all_more(t_data *l)
 
 void	ft_free_all(t_data *l)
 {
-	int	i;
-
 	if (l->path)
 		free(l->path);
-	if (l->params)
-		free(l->params);
-	i = 0;
-	while (l->params_split[i])
-		free(l->params_split[i++]);
-	if (l->params_split)
-		free(l->params_split);
 	ft_free_all_more(l);
 }

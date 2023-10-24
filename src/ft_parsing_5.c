@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 13:21:41 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/16 14:16:00 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/24 10:51:35 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_verif(char *s)
 			i++;
 			while (s[i] != 34)
 			{
-				if (s[i] == "$")
+				if (s[i] == '$')
 					return (1);
 				i++;
 			}
@@ -58,7 +58,7 @@ char	*ft_find(t_params *list, t_data *l)
 	char	*var;
 
 	i = 0;
-	while (list->str[i] != "$")
+	while (list->str[i] != '$')
 		i++;
 	var_len = 0;
 	while (list->str[i] != ' ')
@@ -76,15 +76,10 @@ void	ft_change(t_params *list, t_data *l)
 	int		i;
 
 	i = 0;
-	while (list->str[i] != "$")
+	while (list->str[i] != '$')
 		i++;
 	new = ft_substr(list->str, 0, i - 1);
 	new = ft_strjoin(new, ft_find_var(list, l));
-	i++;
-	while (list->str[i] != ' ')
-		i++;
-	new = ft_strjoin(new, 
-			ft_substr(list->str, i, ft_strlen(list->str)));
 	free(list->str);
 	list->str = new;
 }

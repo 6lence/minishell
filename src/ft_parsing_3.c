@@ -6,43 +6,17 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:01:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/16 13:50:59 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/24 10:41:38 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_spaces(char *str, int *i, int *words)
+void	ft_quotes(t_data *l, int *i, int c)
 {
-	if (str[*i] == ' ')
-	{
-		*i++;
-		while (str[*i] != ' ')
-			*i++;
-		*words++;
-	}
-}
-
-void	ft_double(char *str, int *i, int *words)
-{
-	if (str[*i] == 39)
-	{
-		*i++;
-		while (str[*i] != 39)
-			*i++;
-		*words++;
-	}
-}
-
-void	ft_simple(char *str, int *i, int *words)
-{
-	if (str[*i] == 34)
-	{
-		*i++;
-		while (str[*i] != 34)
-			*i++;
-		*words++;
-	}
+	*i = *i + 1;
+	while (l->params[*i] != c)
+		*i = *i + 1;
 }
 
 int	ft_words(t_data *l)
@@ -54,10 +28,21 @@ int	ft_words(t_data *l)
 	words = 0;
 	while (l->params[i])
 	{
-		ft_simple(l->params, &i, &words);
-		ft_doubles(l->params, &i, &words);
-		ft_spaces(l->params, &i, &words);
-		i++;
+		while (l->params[i] && (l->params[i] < 7 
+				|| l->params[i] > 13)
+				&& l->params[i] != ' ')
+		{
+			if (l->params[i] == 34)
+				ft_quotes(l, &i, 34);
+			else if (l->params[i] == 39)
+				ft_quotes(l, &i, 39);
+			i++;
+		}
+		words++;
+		while (l->params[i] && !((l->params[i] < 7 
+				|| l->params[i] > 13) &&
+				l->params[i] != ' '))
+			i++;
 	}
 	return (words);
 }

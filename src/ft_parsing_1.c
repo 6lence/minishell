@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/16 14:15:52 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/24 10:52:33 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_chained_args(t_data *l)
 
 	i = 0;
 	l->list = NULL;
-	while (l->params_split[i++])
+	while (l->params_split[i])
 	{
 		new = malloc(sizeof(t_params));
 		if (!new)
@@ -65,18 +65,18 @@ int	ft_chained_args(t_data *l)
 			new->prev = NULL;
 			l->list = new;
 		}
+		i++;
 	}
 	return (0);
 }
 
 void	ft_parsing(t_data *l)
 {
-	l->params_split = ft_calloc(ft_words(l), sizeof(char *));
+	l->params_split = ft_calloc(ft_words(l) + 1, sizeof(char *));
 	ft_fill_split(l);
 	if (l->params)
 		free(l->params);
 	ft_chained_args(l);
 	ft_look_dollar(l);
-	ft_look_flash1(l);
-	ft_look_flash2(l);
+	//ft_look_in_out_put(l);
 }

@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/16 16:02:49 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:46:10 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/resource.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <fcntl.h>
 # include <stdlib.h>
 # include <string.h>
 # include <signal.h>
@@ -55,6 +56,7 @@ typedef struct s_data
 	char		**params_split;
 	char		*path;
 	char		**arguments;
+	int			tmp_file;
 	int			pos;
 	int			pipe;
 	int			pipe_nb;
@@ -75,16 +77,31 @@ void	show_parameters(const char *parameters);
 void	ft_pipe(t_data *l);
 int		ft_access_verif(t_data *l, t_params *tmp);
 
-/* parsing */
+/* parsing_1 */
 void	get_command_arguments(const char *input,
 			char *command, char **arguments);
 void	execute_command(t_data *l, t_params *tmp);
 int		ft_chained_args(t_data *l);
 void	ft_pipe_presence(t_data *l);
+void	ft_parsing(t_data *l);
 
-/* parsing_ 2 */
+/* parsing_2 */
 char	**ft_search_path(char *str, t_data *l);
+char	*ft_pathcmp(char *str, char *path);
 int		ft_args(t_params *l);
+
+/* parsing_3 */
+int	ft_words(t_data *l);
+
+/* parsing_4 */
+void	ft_fill_split(t_data *l);
+
+/* parsing_5 */
+void	ft_look_dollar(t_data *l);
+
+/* parsing_6 */
+void	ft_look_in_out_put(t_data *l);
+char	*ft_find_var(t_params *list, t_data *l);
 
 /* builtin */
 int		is_builtin(char *command);
