@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execute_pipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:07:45 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/23 09:28:26 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/25 09:55:51 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,11 @@ int	ft_child(t_data *l, t_params *tmp, int i, int tours)
 	}
 	if (i == 0)
 	{
+		dup2(l->in, 0);
 		dup2(l->new_fd[1], 1);
-		if (l->input)
-			dup2(l->input, 0);
 		execute_command(l, tmp);
 		close(l->new_fd[1]);
-		if (l->input)
-			close(l->input);
+		close(l->in);
 	}
 	else if (tours < l->pipe_nb)
 		ft_between(l, tmp);
@@ -45,12 +43,9 @@ int	ft_child(t_data *l, t_params *tmp, int i, int tours)
 	{
 		dup2(l->old_fd[0], 0);
 		dup2(l->out, 1);
-		if (l->output)
-			dup2(l->output, 1);
 		execute_command(l, tmp);
 		close(l->old_fd[0]);
-		if (l->output)
-			close(l->output);
+		close(l->out);
 	}
 	l->old_fd[0] = l->new_fd[0];
 	l->old_fd[1] = l->new_fd[1];
@@ -87,5 +82,5 @@ void    ft_pipe(t_data *l)
 		}
 	}
 	dup2(l->in, 0);
-	dup2(l->out, 1);	
+	dup2(l->out, 1);
 }
