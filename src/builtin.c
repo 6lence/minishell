@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:21:48 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/13 16:01:25 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/25 13:43:15 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	is_builtin(char *command)
 	if (ft_strcmp(command, "export") == 0)
 		return (1);
 	if (ft_strcmp(command, "unset") == 0)
+		return (1);
+    if (ft_strcmp(command, "exit") == 0)
 		return (1);
 	return (0); //no match
 }
@@ -54,13 +56,16 @@ int execute_builtin(t_data *l, t_params *tmp)
     else if (ft_strcmp(command, "export") == 0)
         result = ft_export(l);
     else if (ft_strcmp(command, "unset") == 0)
-        result = ft_unset(l, arguments);
+        result = ft_unset(l);
+    else if (ft_strcmp(command, "exit") == 0)
+        result = ft_exit(l);
     
     // Free the allocated memory for arguments
     free(arguments);
     
     return (result);
 }
+
 
 char	**linked_list_to_array(t_params *tmp) 
 {
@@ -73,6 +78,7 @@ char	**linked_list_to_array(t_params *tmp)
         count++;
         current = current->next;
     }
+
     // Step 2: Allocate memory for the array
     char **args = (char **)malloc(sizeof(char *) * (count + 1));
     if (args == NULL) 
@@ -80,6 +86,7 @@ char	**linked_list_to_array(t_params *tmp)
         perror("malloc");
         exit(EXIT_FAILURE);
     }
+
     // Step 3: Assign strings to the array
     current = tmp;
     for (int i = 0; i < count; i++) 
@@ -87,34 +94,10 @@ char	**linked_list_to_array(t_params *tmp)
         args[i] = current->str;
         current = current->next;
     }
+
     // Step 4: Ensure the array is NULL-terminated
     args[count] = NULL;
+    
     return args;
 }
-/*
-int	execute_builtin(t_data *data)
-{
-	int		result;
 
-	result = 0;
-	if (ft_strcmp(data->command, "echo") == 0)
-		result = ft_echo(data->arguments);
-	if (ft_strcmp(data->command, "cd") == 0)
-		result = ft_cd(data);
-	if (ft_strcmp(data->command, "pwd") == 0)
-		result = ft_pwd();
-	if (ft_strcmp(data->command, "env") == 0)
-		ft_env(data->envp);
-	if (ft_strcmp(data->command, "export") == 0)
-		result = ft_export(data->arguments);
-	if (ft_strcmp(data->command, "unset") == 0)
-		result = ft_unset(data->arguments, data->envp);
-	return (result);
-}
-*/
-/*
-if (is_builtin(data->command))
-{
-    result = execute_builtin(&data);
-}
-*/

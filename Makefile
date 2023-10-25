@@ -9,6 +9,7 @@ SRC_FILES :=	minishell.c \
 				ft_parsing_6.c \
 				ft_errors.c \
 				ft_lstutils.c \
+				ft_listutils_2.c \
 				ft_execute_pipe.c \
 				ft_utils.c \
 				ft_free.c \
@@ -19,7 +20,8 @@ SRC_FILES :=	minishell.c \
 				ft_exit.c \
 				ft_export.c \
 				ft_pwd.c \
-				ft_unset.c 
+				ft_unset.c \
+				execute_priorities.c
 
 OBJ_DIR := ./obj
 EXECUTABLE := minishell
@@ -50,7 +52,7 @@ $(LFT):
 
 $(EXECUTABLE): $(OBJ_FILES)
 	@$(CC) $(CFLAGS) $^ $(LIB) -lreadline -o $@ 
-	@echo "\033[32m✅ Done !\033[0m"
+	@echo "\033[32m✅ Done! Executable $(EXECUTABLE) is ready.\033[0m"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -59,11 +61,13 @@ clean:
 	@$(RM) -r $(OBJ_DIR)
 #	@make -s -C ./ft_printf/ clean
 	@make -s -C ./libft/ clean
+	@echo "\033[32m✅ Done! Object files removed.\033[0m"
 
 fclean: clean
 	@$(RM) $(EXECUTABLE)
 #	@make -s -C ./ft_printf/ fclean
 	@make -s -C ./libft/ fclean
+	@echo "\033[32m✅ Done! Executable $(EXECUTABLE) removed.\033[0m"
 
 re: fclean all
 

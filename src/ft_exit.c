@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:14:04 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/12 09:33:01 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/25 12:45:36 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,33 +24,41 @@ int	ft_count_arguments(char **arguments)
 	return (count);
 }
 
-// Function to handle the 'exit' command
-void	ft_exit(t_data *data)
+int	ft_exit(t_data *l)
 {
 	int	exit_code;
+	t_params *arguments = l->list;
 
-	if (ft_count_arguments(data->arguments) > 2)
+	// Getting the number of arguments from the linked list
+	int arg_count = ft_lstsize(arguments);
+
+	if (arg_count > 2)
 	{
 		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	if (data->arguments[1] != NULL)
+
+	if (arg_count > 1)
 	{
-		exit_code = ft_atoi(data->arguments[1]);
-		if (exit_code == 0 && ft_strcmp(data->arguments[1], "0") != 0)
+		arguments = arguments->next; // Skipping the command name ('exit')
+		exit_code = ft_atoi(arguments->str);
+
+		if (exit_code == 0 && ft_strcmp(arguments->str, "0") != 0)
 		{
-            // Handle invalid argument
+			// Handle invalid argument
 			ft_putstr_fd("exit: numeric argument required\n", STDERR_FILENO);
 			exit(EXIT_FAILURE);
 		}
-		data->exit_code = exit_code; // Set the exit code
+		l->exit_code = exit_code; // Set the exit code
 	}
 	else
 	{
-		data->exit_code = 0; // No argument provided, exit with a status of 0
+		l->exit_code = 0; // No argument provided, exit with a status of 0
 	}
-	data->stop_main = 0; // Set the stop flag to terminate the main shell loop
+	l->stop_main = 0; // Set the stop flag to terminate the main shell loop
+	return (0);
 }
+
 /*
 #include <stdio.h>
 #include <stdlib.h>

@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/13 15:27:05 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/25 13:39:56 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ static int	valid_env_name(char *arg)
 {
 	int		i;
 
-	if (!ft_isalpha(arg[0]) && arg[0] != '_')
+	// Check if the argument is NULL or starts with '='
+    if (!arg || arg[0] == '=')
+        return (0);
+    if (!ft_isalpha(arg[0]) && arg[0] != '_')
 		return (0);
 	i = 1;
 	while (arg[i])
@@ -39,57 +42,7 @@ static int	valid_env_name(char *arg)
 	}
 	return (1);
 }
-/* code 1
-static void	add_or_update_env(t_data *data, char *arg)
-{
-	int		i;
-	char	*new_env;
-	char	**new_envp;
 
-	i = -1;
-	while (data->envp[++i])
-		if (ft_strncmp(data->envp[i], arg, ft_strlen(arg)) == 0 && \
-			data->envp[i][ft_strlen(arg)] == '=')
-			return ;
-	new_env = ft_strjoin(arg, "=");
-	new_envp = (char **)malloc(sizeof(char *) * (i + 2));
-	i = -1;
-	while (data->envp[++i])
-		new_envp[i] = ft_strdup(data->envp[i]);
-	new_envp[i] = new_env;
-	new_envp[i + 1] = NULL;
-	free(data->envp); // Free old envp here, you might need to free its elements too
-	data->envp = new_envp;
-}
-*/
-/* code 2
-static void	add_or_update_env(t_data *data, char *arg)
-{
-	int		i;
-	char	**new_envp;
-
-	i = -1;
-    // Search for the existing environment variable
-	while (data->envp[++i])
-		if (ft_strncmp(data->envp[i], arg, ft_strchr(arg, '=') - arg) == 0)
-		{
-            // Update the value of the existing environment variable
-			free(data->envp[i]);
-			data->envp[i] = ft_strdup(arg);
-			return ;
-		}
-    
-    // Add a new environment variable if it doesn't exist
-	new_envp = (char **)malloc(sizeof(char *) * (i + 2));
-	i = -1;
-	while (data->envp[++i])
-		new_envp[i] = ft_strdup(data->envp[i]);
-	new_envp[i] = ft_strdup(arg); // Add the new environment variable
-	new_envp[i + 1] = NULL;
-	free(data->envp); // Free old envp here, you might need to free its elements too
-	data->envp = new_envp;
-}
-*/
 int array_length(char **array)
 {
     int length = 0;
@@ -100,11 +53,16 @@ int array_length(char **array)
     return length;
 }
 
-void add_or_update_env(t_data *data, char *key, char *value)
+int add_or_update_env(t_data *data, char *key, char *value)
 {
     int i = 0;
     char *new_env_entry = ft_strjoin(key, "=");
-    new_env_entry = ft_strjoin(new_env_entry, value);
+    if (value) // Check if value is not NULL before concatenating
+    {
+        char *tmp = new_env_entry;
+        new_env_entry = ft_strjoin(new_env_entry, value);
+        free(tmp); // Ensure previously allocated memory is freed to prevent memory leaks
+    }
 
     // Check if the key exists and update the value
     while (data->envp[i])
@@ -113,7 +71,7 @@ void add_or_update_env(t_data *data, char *key, char *value)
         {
             free(data->envp[i]); // Free the old entry
             data->envp[i] = new_env_entry; // Update with the new entry
-            return;
+            return (0);
         }
         i++;
     }
@@ -121,6 +79,10 @@ void add_or_update_env(t_data *data, char *key, char *value)
     // If key does not exist, add a new entry
     i = 0;
     char **new_envp = (char **)malloc(sizeof(char *) * (array_length(data->envp) + 2));
+    if (!new_envp) // Check for malloc failure
+    {
+        return -1; // return -1 on failure
+    }
     int j = 0;
     while (data->envp[j])
     {
@@ -129,65 +91,74 @@ void add_or_update_env(t_data *data, char *key, char *value)
     }
     new_envp[j] = new_env_entry;
     new_envp[j + 1] = NULL;
-    free(data->envp);
     data->envp = new_envp;
+    return (0);
 }
 
-int	ft_export(t_data *l)
+
+int ft_export(t_data *l)
 {
-	char	*key;
-	char	*value;
-	char	*equal_sign;
+    t_params *element;
+    char *key;
+    char *value;
+    char *equal_sign;
+    int pos;
 
-	if (!(l->arguments[1])) // If no argument after ft_export
-	{
-		print_envp(l->envp);
-		return (0);
-	}
-	if (!valid_env_name(l->arguments[1]))
-	{
-		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(l->arguments[1], 2);
-		ft_putendl_fd("': not a valid identifier", 2);
-		return (-1); //error
-	}
+    pos = l->pos + 1;
+    // Check if the position is valid before accessing the element
+    if (pos >= ft_lstsize(l->list)) // Assuming ft_lstsize gives the number of elements
+    {
+        print_envp(l->envp); // Print the environment variables if position is out of range
+        return (0);
+    }
+    element = ft_list_elem(l->list, pos); // Access element at position pos
 
-	equal_sign = ft_strchr(l->arguments[1], '='); // find the position of '=' in the argument
-	if (equal_sign) // if '=' is found
-	{
-		*equal_sign = '\0'; // replace '=' with '\0' to split the string
-		key = l->arguments[1]; // the key is before '='
-		value = equal_sign + 1; // the value is after '='
-	}
-	else
-	{
-		key = l->arguments[1]; // if '=' is not found, only the key is provided
-		value = NULL; // value is NULL
-	}
+    // 1: No arguments passed, just print the environment variables
+    if (!element) 
+    {
+        print_envp(l->envp);
+        return (0);
+    }
 
-	add_or_update_env(l, key, value); // call add_or_update_env with data, key, and value
-	return (0);
+    // 2: Arguments passed, trying to export or update environment variables
+    if (!valid_env_name(element->str))
+    {
+        ft_putstr_fd("minishell: export: `", 2);
+        ft_putstr_fd(element->str, 2);
+        ft_putendl_fd("': not a valid identifier", 2);
+        return (-1); // error
+    }
+    equal_sign = ft_strchr(element->str, '='); // find the position of '=' in the argument
+    if (equal_sign) // if '=' is found
+    {
+        *equal_sign = '\0'; // replace '=' with '\0' to split the string
+        key = element->str; // the key is before '='
+        value = equal_sign + 1; // the value is after '='
+    }
+    else
+    {
+        key = element->str; // if '=' is not found, only the key is provided
+        value = NULL; // value is NULL
+    }
+
+    // Validate the key here after extraction
+    if (!valid_env_name(key)) // Checking validity after getting the key
+    {
+        ft_putstr_fd("minishell: export: `", 2);
+        ft_putstr_fd(key ? key : "", 2); // handle NULL key
+        ft_putendl_fd("': not a valid identifier", 2);
+        return (-1); // error
+    }
+
+    // Attempt to add or update the environment variable and handle the status
+    int status = add_or_update_env(l, key, value);
+    if (status != 0)
+    {
+        printf ("Error status");
+    }
+    return (0);
 }
 
-/*
-int	ft_export(t_data *l)
-{
-	if (!(l->arguments[1])) // If no argument after ft_export
-	{
-		print_envp(l->envp);
-		return (0);
-	}
-	if (!valid_env_name(l->arguments[1]))
-	{
-		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(l->arguments[1], 2);
-		ft_putendl_fd("': not a valid identifier", 2);
-		return (-1); //error
-	}
-	add_or_update_env(l, l->arguments[1]);
-	return (0);
-}
-*/
 /*
 static void free_envp(char **envp)
 {

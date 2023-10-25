@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/13 07:55:48 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:10:50 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,27 @@ void execute_command(t_data *l, t_params *tmp)
     char	**args;
 	pid_t	child_pid;
 
+	t_params *current = tmp;
+    
+    // Assign operators to each node
+    while (current != NULL)
+    {
+        assign_operator(current);
+        current = current->next;
+    }
+
+    // Check if the command contains logical operators
+    if (contains_logical_operators(tmp)) // You need to implement this function
+    {
+        printf("Logical operators found, executing priorities.\n"); // DEBUG: Indicate entering the priorities block
+		int status = ft_execute_priorities(tmp);
+		printf("Finished executing priorities.\n"); // DEBUG: Indicate finished executing priorities
+        if (status != 0)
+        {
+            fprintf(stderr, "Command execution failed with status %d\n", status); //change later fprintf!!!!!!
+        }
+        return;
+    }
     if (is_builtin(tmp->str))
     {
         execute_builtin(l, tmp); // Execute the built-in command directly

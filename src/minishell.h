@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/24 14:46:10 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:30:59 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ typedef struct s_params
 	char			*str;
 	int				pos;
 	struct s_params	*next;
+	char			*cmd;
+    char			**args;
+	int				operator;
 }					t_params;
 
 typedef struct s_signal
@@ -123,20 +126,29 @@ int	ft_env(t_data *l);
 
 /* ft_exit */
 int		ft_count_arguments(char **arguments);
-void	ft_exit(t_data *data);
+int		ft_exit(t_data *l);
 
 /* ft_export */
-int		ft_export(t_data *data);
+int		ft_export(t_data *l);
 int		array_length(char **array);
+int		add_or_update_env(t_data *data, char *key, char *value);
 
 /* pwd */
 char	*ft_pwd(void);
 
 /* ft_unset */
-int		is_proper_env(const char *env_name);
-char	**ft_getenvvar(t_data *data, const char *name);
-int		ft_unsetenv(t_data *data, const char *name);
-int		ft_unset(t_data *data, char *arguments[]);
+int			is_proper_env(const char *env_name);
+char		**ft_getenvvar(t_data *data, const char *name);
+int			ft_unsetenv(t_data *data, const char *name);
+t_params	*ft_get_nth_param(t_params *list, int n);
+int			ft_unset(t_data *l);
+
+/* execute_priorities */
+t_params	*create_temp_command_node(char *cmd_str);
+int			contains_logical_operators(t_params *tmp);
+int			execute_operator(t_params *cmd);
+int			ft_execute_priorities(t_params *commands);
+void		assign_operator(t_params *node);
 
 /* lstutils */
 t_params	*ft_lstlast(t_params *l);
@@ -144,6 +156,10 @@ t_params	*ft_lstfirst(t_params *l);
 int			ft_lstlen(t_params *l);
 void		ft_lstprint(t_params *l);
 t_params	*ft_lst_elem(t_params *l, int pos);
+
+/* lstutils_2 */
+int			ft_lstsize(t_params *l);
+t_params	*ft_list_elem(t_params *l, int pos);
 
 /* errors */
 int		ft_direrror(t_data *l);

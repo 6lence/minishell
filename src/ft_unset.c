@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:15:03 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/09 15:43:46 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/25 13:26:19 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	is_proper_env(const char *env_name)
 {
 	int	i;
 
+	printf("Debug: Checking env_name: %s\n", env_name);
 	if (env_name == NULL || env_name[0] == '\0')
 	{
 		return (0); // Return false for NULL or empty strings
@@ -39,6 +40,7 @@ char	**ft_getenvvar(t_data *data, const char *name)
 	int	j;
 	int	name_len;
 
+	printf("Debug: Getting env var: %s\n", name);
 	if (!name || !data || !data->envp)
 		return (NULL);
 	i = 0;
@@ -62,6 +64,7 @@ int	ft_unsetenv(t_data *data, const char *name)
 	int		i;
 	int		j;
 
+	printf("Debug: Unsetting env var: %s\n", name);
 	if (!name || !data || !data->envp)
 		return (-1);
 	target = ft_getenvvar(data, name);
@@ -93,42 +96,62 @@ int	ft_unsetenv(t_data *data, const char *name)
 	return (0);
 }
 
-int	ft_unset(t_data *data, char *arguments[])
-{
-	int		error_flag;
-	int		word_i;
-	char	*key;
-	char	*error_message;
+#include "minishell.h"
 
+// Function to retrieve the nth element in the linked list
+t_params *ft_get_nth_param(t_params *list, int n) 
+{
+    t_params *current = list;
+    while (current && current->pos != n)
+    {
+        current = current->next;
+    }
+    return current;
+}
+
+int	ft_unset(t_data *l)
+{
+    t_params *element;
+	int	error_flag;
+    int pos;
+
+	printf("Debug: Entering ft_unset function\n");
 	error_flag = 0; // Initialize error_flag to false (0)
-	word_i = 1; // Start with the first argument
-	if (!arguments) // Ensure arguments is not NULL before dereferencing
-		return (-1); // Handle error appropriately; for now, simply return or set the error_flag and error_message as needed
-	while (arguments[word_i] != NULL)
+	pos = l->pos + 1; // Adjust position based on your needs
+
+	element = ft_get_nth_param(l->list, pos); // Get the nth element
+
+	while (element) // Loop through each element in the linked list
 	{
-		if (!is_proper_env(arguments[word_i])) // Check if each argument is a valid environment variable name
+		printf("Debug: Processing element: %s\n", element->str); // Debug
+		if (!is_proper_env(element->str)) // Check if each element is a valid environment variable name
 		{
 			error_flag = 1; // Set error flag to true (1)
-			error_message = "unset: invalid argument\n";
-			write(STDERR_FILENO, error_message, ft_strlen(error_message));
+			char *error_message = ft_strjoin("unset: invalid argument: ", element->str);
+			ft_putendl_fd(error_message, STDERR_FILENO);
+			free(error_message);
 		}
 		else
 		{
-			key = arguments[word_i]; // Process valid environment variable names
-			if (ft_unsetenv(data, key) != 0)
-			{ // Check the return value of ft_unsetenv, handle error appropriately; for now, set error_flag and print an error message
+			char *key = element->str; // Process valid environment variable names
+			printf("Debug: Key to unset: %s\n", key);
+			if (ft_unsetenv(l, key) != 0)
+			{ // Check the return value of ft_unsetenv, handle error appropriately
 				error_flag = 1;
-				error_message = "Error: unable to unset environment variable\n";
-				write(STDERR_FILENO, error_message, ft_strlen(error_message));
+				char *error_message = ft_strjoin("Error: unable to unset environment variable: ", key);
+				ft_putendl_fd(error_message, STDERR_FILENO);
+				free(error_message);
 			}
 		}
-		word_i++; // Move to the next argument
+		element = element->next; // Move to the next element
 	}
+	
 	if (error_flag == 0) // Set exit_code based on error_flag
-		data->exit_code = EXIT_SUCCESS;
+		l->exit_code = EXIT_SUCCESS;
 	else
-		data->exit_code = EXIT_FAILURE;
-	return (data->exit_code); // Return the exit code
+		l->exit_code = EXIT_FAILURE;
+	printf("Debug: Exiting ft_unset with code: %d\n", l->exit_code);
+	return (l->exit_code); // Return the exit code
 }
 
 /*
