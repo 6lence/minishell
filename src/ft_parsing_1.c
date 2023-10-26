@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/26 11:28:05 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/26 14:36:17 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void    ft_pipe_presence(t_data *l)
     l->pipe_nb = 0;
     while (tmp->next)
     {
-        if (tmp->str[0] == '|')
+        if (tmp->str[0] == '|'
+            && !tmp->str[1])
         {
             l->pipe_nb++;
             l->pipe = 1;

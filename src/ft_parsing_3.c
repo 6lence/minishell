@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:01:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/24 10:41:38 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/26 11:46:51 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,17 @@ int	ft_words(t_data *l)
 			i++;
 	}
 	return (words);
+}
+
+int	ft_operator_cmp(t_params *tmp)
+{
+	if (ft_strcmp(tmp->str, "<") == 0
+		|| ft_strcmp(tmp->str, "<<") == 0
+		|| ft_strcmp(tmp->str, ">") == 0
+		|| ft_strcmp(tmp->str, ">>") == 0
+		|| ft_strcmp(tmp->str, "|") == 0
+		|| ft_strcmp(tmp->str, "||") == 0
+		|| ft_strcmp(tmp->str, "&&") == 0)
+		return (1);
+	return (0);
 }

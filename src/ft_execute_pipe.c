@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:07:45 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/26 11:27:12 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/26 11:42:15 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,8 @@ void    ft_pipe(t_data *l)
     i = 0;
     while (l->pos < last && tmp)
     {
-        ft_look_in_out_put(tmp, l);
-        ft_look_pipe(tmp, l);
-        else
+		ft_look_in_out_put(tmp, l);
+        if (ft_look_pipe(tmp, l) == 0)
         {
             if (ft_child(l, tmp, l->pos, i) == 1)
                 return ;

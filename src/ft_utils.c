@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/25 14:10:50 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/26 11:32:01 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ void execute_command(t_data *l, t_params *tmp)
             return;
         }
         args = ft_arguments(tmp); // Convert linked list to array of arguments
+		dup2(l->tmp_in, l->in);
+		dup2(l->tmp_out, l->out);
         execve(l->path, args, l->envp); // Execute the external command
     }
     wait(NULL); // Wait for the child process to finish

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/25 14:30:59 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/26 14:27:24 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ typedef struct s_data
 	int			in;
 	int			out;
 	int			exit_code;
-	int			input;
-	int			output;
+	int			tmp_in;
+	int			tmp_out;
 	int			new_fd[2];
 	int			old_fd[2];
 	t_params	*list;
@@ -91,10 +91,12 @@ void	ft_parsing(t_data *l);
 /* parsing_2 */
 char	**ft_search_path(char *str, t_data *l);
 char	*ft_pathcmp(char *str, char *path);
+int		ft_look_pipe(t_params *tmp, t_data *l);
 int		ft_args(t_params *l);
 
 /* parsing_3 */
 int	ft_words(t_data *l);
+int	ft_operator_cmp(t_params *tmp);
 
 /* parsing_4 */
 void	ft_fill_split(t_data *l);
@@ -103,7 +105,7 @@ void	ft_fill_split(t_data *l);
 void	ft_look_dollar(t_data *l);
 
 /* parsing_6 */
-void	ft_look_in_out_put(t_data *l);
+void	ft_look_in_out_put(t_params *tmp, t_data *l);
 char	*ft_find_var(t_params *list, t_data *l);
 
 /* builtin */
