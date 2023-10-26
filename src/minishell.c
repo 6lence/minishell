@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/26 17:26:21 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:41:11 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ int    init(t_data *l)
         return (0);
     if (ft_lst_elem(l->list, 0))
         l->dir = opendir(ft_lst_elem(l->list, 0)->str);
-	if (ft_add_var(l) == 1)
-		return (1);
     l->in = dup(STDIN_FILENO);
     l->out = dup(STDOUT_FILENO);
     ft_pipe_presence(l);
@@ -106,12 +104,10 @@ int    main(int ac, char **av, char **envp)
     printf("\033[1;32mWelcome to minishell\033[0m\n");
     while (l->stop_main)
     {
-        if (init(l) == 0)
-		{
-        	ft_big_execute(l);
-       		ft_free_all(l);
-		}
-    }
+        init(l);
+		ft_big_execute(l);
+		ft_free_all(l);
+	}
     rl_clear_history();
     return (0);
 }

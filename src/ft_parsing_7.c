@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 14:53:42 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/26 17:24:53 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:38:04 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	ft_print(char *str, int len)
 void	ft_add_to_env(t_params *tmp, t_data *l)
 {
 	t_var	*new;
+	t_var	*tmp_var;
 
 	new = malloc(sizeof(t_var));
 	if (!new)
@@ -36,15 +37,20 @@ void	ft_add_to_env(t_params *tmp, t_data *l)
 	new->var = ft_substr(tmp->str, 0, ft_strlen(tmp->str));
 	new->next = NULL;
 	if (l->var)
-		ft_lstlast(l->var)->next = new;
+	{
+		tmp_var = l->var;
+		while (tmp_var->next)
+			tmp_var = tmp_var->next;
+		tmp_var->next = new;
+	}
 	else
 		l->var = new;
 }
 
 int	ft_verif_node(t_params *tmp, t_data *l)
 {
-	int	i;
-	int	b;
+	size_t	i;
+	int		b;
 
 	i = 0;
 	b = 0;
@@ -52,7 +58,7 @@ int	ft_verif_node(t_params *tmp, t_data *l)
 	{
 		while (((tmp->str[i] <= 'z' && tmp->str[i] >= 'a')
 			|| (tmp->str[i] <= 'Z' && tmp->str[i] >= 'A')
-			|| tmp->str == '='))
+			|| tmp->str[i] == '='))
 			i++;
 		if (tmp->str[i] == '=')
 			b++;
@@ -101,6 +107,7 @@ int	ft_add_var(t_data *l)
 {
 	t_params	*tmp;
 
+	printf("her\n");
 	tmp = l->list;
 	while (tmp)
 	{
