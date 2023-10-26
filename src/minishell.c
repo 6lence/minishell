@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:13:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/26 11:36:07 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:26:21 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int    ft_access_verif(t_data *l, t_params *tmp)
 
 int    ft_big_execute(t_data *l)
 {
+    t_params    *tmp;
+
     if (l->pipe == 1)
     {
         ft_pipe(l);
@@ -56,6 +58,12 @@ int    ft_big_execute(t_data *l)
     else
     {
         l->pos = 0;
+        tmp = l->list;
+        while (tmp)
+        {
+            ft_look_in_out_put(l->list, l);
+            tmp = tmp->next;
+        }
         execute_command(l, l->list);
     }
     return (0);
@@ -73,6 +81,8 @@ int    init(t_data *l)
         return (0);
     if (ft_lst_elem(l->list, 0))
         l->dir = opendir(ft_lst_elem(l->list, 0)->str);
+	if (ft_add_var(l) == 1)
+		return (1);
     l->in = dup(STDIN_FILENO);
     l->out = dup(STDOUT_FILENO);
     ft_pipe_presence(l);
@@ -92,12 +102,15 @@ int    main(int ac, char **av, char **envp)
     l = ft_calloc(sizeof(t_data), 1);
     l->envp = envp;
     l->stop_main = 1;
+	l->var = ft_calloc(1, sizeof(t_var));
     printf("\033[1;32mWelcome to minishell\033[0m\n");
     while (l->stop_main)
     {
-        init(l);
-        ft_big_execute(l);
-        ft_free_all(l);
+        if (init(l) == 0)
+		{
+        	ft_big_execute(l);
+       		ft_free_all(l);
+		}
     }
     rl_clear_history();
     return (0);
