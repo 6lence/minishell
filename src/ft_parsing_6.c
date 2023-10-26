@@ -3,77 +3,89 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_6.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 14:16:10 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/25 11:13:13 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/26 11:27:33 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-void	ft_in_out_put(t_data *l)
+void    ft_input_more(t_params *tmp, int ct, t_data *l)
 {
-	
+    char    *str;
+
+    if (ct == 1)
+        l->tmp_file = open(tmp->str, O_RDONLY, 0644);
+    else if (ct == 2)
+    {
+        tmp = tmp->next;
+        printf("heredoc> ");
+        str = get_next_line(0);
+        while (str && ft_strcmp(str, tmp->str) != 0)
+        {
+            printf("heredoc> ");
+            ft_putstr_fd(str, l->tmp_file);
+            free(str);
+            str = get_next_line(0);
+        }
+        if (str)
+            free(str);
+    }
 }
 
-void	ft_look_in_out_put(t_data *l)
+void    ft_input(t_params *list, t_data *l)
 {
-	char		*c;
-	char		*cc;
-	char		*c2;
-	char		*c22;
-	t_params	*tmp;
+    int            ct;
+    t_params    *tmp;
 
-	c = "<";
-	cc = "<<";
-	c2 = ">";
-	c22 = ">>";
-	tmp = l->list;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->str, c) == 0 || ft_strcmp(tmp->str, cc) == 0
-			|| ft_strcmp(tmp->str, c2) == 0 || ft_strcmp(tmp->str, c22) == 0)
-			ft_in_out_put(l);
-		tmp = tmp->next;
-	}
-}
-*/
-char	*ft_find_in_env(char *var, t_data *l)
-{
-	int		i;
-	char	*line;
-
-	i = 0;
-	while (l->envp[i])
-	{
-		line = ft_pathcmp(l->envp[i], var);
-		if (line != NULL)
-			break ;
-		i++;
-	}
-	return (line);
+    ct = 0;
+    tmp = list;
+    if (ft_strcmp(tmp->str, "<") == 0)
+    {
+        ct = 1;
+        tmp = tmp->next;
+        while (!(ft_strcmp(tmp->next->str, "<") == 0
+                || ft_strcmp(tmp->next->str, "<<") == 0
+                || ft_strcmp(tmp->next->str, ">") == 0
+                || ft_strcmp(tmp->next->str, ">>") == 0
+                || ft_strcmp(tmp->next->str, "|") == 0))
+            tmp = tmp->next;
+    }
+    else if (ft_stcmp(tmp->str, "<<") == 0)
+        ct = 2;
+    else
+    {
+        l->tmp_file = l->in;
+        return ;
+    }
+    ft_input_more(tmp, ct, l);
 }
 
-char	*ft_find_var(t_params *list, t_data *l)
+void    ft_output(t_params *list, t_data *l)
 {
-	int		len;
-	int		i;
-	int		ct;
-	char	*var;
-	char	*var_in_env;
+    t_params    *tmp;
+    int            ct;
 
-	i = 0;
-	while (list->str[i] != '$')
-		i++;
-	ct = 1;
-	while (list->str[i + ct] != ' ' && list->str[i + ct] != 34
-		&& (list->str[i + ct] < 7 || list->str[i + ct] > 13))
-		ct++;
-	var = ft_substr(list->str, i + 1, ct - 1);
-	var_in_env = ft_find_in_env(var, l);
-	len = ft_strlen(var) + 1;
-	free(var);
-	var = ft_substr(var_in_env, len, ft_strlen(var_in_env) - len);
-	return (var);
+    tmp = list;
+    ct = 0;
+    if (ft_strcmp(tmp->str, ">") == 0)
+    {
+        ct = 1;
+        tmp = tmp->next;
+    }
+    else if (ft_strcmp(tmp->str, ">>") == 0)
+    {
+        
+    }
+}
+
+void    ft_look_in_out_put(t_params *tmp, t_data *l)
+{
+    if (ft_strcmp(tmp->str, "<") == 0
+        || ft_strmp(tmp->str, "<< ") == 0)
+        ft_input(tmp, l);
+    else if (ft_strcmp(tmp->str, ">")
+        || ft_strcmp(tmp->str, ">>"))
+        ft_output(tmp, l);
 }
