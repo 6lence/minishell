@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:14:04 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/25 12:45:36 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/10/27 11:08:30 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,10 @@ int	ft_exit(t_data *l)
 		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-
 	if (arg_count > 1)
 	{
 		arguments = arguments->next; // Skipping the command name ('exit')
 		exit_code = ft_atoi(arguments->str);
-
 		if (exit_code == 0 && ft_strcmp(arguments->str, "0") != 0)
 		{
 			// Handle invalid argument
