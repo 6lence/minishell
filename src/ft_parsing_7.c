@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_7.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 14:53:42 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/27 12:06:04 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/30 11:23:18 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,6 @@ int	ft_add_var(t_data *l)
 				ct = 1;
 		tmp = tmp->next;
 	}
+	printf("%d\n", ct);
 	return (ct);
 }
