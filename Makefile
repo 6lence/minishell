@@ -23,7 +23,8 @@ SRC_FILES :=	minishell.c \
 				ft_export.c \
 				ft_pwd.c \
 				ft_unset.c \
-				execute_priorities.c
+				execute_priorities.c \
+				ft_childs.c
 
 OBJ_DIR := ./obj
 EXECUTABLE := minishell

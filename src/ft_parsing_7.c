@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 14:53:42 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/30 11:23:18 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/30 15:12:23 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	ft_add_var(t_data *l)
 	t_params	*tmp;
 	int			ct;
 
-	printf("her\n");
 	tmp = l->list;
 	ct = 0;
 	while (tmp)
@@ -68,6 +67,5 @@ int	ft_add_var(t_data *l)
 				ct = 1;
 		tmp = tmp->next;
 	}
-	printf("%d\n", ct);
 	return (ct);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/27 11:47:10 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/31 17:20:05 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,25 @@ int	ft_big_execute(t_data *l)
 	t_params	*tmp;
 
 	if (l->pipe == 1)
-	{
+    {
 		ft_pipe(l);
-		dup2(l->in, 0);
-		dup2(l->out, 1);
-	}
+        dup2(l->in, 0);
+        dup2(l->out, 1);
+
+    }
 	else
 	{
 		l->pos = 0;
 		tmp = l->list;
 		while (tmp)
 		{
-			ft_look_in_out_put(l->list, l);
-			tmp = tmp->next;
+            if (ft_operator_cmp(tmp))
+                tmp = tmp->next;
+			ft_look_in_out_put(tmp, l);
+		    execute_command(l, tmp);
+            while (tmp && !ft_operator_cmp(tmp))
+                tmp = tmp->next;
 		}
-		execute_command(l, l->list);
 	}
 	return (0);
 }
@@ -81,9 +85,9 @@ int	init(t_data *l)
 		return (0);
 	if (ft_lst_elem(l->list, 0))
 		l->dir = opendir(ft_lst_elem(l->list, 0)->str);
-	l->in = dup(STDIN_FILENO);
-	l->out = dup(STDOUT_FILENO);
 	ft_pipe_presence(l);
+	l->child_pid = ft_calloc(l->pipe_nb + 1, sizeof(int));
+	l->child_pos = 0;
 	return (0);
 }
 
@@ -100,14 +104,18 @@ int	main(int ac, char **av, char **envp)
 	l = ft_calloc(sizeof(t_data), 1);
 	l->envp = envp;
 	l->stop_main = 1;
+	l->in = dup(STDIN_FILENO);
+	l->out = dup(STDOUT_FILENO);
 	printf("\033[1;32mWelcome to minishell\033[0m\n");
 	while (l->stop_main)
 	{
 		init(l);
-		if (!ft_add_var(l))
+		if (ft_add_var(l) == 0)
 			ft_big_execute(l);
+		ft_childs(l);
 		ft_free_all(l);
 	}
 	rl_clear_history();
+	free(l);
 	return (0);
 }

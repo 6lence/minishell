@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_6.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:27:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/27 11:22:43 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/31 11:40:26 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	ft_input(t_params *list, t_data *l)
 	int			ct;
 	t_params	*tmp;
 
+	printf("input\n");
 	ct = 0;
 	tmp = list;
 	if (ft_strcmp(tmp->str, "<") == 0)
@@ -68,6 +69,7 @@ void	ft_output(t_params *list, t_data *l)
 	t_params	*tmp;
 	int			ct;
 
+	printf("output\n");
 	tmp = list;
 	ct = 0;
 	if (ft_strcmp(tmp->str, ">") == 0)
@@ -83,8 +85,8 @@ void	ft_look_in_out_put(t_params *tmp, t_data *l)
 	if (ft_strcmp(tmp->str, "<") == 0
 		|| ft_strcmp(tmp->str, "<< ") == 0)
 		ft_input(tmp, l);
-	else if (ft_strcmp(tmp->str, ">")
-		|| ft_strcmp(tmp->str, ">>"))
+	else if (ft_strcmp(tmp->str, ">") == 0
+		|| ft_strcmp(tmp->str, ">>") == 0)
 		ft_output(tmp, l);
 	else
 	{

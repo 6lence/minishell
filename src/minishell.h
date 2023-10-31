@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/27 12:08:47 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/31 17:19:40 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_data
 	int			exit_code;
 	int			tmp_in;
 	int			tmp_out;
+	int			*child_pid;
+	int			child_pos;
 	int			new_fd[2];
 	int			old_fd[2];
 	t_params	*list;
@@ -98,7 +100,7 @@ void		ft_parsing(t_data *l);
 /* parsing_2 */
 char		**ft_search_path(char *str, t_data *l);
 char		*ft_pathcmp(char *str, char *path);
-int			ft_look_pipe(t_params *tmp, t_data *l);
+int			ft_look_pipe(t_params **tmp, t_data *l);
 int			ft_args(t_params *l);
 
 /* parsing_3 */
@@ -176,6 +178,9 @@ t_params	*ft_lst_elem(t_params *l, int pos);
 /* lstutils_2 */
 int			ft_lstsize(t_params *l);
 t_params	*ft_list_elem(t_params *l, int pos);
+
+/*  childs  */
+void		ft_childs(t_data *l);
 
 /* errors */
 int			ft_direrror(t_data *l);

@@ -1,41 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_execute_pipe.c                                  :+:      :+:    :+:   */
+/*   ft_childs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 10:07:45 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/31 17:19:04 by mescobar         ###   ########.fr       */
+/*   Created: 2023/10/31 17:03:16 by mescobar          #+#    #+#             */
+/*   Updated: 2023/10/31 17:24:03 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_pipe(t_data *l)
+void	ft_childs(t_data *l)
 {
-	int 		last;
-	t_params 	*tmp;
-	int 		i;
+	int	i;
+	int	status;
 
-	l->pos = 0;
-	tmp = l->list;
-	last = ft_lstlast(l->list)->pos;
 	i = 0;
-	l->tmp_in = l->in;
-	l->tmp_out = l->out;
-	while (l->pos < last && tmp)
+	while (l->child_pid[i])
+		waitpid(l->child_pid[i++], &status, 0);
+	if (l->pipe_nb && (dup2(l->new_fd[0], 0) == -1 ||
+			close(l->new_fd[0]) || close(l->new_fd[1]) == -1))
 	{
-		ft_look_in_out_put(tmp, l);
-		if (ft_look_pipe(&tmp, l) == 0)
-		{
-			execute_command(l, tmp);
-			while (tmp && !(ft_strcmp(tmp->str, "|") == 0))
-			{
-				l->pos++;
-				tmp = tmp->next;
-			}
-			i++;
-		}
-	}
+        perror("fork");
+        exit(EXIT_FAILURE);
+    }
 }

@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/26 14:36:17 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/31 14:31:12 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ void    ft_parsing(t_data *l)
 {
     l->params_split = ft_calloc(ft_words(l) + 1, sizeof(char *));
     ft_fill_split(l);
-    if (l->params)
-        free(l->params);
     ft_chained_args(l);
     ft_look_dollar(l);
 }

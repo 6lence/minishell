@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/26 11:32:01 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/31 17:24:43 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**ft_arguments(t_params *l)
 
 	tmp = l;
 	i = 0;
-	while (tmp && tmp->str[0] != '|')
+	while (tmp && !ft_operator_cmp(tmp))
 	{
 		i++;
 		tmp = tmp->next;
@@ -59,53 +59,44 @@ void execute_command(t_data *l, t_params *tmp)
     char	**args;
 	pid_t	child_pid;
 
-	t_params *current = tmp;
-    
-    // Assign operators to each node
-    while (current != NULL)
-    {
-        assign_operator(current);
-        current = current->next;
-    }
-
-    // Check if the command contains logical operators
-    if (contains_logical_operators(tmp)) // You need to implement this function
-    {
-        printf("Logical operators found, executing priorities.\n"); // DEBUG: Indicate entering the priorities block
-		int status = ft_execute_priorities(tmp);
-		printf("Finished executing priorities.\n"); // DEBUG: Indicate finished executing priorities
-        if (status != 0)
-        {
-            fprintf(stderr, "Command execution failed with status %d\n", status); //change later fprintf!!!!!!
-        }
-        return;
-    }
     if (is_builtin(tmp->str))
     {
         execute_builtin(l, tmp); // Execute the built-in command directly
         return; // Return after executing the built-in command
     }
+	if (l->pipe_nb && pipe(l->new_fd) == -1)
+	{
+        perror("fork");
+        exit(EXIT_FAILURE);
+    }	
     child_pid = fork();
+	l->child_pid[l->child_pos++] = child_pid;
     if (child_pid == -1)
     {
         perror("fork");
         exit(EXIT_FAILURE);
     }
-
     if (child_pid == 0)
     {
+		if (l->pipe_nb && (dup2(l->new_fd[1], 1) == -1 ||
+			close(l->new_fd[0]) == -1 || close(l->new_fd[1]) == -1)) 
+		{
+        	perror("fork");
+        	exit(EXIT_FAILURE);
+    	}
         if (ft_access_verif(l, tmp) < 0 && tmp->str != NULL)
         {
-            dup2(l->out, 1);
+            dup2(l->tmp_out, l->out);
             printf("Command '%s' not found.\n", tmp->str);
             return;
         }
         args = ft_arguments(tmp); // Convert linked list to array of arguments
 		dup2(l->tmp_in, l->in);
 		dup2(l->tmp_out, l->out);
+		close(l->tmp_in);
+		close(l->tmp_out);
         execve(l->path, args, l->envp); // Execute the external command
     }
-    wait(NULL); // Wait for the child process to finish
 }
 
 /*

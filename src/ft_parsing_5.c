@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 13:21:41 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/24 10:51:35 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/10/31 14:36:36 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,18 @@
 int	ft_verif(char *s)
 {
 	int	i;
+	int	ct;
 
 	i = 0;
 	while (s[i])
 	{
+		ct = 0;
 		if (s[i] == 34)
 		{
 			i++;
-			while (s[i] != 34)
+			if (s[i] == 39)
+				ct++;
+			while (s[i] != 34 && ct == 0)
 			{
 				if (s[i] == '$')
 					return (1);
