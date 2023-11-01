@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execute_pipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:07:45 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/31 17:19:04 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/01 12:00:29 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void ft_pipe(t_data *l)
 		ft_look_in_out_put(tmp, l);
 		if (ft_look_pipe(&tmp, l) == 0)
 		{
+			dprintf(2, "%s\n", tmp->str);
 			execute_command(l, tmp);
 			while (tmp && !(ft_strcmp(tmp->str, "|") == 0))
 			{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/31 17:19:40 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:43:53 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,20 @@
 
 typedef struct s_params
 {
-	struct s_params	*prev;
-	char			*str;
-	int				pos;
-	struct s_params	*next;
-	char			*cmd;
-    char			**args;
-	int				operator;
-}					t_params;
+	struct s_params		*prev;
+	char				*str;
+	int					pos;
+	struct s_params		*next;
+	char				*cmd;
+	int					operator;
+    char				**args;
+}						t_params;
 
-typedef	struct	s_var
+typedef struct s_var
 {
 	char			*var;
 	struct s_var	*next;
-}				t_var;
+}					t_var;
 
 typedef struct s_signal
 {
@@ -87,7 +87,7 @@ typedef struct s_data
 /* minishell */
 void		show_parameters(const char *parameters);
 void		ft_pipe(t_data *l);
-int			ft_access_verif(t_data *l, t_params *tmp);
+char		*ft_access_verif(t_data *l, t_params *tmp);
 
 /* parsing_1 */
 void		get_command_arguments(const char *input,
@@ -123,10 +123,14 @@ int			ft_add_var(t_data *l);
 /*  parsing_8 */
 void		ft_verif_tmp_var(t_params *tmp, t_data *l, int i, int b);
 
-/* builtin */
+/* utils */
 int			is_builtin(char *command);
 int			execute_builtin(t_data *l, t_params *tmp);
 char		**linked_list_to_array(t_params *tmp);
+
+/* utils_2 */
+char		**ft_absolute_path(t_data *l);
+char		**ft_arguments(t_params *params);
 
 /* ft_cd */
 void		print_env_variables(char **envp);

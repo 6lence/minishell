@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/31 17:24:43 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/01 14:03:53 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 int	ft_pipe_here(char *str)
 {
@@ -26,77 +26,33 @@ int	ft_pipe_here(char *str)
 	return (0);
 }
 
-char	**ft_arguments(t_params *l)
+void	ft_child(t_data *l, t_params *tmp)
 {
-	t_params	*tmp;
-	char		**res;
-	int			i;
-	int			pos;
+	char	**args;
 
-	tmp = l;
-	i = 0;
-	while (tmp && !ft_operator_cmp(tmp))
+	l->path = ft_access_verif(l, tmp);
+	args = ft_arguments(tmp);
+	if (l->path)
 	{
-		i++;
-		tmp = tmp->next;
+		if (dup2(l->tmp_in, l->in) == -1 || dup2(l->tmp_out, l->out) == -1
+			|| close(l->tmp_in) == -1 || close(l->tmp_out) == -1)
+		{
+			perror("error: fatal\n");
+			return ;
+		}
+		execve(l->path, args, l->envp);
 	}
-	res = ft_calloc(i + 1, sizeof(char *));
-	pos = i;
-	tmp = ft_lst_elem(l, 0);
-	i = 0;
-	while (i < pos && tmp)
-	{
-		res[i++] = ft_strdup(tmp->str);
-		tmp = tmp->next;
-	}
-	l->pos += pos;
-	res[i] = NULL;
-	return (res);
+	printf("Command %s: not found\n", tmp->str);
 }
 
-void execute_command(t_data *l, t_params *tmp)
+void	execute_command(t_data *l, t_params *tmp)
 {
-    char	**args;
 	pid_t	child_pid;
 
-    if (is_builtin(tmp->str))
-    {
-        execute_builtin(l, tmp); // Execute the built-in command directly
-        return; // Return after executing the built-in command
-    }
-	if (l->pipe_nb && pipe(l->new_fd) == -1)
-	{
-        perror("fork");
-        exit(EXIT_FAILURE);
-    }	
-    child_pid = fork();
+	child_pid = fork();
 	l->child_pid[l->child_pos++] = child_pid;
-    if (child_pid == -1)
-    {
-        perror("fork");
-        exit(EXIT_FAILURE);
-    }
-    if (child_pid == 0)
-    {
-		if (l->pipe_nb && (dup2(l->new_fd[1], 1) == -1 ||
-			close(l->new_fd[0]) == -1 || close(l->new_fd[1]) == -1)) 
-		{
-        	perror("fork");
-        	exit(EXIT_FAILURE);
-    	}
-        if (ft_access_verif(l, tmp) < 0 && tmp->str != NULL)
-        {
-            dup2(l->tmp_out, l->out);
-            printf("Command '%s' not found.\n", tmp->str);
-            return;
-        }
-        args = ft_arguments(tmp); // Convert linked list to array of arguments
-		dup2(l->tmp_in, l->in);
-		dup2(l->tmp_out, l->out);
-		close(l->tmp_in);
-		close(l->tmp_out);
-        execve(l->path, args, l->envp); // Execute the external command
-    }
+	if (!child_pid)
+		ft_child(l, tmp);
 }
 
 /*

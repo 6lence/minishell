@@ -3,71 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/31 17:20:05 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:39:19 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_access_verif(t_data *l, t_params *tmp)
-{
-	int		k;
-	int		j;
-	char	**path;
-	char	*join;
-	char	*command;
-
-	path = ft_search_path("PATH", l);
-	l->path = NULL;
-	command = ft_strjoin("/", tmp->str);
-	j = 0;
-	k = -1;
-	while (path[j])
-	{
-		join = ft_strjoin(path[j], command);
-		if (access(join, 0) == 0)
-		{
-			l->path = ft_strjoin(path[j], command);
-			k = j;
-		}
-		free(join);
-		if (j != k)
-			free(path[j]);
-		j++;
-	}
-	if (path)
-		free(path);
-	if (command)
-		free(command);
-	return (k);
-}
 
 int	ft_big_execute(t_data *l)
 {
 	t_params	*tmp;
 
 	if (l->pipe == 1)
-    {
+	{
 		ft_pipe(l);
-        dup2(l->in, 0);
-        dup2(l->out, 1);
-
-    }
+		dup2(l->in, 0);
+		dup2(l->out, 1);
+	}
 	else
 	{
 		l->pos = 0;
 		tmp = l->list;
 		while (tmp)
 		{
-            if (ft_operator_cmp(tmp))
-                tmp = tmp->next;
+			if (ft_operator_cmp(tmp))
+				tmp = tmp->next;
 			ft_look_in_out_put(tmp, l);
-		    execute_command(l, tmp);
-            while (tmp && !ft_operator_cmp(tmp))
-                tmp = tmp->next;
+			execute_command(l, tmp);
+			while (tmp && !ft_operator_cmp(tmp))
+				tmp = tmp->next;
 		}
 	}
 	return (0);
