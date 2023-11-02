@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/01 13:43:53 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/02 07:20:55 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int			ft_add_var(t_data *l);
 
 /*  parsing_8 */
 void		ft_verif_tmp_var(t_params *tmp, t_data *l, int i, int b);
+int			ft_only_spaces(char *str);
 
 /* utils */
 int			is_builtin(char *command);

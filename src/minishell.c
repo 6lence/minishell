@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/01 13:39:19 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/02 07:21:36 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_big_execute(t_data *l)
 int	init(t_data *l)
 {
 	l->params = readline("minishell-> ");
-	if (!l->params)
+	if (!l->params || ft_only_spaces(l->params))
 		return (1);
 	add_history(l->params);
 	ft_parsing(l);
@@ -75,11 +75,13 @@ int	main(int ac, char **av, char **envp)
 	printf("\033[1;32mWelcome to minishell\033[0m\n");
 	while (l->stop_main)
 	{
-		init(l);
-		if (ft_add_var(l) == 0)
-			ft_big_execute(l);
-		ft_childs(l);
-		ft_free_all(l);
+		if (init(l) == 0)
+		{
+			if (ft_add_var(l) == 0)
+				ft_big_execute(l);
+			ft_childs(l);
+			ft_free_all(l);
+		}
 	}
 	rl_clear_history();
 	free(l);

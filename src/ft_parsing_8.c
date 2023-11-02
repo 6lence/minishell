@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_8.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 11:48:40 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/27 12:05:30 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/02 07:20:37 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,17 @@ void	ft_verif_tmp_var(t_params *tmp, t_data *l, int i, int b)
 	if (!(!tmp->str[k + 1] || (size_t)i != ft_strlen(tmp->str) || b > 2))
 		ft_add_to_vars(tmp, l);
 	ft_print(tmp->str, i);
+}
+
+int	ft_only_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	while ((str[i] < 14 && str[i] > 6) 
+			|| str[i] == ' ' || str[i] == '\n')
+		i++;
+	if (i == (int)ft_strlen(str))
+		return (1);
+	return (0);
 }
