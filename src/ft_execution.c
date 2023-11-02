@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils.c                                         :+:      :+:    :+:   */
+/*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/01 14:03:53 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/02 10:36:15 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,25 @@ int	ft_pipe_here(char *str)
 	return (0);
 }
 
+void	ft_in_out(t_data *l, pid_t child_pid)
+{
+	if (!child_pid)
+	{
+		if (l->pipe_nb >= 1)
+		{
+			dup2(l->old_fd[1], 1);
+			close(l->old_fd[1]);
+			close(l->old_fd[0]);
+		}
+		else
+		{
+			dup2(l->tmp_out, 1);
+			close(l->old_fd[1]);
+			close(l->old_fd[0]);
+		}
+	}
+}
+
 void	ft_child(t_data *l, t_params *tmp)
 {
 	char	**args;
@@ -33,15 +52,7 @@ void	ft_child(t_data *l, t_params *tmp)
 	l->path = ft_access_verif(l, tmp);
 	args = ft_arguments(tmp);
 	if (l->path)
-	{
-		if (dup2(l->tmp_in, l->in) == -1 || dup2(l->tmp_out, l->out) == -1
-			|| close(l->tmp_in) == -1 || close(l->tmp_out) == -1)
-		{
-			perror("error: fatal\n");
-			return ;
-		}
 		execve(l->path, args, l->envp);
-	}
 	printf("Command %s: not found\n", tmp->str);
 }
 
@@ -49,10 +60,24 @@ void	execute_command(t_data *l, t_params *tmp)
 {
 	pid_t	child_pid;
 
+
+	if (pipe(l->old_fd) < 0)
+		return (perror("error: fatal\n"));
 	child_pid = fork();
-	l->child_pid[l->child_pos++] = child_pid;
+	ft_in_out(l, child_pid);
 	if (!child_pid)
 		ft_child(l, tmp);
+	else
+	{
+		l->child_pid[l->child_pos++] = child_pid;
+		if (l->pipe_nb >= 1)
+			dup2(l->old_fd[0], 0);
+		else
+			dup2(l->tmp_in, 0);
+		close(l->old_fd[0]);
+		close(l->old_fd[1]);
+		l->pipe_nb--;
+	}
 }
 
 /*

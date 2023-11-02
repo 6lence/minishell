@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/02 07:21:36 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/02 10:14:07 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@ int	ft_big_execute(t_data *l)
 	t_params	*tmp;
 
 	if (l->pipe == 1)
-	{
 		ft_pipe(l);
-		dup2(l->in, 0);
-		dup2(l->out, 1);
-	}
 	else
 	{
 		l->pos = 0;

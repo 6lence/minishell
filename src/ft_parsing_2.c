@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:29:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/31 12:06:12 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/02 10:36:44 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char    *ft_find_var(t_params *list, t_data *l)
 
 int    ft_look_pipe(t_params **tmp, t_data *l)
 {
-    if (ft_strcmp((*tmp)->str, "|") == 0)
+    if (tmp && ft_strcmp((*tmp)->str, "|") == 0)
     {
         l->pos++;
         (*tmp) = (*tmp)->next;

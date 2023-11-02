@@ -13,8 +13,8 @@ SRC_FILES :=	minishell.c \
 				ft_lstutils.c \
 				ft_listutils_2.c \
 				ft_execute_pipe.c \
-				ft_utils.c \
-				ft_utils_2.c \
+				ft_execution.c \
+				ft_execution_2.c \
 				ft_free.c \
 				builtin.c \
 				ft_cd.c \
