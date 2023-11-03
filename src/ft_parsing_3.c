@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:01:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/26 11:46:51 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/03 01:58:38 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ int	ft_words(t_data *l)
 	while (l->params[i])
 	{
 		while (l->params[i] && (l->params[i] < 7 
-				|| l->params[i] > 13)
-				&& l->params[i] != ' ')
+				|| l->params[i] > 13) && l->params[i] != ' ')
 		{
 			if (l->params[i] == 34)
 				ft_quotes(l, &i, 34);
@@ -40,8 +39,7 @@ int	ft_words(t_data *l)
 		}
 		words++;
 		while (l->params[i] && !((l->params[i] < 7 
-				|| l->params[i] > 13) &&
-				l->params[i] != ' '))
+					|| l->params[i] > 13) && l->params[i] != ' '))
 			i++;
 	}
 	return (words);

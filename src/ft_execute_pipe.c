@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execute_pipe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:07:45 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/02 10:36:31 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/03 01:57:51 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_pipe(t_data *l)
+void	ft_pipe(t_data *l)
 {
-	t_params 	*tmp;
+	t_params	*tmp;
 
 	l->pos = 0;
 	tmp = l->list;
