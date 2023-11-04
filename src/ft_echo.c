@@ -6,10 +6,9 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:10:15 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/03 01:57:48 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/04 11:41:11 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -52,6 +51,31 @@ int	ft_operator_cmp_args(char *str)
 	return (0);
 }
 
+void	ft_print_argument(char *str, t_data *l)
+{
+	int	i;
+
+	(void)*l;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == 39)
+		{
+			i++;
+			while (str[i] && str[i] != 39)
+				printf("%c", str[i++]);
+		}
+		else if (str[i] == 34)
+		{
+			i++;
+			while (str[i] && str[i] != 34)
+				printf("%c", str[i++]);
+		}
+		else
+			printf("%c", str[i++]);
+	}
+}
+
 int	ft_echo(t_data *l)
 {
 	int	newline;
@@ -66,12 +90,12 @@ int	ft_echo(t_data *l)
 	newline = (i == 0 || ft_strcmp(l->arguments[0], "-n") != 0);
 	while (l->arguments[i] && !ft_operator_cmp_args(l->arguments[i]))
 	{
-		write(STDOUT_FILENO, l->arguments[i], ft_strlen(l->arguments[i]));
+		ft_print_argument(l->arguments[i], l);
 		if (l->arguments[i + 1] != NULL)
-			write(STDOUT_FILENO, " ", 1);
+			printf(" ");
 		i++;
 	}
 	if (newline)
-		write(STDOUT_FILENO, "\n", 1);
+		printf("\n");
 	return (0);
 }

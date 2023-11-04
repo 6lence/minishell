@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/03 02:34:48 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/04 11:47:57 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,12 @@ int	main(int ac, char **av, char **envp)
 	printf("\033[1;32mWelcome to minishell\033[0m\n");
 	while (l->stop_main)
 	{
-		if (init(l) == 0)
-		{
-			if (ft_add_var(l) == 0)
-				ft_big_execute(l);
-			ft_childs(l);
-			ft_free_all(l);
-		}
+		if (init(l) != 0)
+			continue ;
+		if (ft_add_var(l) == 0)
+			ft_big_execute(l);
+		ft_childs(l);
+		ft_free_all(l);
 	}
 	rl_clear_history();
 	free(l);

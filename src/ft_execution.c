@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/03 02:34:04 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/04 11:34:15 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,11 @@ void	ft_in_out(t_data *l, pid_t child_pid)
 	if (!child_pid)
 	{
 		if (l->pipe_nb >= 1)
-		{
 			dup2(l->old_fd[1], 1);
-			close(l->old_fd[1]);
-			close(l->old_fd[0]);
-		}
 		else
-		{
 			dup2(l->tmp_out, 1);
-			close(l->old_fd[1]);
-			close(l->old_fd[0]);
-		}
+		close(l->old_fd[1]);
+		close(l->old_fd[0]);
 	}
 }
 
