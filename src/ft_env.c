@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 10:38:07 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/25 12:44:50 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/05 16:30:33 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,14 @@ int	ft_env(t_data *l)
 	index = 0;
 	if (l == NULL || l->envp == NULL)
 	{
-		write(STDERR_FILENO, "Error: data or data->envp is NULL\n", 35);
+		printf("Error: data or data->envp is NULL\n");
 		return (-1);
 	}
-    // Print all environment variables
 	while (l->envp[index] != NULL)
 	{
 		env_variable = l->envp[index];
 		if (env_variable != NULL && ft_strchr(env_variable, '='))
-		{
 			printf("%s\n", env_variable);
-		}
 		index++;
 	}
 	return (0);

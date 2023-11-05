@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_6.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:27:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/31 11:40:26 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/05 16:46:14 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,22 @@ void	ft_output(t_params *list, t_data *l)
 
 void	ft_look_in_out_put(t_params *tmp, t_data *l)
 {
-	if (ft_strcmp(tmp->str, "<") == 0
-		|| ft_strcmp(tmp->str, "<< ") == 0)
-		ft_input(tmp, l);
-	else if (ft_strcmp(tmp->str, ">") == 0
-		|| ft_strcmp(tmp->str, ">>") == 0)
-		ft_output(tmp, l);
-	else
+	t_params	*copy;
+
+	copy = tmp;
+	while (copy && !ft_operator_cmp(copy))
 	{
-		l->tmp_in = l->in;
-		l->tmp_out = l->out;
+		if (ft_strcmp(tmp->str, "<") == 0
+			|| ft_strcmp(tmp->str, "<< ") == 0)
+			ft_input(tmp, l);
+		else if (ft_strcmp(tmp->str, ">") == 0
+			|| ft_strcmp(tmp->str, ">>") == 0)
+			ft_output(tmp, l);
+		else
+		{
+			l->tmp_in = l->in;
+			l->tmp_out = l->out;
+		}
+		copy = copy->next;
 	}
 }

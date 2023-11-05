@@ -6,23 +6,11 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/04 12:13:36 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/05 17:44:36 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	print_envp(char **envp)
-{
-	int		i;
-
-	i = 0;
-	while (envp[i])
-	{
-		ft_putendl_fd(envp[i], 1);
-		i++;
-	}
-}
 
 static int	valid_env_name(char *arg)
 {
@@ -108,7 +96,7 @@ int ft_export(t_data *l)
 	// Check if the position is valid before accessing the element
 	if (pos >= ft_lstsize(l->list)) // Assuming ft_lstsize gives the number of elements
 	{
-		print_envp(l->envp); // Print the environment variables if position is out of range
+		ft_print_env(l->envp); // Print the environment variables if position is out of range
 		return (0);
 	}
 	element = ft_list_elem(l->list, pos); // Access element at position pos
@@ -116,7 +104,7 @@ int ft_export(t_data *l)
 	// 1: No arguments passed, just print the environment variables
 	if (!element) 
 	{
-		print_envp(l->envp);
+		ft_print_env(l->envp);
 		return (0);
 	}
 

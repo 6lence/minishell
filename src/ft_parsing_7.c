@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_7.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 14:53:42 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/30 15:12:23 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/05 16:19:48 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int	ft_verif_node(t_params *tmp, t_data *l)
 			while (tmp->str[i] != 34)
 				i++;
 	}
-	ft_verif_tmp_var(tmp, l, i, b);
+	if (tmp->prev == NULL || ft_operator_cmp(tmp->prev))
+		ft_verif_tmp_var(tmp, l, i, b);
 	return (ct);
 }
 

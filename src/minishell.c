@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/04 11:47:57 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/05 16:45:26 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int	ft_big_execute(t_data *l)
 		tmp = l->list;
 		while (tmp)
 		{
+			ft_look_in_out_put(tmp, l);
 			if (ft_operator_cmp(tmp))
 				tmp = tmp->next;
-			ft_look_in_out_put(tmp, l);
 			execute_command(l, tmp);
 			while (tmp && !ft_operator_cmp(tmp))
 				tmp = tmp->next;
@@ -73,8 +73,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		if (init(l) != 0)
 			continue ;
-		if (ft_add_var(l) == 0)
-			ft_big_execute(l);
+		ft_big_execute(l);
 		ft_childs(l);
 		ft_free_all(l);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/02 07:20:55 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/05 17:44:08 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,9 @@ int			ft_exit(t_data *l);
 int			ft_export(t_data *l);
 int			array_length(char **array);
 int			add_or_update_env(t_data *data, char *key, char *value);
+
+/* ft_print_env */
+void		ft_print_env(char **str);
 
 /* pwd */
 char		*ft_pwd(void);

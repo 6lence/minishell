@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_8.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 11:48:40 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/02 07:20:37 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/05 16:17:12 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,8 @@ void	ft_verif_tmp_var(t_params *tmp, t_data *l, int i, int b)
 	k = 0;
 	while (tmp->str[k] != '=')
 		k++;
-	printf("%c\n", tmp->str[k]);
-	printf("strlen: %ld, i: %d\n", ft_strlen(tmp->str), i);
 	if (!(!tmp->str[k + 1] || (size_t)i != ft_strlen(tmp->str) || b > 2))
 		ft_add_to_vars(tmp, l);
-	ft_print(tmp->str, i);
 }
 
 int	ft_only_spaces(char *str)
@@ -68,7 +65,7 @@ int	ft_only_spaces(char *str)
 
 	i = 0;
 	while ((str[i] < 14 && str[i] > 6) 
-			|| str[i] == ' ' || str[i] == '\n')
+		|| str[i] == ' ' || str[i] == '\n')
 		i++;
 	if (i == (int)ft_strlen(str))
 		return (1);
