@@ -22,7 +22,6 @@ SRC_FILES :=	minishell.c \
 				ft_env.c \
 				ft_exit.c \
 				ft_export.c \
-				ft_print_env.c \
 				ft_pwd.c \
 				ft_unset.c \
 				execute_priorities.c \

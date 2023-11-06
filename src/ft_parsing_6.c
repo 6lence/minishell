@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_6.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:27:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/05 16:46:14 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/06 13:42:27 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_input(t_params *list, t_data *l)
 	int			ct;
 	t_params	*tmp;
 
-	printf("input\n");
 	ct = 0;
 	tmp = list;
 	if (ft_strcmp(tmp->str, "<") == 0)
@@ -61,23 +60,19 @@ void	ft_output_more(t_params *tmp, int ct, t_data *l)
 		l->tmp_out = open(tmp->next->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (ct == 2)
 		l->tmp_out = open(tmp->next->str,
-				O_WRONLY | O_APPEND | O_CREAT | O_TRUNC, 0644);
+				O_WRONLY | O_APPEND | O_CREAT, 0644);
 }
 
 void	ft_output(t_params *list, t_data *l)
 {
-	t_params	*tmp;
 	int			ct;
 
-	printf("output\n");
-	tmp = list;
 	ct = 0;
-	if (ft_strcmp(tmp->str, ">") == 0)
+	if (ft_strcmp(list->str, ">") == 0)
 		ct = 1;
-	else if (ft_strcmp(tmp->str, ">>") == 0)
+	else if (ft_strcmp(list->str, ">>") == 0)
 		ct = 2;
-	tmp = tmp->next;
-	ft_output_more(tmp, ct, l);
+	ft_output_more(list, ct, l);
 }
 
 void	ft_look_in_out_put(t_params *tmp, t_data *l)
@@ -85,19 +80,17 @@ void	ft_look_in_out_put(t_params *tmp, t_data *l)
 	t_params	*copy;
 
 	copy = tmp;
-	while (copy && !ft_operator_cmp(copy))
-	{
-		if (ft_strcmp(tmp->str, "<") == 0
-			|| ft_strcmp(tmp->str, "<< ") == 0)
-			ft_input(tmp, l);
-		else if (ft_strcmp(tmp->str, ">") == 0
-			|| ft_strcmp(tmp->str, ">>") == 0)
-			ft_output(tmp, l);
-		else
-		{
-			l->tmp_in = l->in;
-			l->tmp_out = l->out;
-		}
+	while (copy->next && !ft_operator_cmp(copy))
 		copy = copy->next;
+	if (ft_strcmp(copy->str, "<") == 0
+		|| ft_strcmp(copy->str, "<< ") == 0)
+		ft_input(copy, l);
+	else if (ft_strcmp(copy->str, ">") == 0
+		|| ft_strcmp(copy->str, ">>") == 0)
+		ft_output(copy, l);
+	else
+	{
+		l->tmp_in = l->in;
+		l->tmp_out = l->out;
 	}
 }

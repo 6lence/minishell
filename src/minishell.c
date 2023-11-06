@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/06 09:17:10 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/06 13:59:37 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,23 @@ int	init(t_data *l)
 	if (ft_lst_elem(l->list, 0))
 		l->dir = opendir(ft_lst_elem(l->list, 0)->str);
 	ft_pipe_presence(l);
-	l->child_pid = ft_calloc(l->pipe_nb + 1, sizeof(int));
+	l->command_nb = ft_count_command(l);
+	l->child_pid = ft_calloc(, sizeof(int));
 	l->child_pos = 0;
 	return (0);
+}
+
+void	main_loop(t_data *l)
+{
+	printf("\033[1;32mWelcome to minishell\033[0m\n");
+	while (l->stop_main)
+	{
+		if (init(l) != 0)
+			continue ;
+		ft_big_execute(l);
+		ft_childs(l);
+		ft_free_all(l);
+	}
 }
 
 int	main(int ac, char **av, char **envp)
@@ -68,15 +82,7 @@ int	main(int ac, char **av, char **envp)
 	l->stop_main = 1;
 	l->in = dup(STDIN_FILENO);
 	l->out = dup(STDOUT_FILENO);
-	printf("\033[1;32mWelcome to minishell\033[0m\n");
-	while (l->stop_main)
-	{
-		if (init(l) != 0)
-			continue ;
-		ft_big_execute(l);
-		ft_childs(l);
-		ft_free_all(l);
-	}
+	main_loop(l);
 	rl_clear_history();
 	free(l);
 	return (0);

@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/05 17:44:36 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/06 09:30:58 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_print_env(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		printf("%s\n", str[i++]);
+}
 
 static int	valid_env_name(char *arg)
 {
