@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+         #
+#    By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/08 10:13:49 by ashalagi          #+#    #+#              #
-#    Updated: 2023/10/12 09:28:28 by mescobar         ###   ########.fr        #
+#    Updated: 2023/11/06 14:36:45 by ashalagi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRC = ft_isalpha.c \
 	ft_memchr.c \
 	ft_memcmp.c \
 	ft_strnstr.c \
+	ft_strstr.c \
 	ft_atoi.c \
 	ft_calloc.c \
 	ft_strdup.c \

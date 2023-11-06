@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handling_c.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:16:57 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/09 10:20:17 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/06 10:49:55 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,24 @@ void handle_sigint(int sig_num)
     {
         data->sig.stop = 1;
         write(1, "\n", 1);
+        write(1, "$ ", 2);
         // Handle other necessary actions upon SIGINT
-        exit(0);
+        // exit(0);
+    }
+    else if (sig_num == SIGQUIT && data != NULL)
+    {
+        //
+        write(1, "lala\n", 5);
     }
 }
-void signal_ctrl_c(void)
+void signal_ctrl_c(void) //in main
 {
     struct sigaction ctrl_c;
     ctrl_c.sa_handler = handle_sigint;
     ctrl_c.sa_flags = SA_RESTART;
     sigemptyset(&ctrl_c.sa_mask);
     sigaction(SIGINT, &ctrl_c, NULL);
+    sigaction(SIGQUIT, &ctrl_c, NULL);
 }
 void cleanup(void)
 {

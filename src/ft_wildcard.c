@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:27:29 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/31 12:28:07 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/06 14:42:59 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void execute_command_with_wildcards(t_params *commands, char **envp)
 
 int main(void)
 {
-    char *args[] = {"ls", "*.txt", NULL};
+    char *args[] = {"ls src", ".c", NULL};
 
     t_params *commands = new_node("/bin/ls", args);
 

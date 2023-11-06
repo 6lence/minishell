@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/06 09:06:19 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/06 14:27:45 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,53 +19,66 @@
 #define MAX_ARGS 64
 #define MAX_ARG_LENGTH 256
 
-
 t_params *create_temp_command_node(char *cmd_str)
 {
-    t_params *temp = malloc(sizeof(t_params));
-    temp->str = cmd_str;
-    temp->operator = NONE; // Assuming NONE represents a regular command
+    t_params *temp;
+    temp = (t_params *)malloc(sizeof(t_params));
+    temp->str = ft_strdup(cmd_str);
+    temp->operator = NONE;
     temp->next = NULL;
-    
-    char **args = malloc(MAX_ARGS * sizeof(char *));
-    int i = 0, j = 0, len = strlen(cmd_str);
-    char current_arg[MAX_ARG_LENGTH]; // Assuming a maximum argument length
+    temp->cmd = NULL;
+    temp->args = NULL;
 
-    for (int k = 0; k < len; k++)
+    printf("Creating node for: %s\n", cmd_str); // DEBUG
+
+    // Check for logical operators
+    if (ft_strcmp(cmd_str, "&&") == 0)
     {
-        if (cmd_str[k] != ' ' && cmd_str[k] != '\0')
+        temp->operator = AND;
+    }
+    else if (ft_strcmp(cmd_str, "||") == 0)
+    {
+        temp->operator = OR;
+    }
+    else if ((ft_strcmp(cmd_str, "(") == 0)&& (ft_strcmp(cmd_str, ")") == 0))
+    {
+        temp->operator = PAREN;
+    }
+    else // treat as command with arguments
+    {
+        char **args = ft_split(cmd_str, ' ');
+        int i = 0;
+
+        if (args[i] != NULL) // Check if there is at least a command
         {
-            current_arg[j++] = cmd_str[k];
-        }
-        else
-        {
-            if (j > 0) // if there was a previous argument
+            printf("DEBUG: Setting CMD: %s\n", args[i]);
+            temp->cmd = ft_strdup(args[i++]);
+            printf("DEBUG: CMD set in node: %s\n", temp->cmd);
+
+            // Allocate and initialize arguments including the cmd as the first argument
+            temp->args = (char **)malloc(sizeof(char *) * MAX_ARGS);
+            temp->args[0] = ft_strdup(temp->cmd);
+
+            // Copy the rest of the arguments
+            int j = 1;
+            while (args[i] != NULL && j < MAX_ARGS - 1)
             {
-                current_arg[j] = '\0'; // null-terminate the argument
-                args[i] = malloc(j + 1);
-                strcpy(args[i++], current_arg); // save the argument
-                j = 0; // reset for the next argument
+                temp->args[j++] = ft_strdup(args[i++]);
             }
+            temp->args[j] = NULL; // Null terminate the args array
         }
+
+        // Free the memory allocated by ft_split
+        i = 0;
+        while (args[i] != NULL)
+        {
+            free(args[i++]);
+        }
+        free(args);
     }
 
-    if (j > 0) // for the last argument
-    {
-        current_arg[j] = '\0';
-        args[i] = malloc(j + 1);
-        strcpy(args[i++], current_arg);
-    }
-
-    args[i] = NULL; // null-terminate the arguments array
-
-    temp->cmd = args[0]; // the command is the first argument
-    temp->args = args;
-    
     return temp;
 }
-
-
-
 int contains_logical_operators(t_params *tmp)
 {
 //    t_params *current = tmp;
@@ -192,30 +205,33 @@ int ft_execute_priorities(t_params *commands)
         }
         else if (current->operator == AND)
         {
-            if (status == 0)
+            if (status != 0)
             {
-                // If the previous command was successful, execute the next command
-                current = current->next;
-                continue;
+                // If the previous command failed, skip until the next OR or NONE operator
+                while (current != NULL && current->operator == AND)
+                {
+                    current = current->next;
+                }
             }
-            else
+            else // if the previous command succeeded
             {
-                // If the previous command failed, skip the next command
-                current = current->next->next;
+                current = current->next; // skip until the next logical operator
             }
         }
         else if (current->operator == OR)
         {
-            if (status != 0)
+            if (status == 0)
             {
-                // If the previous command failed, execute the next command
-                current = current->next;
-                continue;
+                // If the previous command was successful, skip until the next AND or NONE operator
+                while (current && (!ft_operator_cmp(current) && current->operator != AND))
+                {
+                    current = current->next;
+                }
             }
             else
             {
-                // If the previous command was successful, skip the next command
-                current = current->next->next;
+                // If the previous command failed, proceed to the next command
+                current = current->next;
             }
         }
         else

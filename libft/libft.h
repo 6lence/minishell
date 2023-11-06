@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:14:02 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/13 07:54:45 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/06 14:37:11 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int		ft_atoi(char *str);
 void	*ft_calloc(size_t num, size_t size);
 char	*ft_strdup(const char *src);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strstr(const char *haystack, const char *needle);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *s, char c);

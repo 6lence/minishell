@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:01:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/06 09:33:44 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/06 14:22:10 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	ft_operator_cmp(t_params *tmp)
 		|| ft_strcmp(tmp->str, "<<") == 0
 		|| ft_strcmp(tmp->str, ">") == 0
 		|| ft_strcmp(tmp->str, ">>") == 0
-		|| ft_strcmp(tmp->str, "|") == 0)
+		|| (ft_strcmp(tmp->str, "|") == 0 && !(ft_strcmp(tmp->str, "||") == 0)))
 		return (1);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/06 13:59:37 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/06 14:10:50 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ int	init(t_data *l)
 	if (ft_lst_elem(l->list, 0))
 		l->dir = opendir(ft_lst_elem(l->list, 0)->str);
 	ft_pipe_presence(l);
-	l->command_nb = ft_count_command(l);
-	l->child_pid = ft_calloc(, sizeof(int));
+	l->child_pid = ft_calloc(l->pipe_nb + 1, sizeof(int));
 	l->child_pos = 0;
 	return (0);
 }
