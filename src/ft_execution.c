@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/04 11:34:15 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/06 09:17:12 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,25 @@ void	execute_command(t_data *l, t_params *tmp)
 
 	if (pipe(l->old_fd) < 0)
 		return (perror("error: fatal\n"));
+
+	t_params *current = tmp;
+	while (current != NULL)
+    {
+        assign_operator(current);
+        current = current->next;
+    }
+
+    // Check if the command contains logical operators
+    if (contains_logical_operators(tmp))
+    {
+		int status = ft_execute_priorities(tmp);
+        if (status != 0)
+        {
+            char *status_str = ft_itoa(status);
+            free(status_str); // Free the allocated string
+        }
+        return;
+    }
 	ct = is_builtin(tmp->str);
 	if (ct)
 		return (ft_exec_builtin(l, tmp));

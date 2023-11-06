@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/25 15:05:10 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/06 09:06:19 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,24 +68,24 @@ t_params *create_temp_command_node(char *cmd_str)
 
 int contains_logical_operators(t_params *tmp)
 {
-    t_params *current = tmp;
+//    t_params *current = tmp;
 
     printf("Starting to search for logical operators...\n"); // DEBUG: Indicating the start of the search
 
-    while (current != NULL)
+    while (tmp != NULL)
     {
         // DEBUG: Detailed information about the current node
         printf("Current Node Information:\n");
-        printf("  - String: %s\n", current->str);
-        printf("  - Position: %d\n", current->pos);
-        printf("  - Operator: %d\n", current->operator);
+        printf("  - String: %s\n", tmp->str);
+        printf("  - Position: %d\n", tmp->pos);
+        printf("  - Operator: %d\n", tmp->operator);
 
-        if (current->operator != NONE)
+        if (tmp->operator != NONE)
         {
-            printf("Logical operator found! Operator type: %d in command: %s\n", current->operator, current->str); // DEBUG: Indicating found logical operator
+            printf("Logical operator found! Operator type: %d in command: %s\n", tmp->operator, tmp->str); // DEBUG: Indicating found logical operator
             return 1;
         }
-        current = current->next;
+        tmp = tmp->next;
     }
 
     printf("No logical operators found in the provided commands.\n"); // DEBUG: Indicating no logical operators were found
