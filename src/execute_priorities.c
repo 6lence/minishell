@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/06 14:27:45 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/07 16:47:53 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@
 #define AND 1
 #define OR 2
 #define PAREN 3
+
+#define OPEN_PAREN 4
+#define CLOSE_PAREN 5
 #define MAX_ARGS 64
 #define MAX_ARG_LENGTH 256
 
-t_params *create_temp_command_node(char *cmd_str)
+t_params *create_temp_command_node(char *cmd_str, int is_within_parens)
 {
     t_params *temp;
     temp = (t_params *)malloc(sizeof(t_params));
@@ -31,19 +34,18 @@ t_params *create_temp_command_node(char *cmd_str)
 
     printf("Creating node for: %s\n", cmd_str); // DEBUG
 
+    printf("\n\n\n\n %s\n\n\n\n", cmd_str);
     // Check for logical operators
     if (ft_strcmp(cmd_str, "&&") == 0)
-    {
         temp->operator = AND;
-    }
     else if (ft_strcmp(cmd_str, "||") == 0)
-    {
         temp->operator = OR;
-    }
-    else if ((ft_strcmp(cmd_str, "(") == 0)&& (ft_strcmp(cmd_str, ")") == 0))
-    {
+    else if (ft_strcmp(cmd_str, "(") == 0)
+        temp->operator = OPEN_PAREN;
+    else if (ft_strcmp(cmd_str, ")") == 0)
+        temp->operator = CLOSE_PAREN;
+    else if (is_within_parens)
         temp->operator = PAREN;
-    }
     else // treat as command with arguments
     {
         char **args = ft_split(cmd_str, ' ');
@@ -76,14 +78,14 @@ t_params *create_temp_command_node(char *cmd_str)
         }
         free(args);
     }
-
     return temp;
 }
+
 int contains_logical_operators(t_params *tmp)
 {
 //    t_params *current = tmp;
 
-    printf("Starting to search for logical operators...\n"); // DEBUG: Indicating the start of the search
+    printf("Starting to search for logical operators and parentheses...\n"); // DEBUG: Indicating the start of the search
 
     while (tmp != NULL)
     {
@@ -97,6 +99,11 @@ int contains_logical_operators(t_params *tmp)
         {
             printf("Logical operator found! Operator type: %d in command: %s\n", tmp->operator, tmp->str); // DEBUG: Indicating found logical operator
             return 1;
+        }
+        if (ft_strchr(tmp->str, '(') || ft_strchr(tmp->str, ')'))
+        {
+            printf("Parentheses found in command: %s\n", tmp->str);
+            return PAREN;
         }
         tmp = tmp->next;
     }
@@ -148,13 +155,10 @@ int execute_operator(t_params *cmd)
     return status;
 }
 
-
-// with () and && and ||
-#include <stdio.h> // Include this for printf
-
 int ft_execute_priorities(t_params *commands)
 {
     int status = 0;
+    int paren_count = 0;
     t_params *current = commands;
     char *cmd_str = NULL;
 
@@ -162,18 +166,18 @@ int ft_execute_priorities(t_params *commands)
     {
         printf("Current command/operator: %s\n", current->str); // DEBUG
 
-        if (current->operator == NONE)
+        if (current->operator == NONE)// || current->operator == PAREN)
         { // If it's a command
             t_params *temp_cmd_node;
             if (current->next != NULL && current->next->operator == NONE)
             { // Check if the next node is also a command part
                 char *cmd_str = malloc(strlen(current->str) + strlen(current->next->str) + 2);
                 sprintf(cmd_str, "%s %s", current->str, current->next->str);
-                temp_cmd_node = create_temp_command_node(cmd_str);
+                temp_cmd_node = create_temp_command_node(cmd_str, 0);
             }
             else
             {
-                temp_cmd_node = create_temp_command_node(current->str);
+                temp_cmd_node = create_temp_command_node(current->str, 0);
             }
 
             status = execute_operator(temp_cmd_node);
@@ -190,18 +194,68 @@ int ft_execute_priorities(t_params *commands)
 
             free(temp_cmd_node); // Free the temporary node
         }
-        else if (current->operator == PAREN)
+        else if (current->operator == OPEN_PAREN)
         {
-            printf("Parentheses found, skipping enclosed commands.\n"); // DEBUG: Indicate parentheses found
-            
-            // Skip the commands inside the parentheses. 
-            // You might want to enhance this logic based on how you’ve structured commands inside parentheses.
-            while (current != NULL && current->operator != PAREN)
+            t_params *sub_cmds = NULL; // hold subcommands inside parentheses
+            t_params *sub_cmd_last = NULL;
+
+            paren_count = 1;
+            current = current->next;
+
+            printf("Parentheses found, processing enclosed commands.\n");
+            while (current && paren_count > 0)
             {
-                current = current->next;
+                printf("la\n");
+                if (current->operator == OPEN_PAREN)
+                {
+                    paren_count++;
+                }
+                else if (current->operator == CLOSE_PAREN)
+                {
+                    paren_count--; // a matching CLOSE_PAREN found
+                }
+                if (paren_count > 0)
+                {
+                    // Add command to subcommand list if we are not at the closing parenthesis
+                    t_params *new_sub_cmd = create_temp_command_node(current->str, 1);
+                    if (!new_sub_cmd)
+                    {
+                        // Handle memory allocation failure
+                        perror("Failed to allocate memory for subcommand node");
+                        // Consider freeing any allocated resources here before returning
+                        free_subcommands(sub_cmds);
+                        return (EXIT_FAILURE);
+                    }
+                    if (sub_cmds == NULL)
+                    {
+                        sub_cmds = new_sub_cmd;
+                    }
+                    else
+                    {
+                        sub_cmd_last->next = new_sub_cmd;
+                    }
+                    sub_cmd_last = new_sub_cmd;
+                }
+                 current = current->next; // Move to the next command/operator
             }
-            if (current != NULL) // Skip the closing parenthesis
-                current = current->next;
+            if (paren_count != 0)
+            {
+                write (2, "Mismatched parentheses.\n", 24);
+                free_subcommands(sub_cmds);
+                return (EXIT_FAILURE);
+            }
+
+            // Execute the collected subcommands
+            status = ft_execute_priorities(sub_cmds);
+            free_subcommands(sub_cmds);
+            if (status != EXIT_SUCCESS)
+            {
+                write(2, "Subcommand execution failed.\n", 29);
+                free_subcommands(sub_cmds);
+                return (status);
+            }
+
+            free_subcommands(sub_cmds);
         }
         else if (current->operator == AND)
         {
@@ -234,6 +288,11 @@ int ft_execute_priorities(t_params *commands)
                 current = current->next;
             }
         }
+        else if (current->operator == CLOSE_PAREN)
+        {
+            write(2, "Error: Unmatched closing parenthesis.\n", 38);
+            return EXIT_FAILURE;
+        }
         else
         {
             printf("Unknown operator/command: %s\n", current->str); // DEBUG: Indicate unrecognized operator/command
@@ -242,6 +301,11 @@ int ft_execute_priorities(t_params *commands)
             write(2, "'.\n", 3);
             return EXIT_FAILURE; // Or handle error differently
         }
+    }
+    if (paren_count > 0)
+    {
+        write(2, "Error: Unmatched closing parenthesis.\n", 38);
+        return EXIT_FAILURE;
     }
     return status;
 }
@@ -265,103 +329,41 @@ void assign_operator(t_params *node)
     printf("Node: %s, Operator: %d\n", node->str, node->operator);
 }
 
-/*
-Call this function wherever you create or update nodes.
-For instance, if you have a function to insert a new command into your
-linked list, you should call assign_operator() within that function.
-*/
-
-
-
-
-/*
-
-#include "minishell.h"
-#include <stdio.h>
-
-int main()
+void free_subcommand_args(char **args)
 {
-    // Test 1: Command without logical operators or parentheses
-    t_params cmd1 = {NULL, "echo Hello", 0, NULL, "echo", (char *[]){"echo", "Hello", NULL}, NONE};
-    assign_operator(&cmd1);
-    printf("Test 1 status: %d\n", ft_execute_priorities(&cmd1));
-
-    // Test 2: Command sequence with AND operator
-    t_params cmd2b = {NULL, "false", 0, NULL, "false", (char *[]){"false", NULL}, NONE};
-    assign_operator(&cmd1);
-    t_params cmd2a = {NULL, "echo Hello", 0, &cmd2b, "echo", (char *[]){"echo", "Hello", NULL}, AND};
-    assign_operator(&cmd1);
-    printf("Test 2 status: %d\n", ft_execute_priorities(&cmd2a));
-
-    // Test 3: Command sequence with OR operator
-    t_params cmd3b = {NULL, "echo World", 0, NULL, "echo", (char *[]){"echo", "World", NULL}, NONE};
-    assign_operator(&cmd1);
-    t_params cmd3a = {NULL, "false", 0, &cmd3b, "false", (char *[]){"false", NULL}, OR};
-    assign_operator(&cmd1);
-    printf("Test 3 status: %d\n", ft_execute_priorities(&cmd3a));
-
-    // Test 4: Command sequence with parentheses (This test assumes that parentheses are already handled in your linked list)
-    // This example assumes that parentheses commands are linked as next nodes and the PAREN operator node is used to skip them if necessary.
-    t_params cmd4c = {NULL, "echo InParen", 0, NULL, "echo", (char *[]){"echo", "InParen", NULL}, NONE};
-    assign_operator(&cmd1);
-    t_params cmd4b = {NULL, "", PAREN, &cmd4c, "", NULL, PAREN};
-    assign_operator(&cmd1);
-    t_params cmd4a = {NULL, "echo BeforeParen", 0, &cmd4b, "echo", (char *[]){"echo", "BeforeParen", NULL}, NONE};
-    assign_operator(&cmd1);
-    printf("Test 4 status: %d\n", ft_execute_priorities(&cmd4a));
-
-    return 0;
+    if (args != NULL)
+    {
+        int i = 0;
+        while (args[i] != NULL)
+        {
+            free(args[i]); // Free each argument string
+            i++;
+        }
+        free(args); // Finally, free the array itself
+    }
 }
-*/
-/*
-Moving forward, you might want to:
 
-Enhance Parentheses Handling: If you want the parentheses to influence the execution
-flow more (for instance, by implementing subshells or grouped command execution),
-you might want to adjust the logic inside the parentheses handling part.
+void free_subcommands(t_params *sub_cmds)
+{
+    while (sub_cmds != NULL)
+    {
+        t_params *tmp = sub_cmds;
+        sub_cmds = sub_cmds->next; // Move to next command before freeing current
 
-Error Handling: Consider enhancing error handling, for example, mismatched parentheses,
-unknown operators, or commands that could not be found/executed.
+        // Free the dynamically allocated members
+        if (tmp->str != NULL)
+        {
+            free(tmp->str);
+        }
+        if (tmp->cmd != NULL)
+        {
+            free(tmp->cmd);
+        }
+        
+        // Free the arguments array
+        free_subcommand_args(tmp->args);
 
-Code Modularity: Your functions are well separated by functionality. You might want
-to keep this modularity as your code grows, maybe even moving some functions to
-separate files based on their roles.
-
-Testing: You might want to continue thorough testing with more complex command sequences,
-nested parentheses, and various combinations of logical operators to ensure that all
-cases are correctly handled.
-
-Remove Debug Prints: Once you are satisfied with the functionality, you might want
-to remove or toggle off debug prints to clean up the output.
-*/
-/*
-Test 1
-
-Command: echo Hello
-Command Exit Status: 0 (successful execution)
-Test Status: 0
-
-Test 2
-
-Command: echo Hello
-Command Exit Status: 0 (successful execution)
-Command: false
-Command Exit Status: 1 (unsuccessful execution)
-Test Status: 1 (because the second command failed)
-
-Test 3
-
-Command: false
-Command Exit Status: 1 (unsuccessful execution)
-Command: echo World
-Command Exit Status: 0 (successful execution)
-Test Status: 0 (because of the OR operator; even though the first command failed, the second command was executed)
-
-Test 4
-
-Command: echo BeforeParen
-Command Exit Status: 0 (successful execution)
-Command: echo InParen
-Command Exit Status: 0 (successful execution)
-Test Status: 0 (both commands executed successfully)
-*/
+        // Finally free the t_params structure itself
+        free(tmp);
+    }
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/07 11:12:42 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:47:39 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,11 +169,13 @@ t_params	*ft_get_nth_param(t_params *list, int n);
 int			ft_unset(t_data *l);
 
 /* execute_priorities */
-t_params	*create_temp_command_node(char *cmd_str);
+t_params	*create_temp_command_node(char *cmd_str, int is_within_parens);
 int			contains_logical_operators(t_params *tmp);
 int			execute_operator(t_params *cmd);
 int			ft_execute_priorities(t_params *commands);
 void		assign_operator(t_params *node);
+void		free_subcommand_args(char **args);
+void		free_subcommands(t_params *sub_cmds);
 
 /* lstutils */
 t_params	*ft_lstlast(t_params *l);
@@ -191,6 +193,12 @@ void		ft_childs(t_data *l);
 
 /* errors */
 int			ft_direrror(t_data *l);
+
+/* ft_free */
+void		ft_free_list(t_params *l);
+void		ft_free_split(char **str, int len);
+void		ft_free_split_2(char **split);
 void		ft_free_all(t_data *l);
+void		free_resources(char **args, char *cmd_no_paren, t_params *temp);
 
 #endif
