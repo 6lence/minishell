@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:15:56 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/24 10:41:37 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:42:10 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,16 @@ void	ft_until_quote(t_data *l, int *i, int *end, int c)
 	*end = *end + 1;
 	while (l->params[*i + *end] != c)
 		*end = *end + 1;
+}
+
+char	*ft_char_to_char(char c)
+{
+	char	*s;
+
+	s = ft_calloc(2, sizeof(char));
+	s[0] = c;
+	s[1] = '\0';
+	return (s);
 }
 
 void	ft_while_spaces(t_data *l, int *i)
@@ -34,6 +44,12 @@ void	ft_go(t_data *l, int *i, int *end)
 			(l->params[*i + *end] < 7 || l->params[*i + *end] > 13)
 			&& l->params[*i + *end] != ' ')
 	{
+		if (l->params[*i + 1 + *end] == '(' || l->params[*i + 1 + *end] == ')'
+			|| l->params[*i + *end] == '(' || l->params[*i +  *end] == ')')
+		{
+			*end = *end + 1;
+			return ;
+		}
 		if (l->params[*i + *end] == 34)
 			ft_until_quote(l, i, end, 34);
 		else if (l->params[*i + *end] == 39)

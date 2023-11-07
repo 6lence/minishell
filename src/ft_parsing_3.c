@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:01:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/07 14:43:08 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:18:06 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ int	ft_words(t_data *l)
 		while (l->params[i] && (l->params[i] < 7 
 				|| l->params[i] > 13) && l->params[i] != ' ')
 		{
+			if (l->params[i] == ')' || l->params[i] == '(')
+			{
+				words++;
+				i++;
+			}
 			if (l->params[i] == 34)
 				ft_quotes(l, &i, 34);
 			else if (l->params[i] == 39)
@@ -40,7 +45,14 @@ int	ft_words(t_data *l)
 		words++;
 		while (l->params[i] && !((l->params[i] < 7 
 					|| l->params[i] > 13) && l->params[i] != ' '))
+		{
+			if (l->params[i] == ')' || l->params[i] == '(')
+			{
+				words++;
+				i++;
+			}
 			i++;
+		}
 	}
 	return (words);
 }
