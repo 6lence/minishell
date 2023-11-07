@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils_2.c                                       :+:      :+:    :+:   */
+/*   ft_execution_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 12:16:21 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/01 14:03:51 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 14:59:41 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*ft_divide_path(char *str)
 	int	i;
 
 	i = ft_strlen(str);
-	while (i != '/')
+	while (str[i] != '/')
 		i--;
 	return (ft_substr(str, i, ft_strlen(str)));
 }

@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/07 11:19:01 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 14:43:30 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	init(t_data *l)
 		l->dir = opendir(ft_lst_elem(l->list, 0)->str);
 	ft_pipe_presence(l);
 	l->commands = ft_count_command(l);
-	l->child_pid = ft_calloc(l->commands, sizeof(int));
 	l->child_pos = 0;
+	l->child_pid = ft_calloc(l->commands, sizeof(int));
 	return (0);
 }
 

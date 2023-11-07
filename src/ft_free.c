@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:13:35 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/31 15:08:38 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 14:43:26 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,7 @@ void	ft_free_all(t_data *l)
 		ft_free_list(l->list);
 	if (l->params)
 		free(l->params);
+	if (l->child_pid)
+		free(l->child_pid);
 	l = NULL;
 }

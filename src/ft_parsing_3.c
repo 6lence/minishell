@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:01:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/07 09:43:19 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 14:43:08 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	ft_join_access(char **path, char *command)
 		free(path[i]);
 		i++;
 	}
+	free(path);
 	free(command);
 	return(res);
 }

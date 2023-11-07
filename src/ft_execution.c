@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/07 11:54:09 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:00:40 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	ft_exec_builtin(t_data *l, t_params *tmp)
 	close(l->old_fd[1]);
 	close(l->old_fd[0]);
 	execute_builtin(l, tmp);
-	exit(EXIT_SUCCESS);
+	ft_free_all(l);
+	exit(EXIT_FAILURE);
 	l->pipe_nb--;
 }
 
@@ -103,7 +104,8 @@ void	execute_command(t_data *l, t_params *tmp)
 		ft_child(l, tmp);
 	else
 	{
-		l->child_pid[l->child_pos++] = child_pid;
+		if (l->commands)
+			l->child_pid[l->child_pos++] = child_pid;
 		if (l->pipe_nb >= 1)
 			dup2(l->old_fd[0], 0);
 		else
