@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:21:48 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/05 16:35:37 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 11:34:46 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int execute_builtin(t_data *l, t_params *tmp)
 		result = ft_unset(l);
 	else if (ft_strcmp(command, "exit") == 0)
 		result = ft_exit(l);
-	
 	// Free the allocated memory for arguments
 	free(arguments);
 	

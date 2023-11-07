@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/06 09:31:25 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 11:12:42 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_data
 	char		**arguments;
 	int			tmp_file;
 	int			pos;
+	int			commands;
 	int			pipe;
 	int			pipe_nb;
 	DIR			*dir;
@@ -106,6 +107,7 @@ int			ft_args(t_params *l);
 /* parsing_3 */
 int			ft_words(t_data *l);
 int			ft_operator_cmp(t_params *tmp);
+int			ft_count_command(t_data *l);
 
 /* parsing_4 */
 void		ft_fill_split(t_data *l);

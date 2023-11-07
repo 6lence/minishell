@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:03:16 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/06 13:47:10 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 11:16:30 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ void	ft_childs(t_data *l)
 	int	status;
 
 	i = 0;
-	while (i < l->pipe_nb + 2)
+	while (i < l->commands)
 		waitpid(l->child_pid[i++], &status, 0);
 }
