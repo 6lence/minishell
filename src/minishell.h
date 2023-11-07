@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/07 11:12:42 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/07 16:34:17 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_data
 	DIR			*dir;
 	int			in;
 	int			out;
+	int			var_out;
 	int			exit_code;
 	int			tmp_in;
 	int			tmp_out;
