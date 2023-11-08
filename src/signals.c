@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:16:37 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/08 15:13:24 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:18:14 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void handle_sigint(int sig_num)
         // Set flag to indicate SIGINT was received
     }
 }
+
 void signal_ctrl_c(void)
 {
     struct sigaction ctrl_c;
@@ -64,11 +65,13 @@ void signal_ctrl_c(void)
     sigaction(SIGINT, &ctrl_c, NULL);
     sigaction(SIGQUIT, &ctrl_c, NULL);
 }
+
 void handle_sigquit(int sig_num)
 {
     (void)sig_num; // Suppress unused parameter warning
     printf("do nothing, Ctrl+backslash is pressed\n"); // Print message indicating that Ctrl+\ was pressed
 }
+
 void signal_ctrl_back_slash(void)
 {
     struct sigaction ctrl_back_slash;
@@ -77,17 +80,21 @@ void signal_ctrl_back_slash(void)
     sigemptyset(&ctrl_back_slash.sa_mask);
     sigaction(SIGQUIT, &ctrl_back_slash, NULL);
 }
+
 void handle_eof(void) // Ctrl+D
 {
     printf("Exiting...\n");
     ft_cleanup();
     exit(0);
 }
+
 void signal_ctrl_d(void)
 {
     // The ctrl+D (EOF) handling would usually be in main loop where read input
     // This function isn't necessarily a signal handler, but a routine called when EOF is detected
 }
+
+/*
 int main(void)
 {
     t_data *data;
@@ -123,7 +130,7 @@ int main(void)
     ft_cleanup(); // Cleanup resources on exit
     return (0);
 }
-
+*/
 /*
 gcc -Wall -Wextra -Werror src/signal_handling.c -lreadline
 */
