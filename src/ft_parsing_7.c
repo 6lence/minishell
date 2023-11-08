@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_7.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 14:53:42 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/05 16:19:48 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/08 12:27:53 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,28 @@ int	ft_add_var(t_data *l)
 		tmp = tmp->next;
 	}
 	return (ct);
+}
+
+void	ft_free_paranthese(t_params *params)
+{
+	t_params	*tmp;
+	t_params	*tmp_free;
+
+	tmp = params;
+	while (tmp)
+	{
+		if ((ft_strcmp(tmp->str, "(") == 0
+			|| ft_strcmp(tmp->str, ")") == 0))
+		{
+			if (tmp->prev)
+				tmp->prev->next = tmp->next;
+			if (tmp->next)
+				tmp->next->prev = tmp->prev;
+			tmp_free = tmp;
+			tmp = tmp->next;
+			free(tmp_free);
+		}
+		else
+			tmp = tmp->next;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/07 16:34:17 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/08 12:01:04 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ char		*ft_find_var(t_params *list, t_data *l);
 
 /*  parsing_7 */
 int			ft_add_var(t_data *l);
+void		ft_free_paranthese(t_params *params);
 
 /*  parsing_8 */
 void		ft_verif_tmp_var(t_params *tmp, t_data *l, int i, int b);
@@ -170,11 +171,13 @@ t_params	*ft_get_nth_param(t_params *list, int n);
 int			ft_unset(t_data *l);
 
 /* execute_priorities */
-t_params	*create_temp_command_node(char *cmd_str);
+t_params	*create_temp_command_node(char *cmd_str, int is_within_parens);
 int			contains_logical_operators(t_params *tmp);
 int			execute_operator(t_params *cmd);
 int			ft_execute_priorities(t_params *commands);
 void		assign_operator(t_params *node);
+void		free_subcommand_args(char **args);
+void		free_subcommands(t_params *sub_cmds);
 
 /* lstutils */
 t_params	*ft_lstlast(t_params *l);
@@ -192,6 +195,12 @@ void		ft_childs(t_data *l);
 
 /* errors */
 int			ft_direrror(t_data *l);
+
+/* ft_free */
+void		ft_free_list(t_params *l);
+void		ft_free_split(char **str, int len);
+void		ft_free_split_2(char **split);
 void		ft_free_all(t_data *l);
+void		free_resources(char **args, char *cmd_no_paren, t_params *temp);
 
 #endif

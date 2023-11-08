@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/07 15:42:28 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/08 12:31:24 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,30 @@ int    ft_params_len(char **str)
     return (i);
 }
 
+void    ft_verif_paranthese(t_data *l)
+{
+    t_params    *tmp;
+    int         ct;
+
+    tmp = l->list;
+    while (tmp)
+    {
+        if (ft_strcmp(tmp->str, "(") == 0)
+        {
+            ct = 1;
+            tmp = tmp->next;
+            while (tmp && ft_strcmp(tmp->str, ")") != 0)
+                tmp = tmp->next;
+            if (ft_strcmp(tmp->str, ")") == 0)
+                ct = 0;
+        }
+        else
+            tmp = tmp->next;
+    }
+    if (ct == 1)
+        ft_exit(l);
+}
+
 int    ft_chained_args(t_data *l)
 {
     t_params    *new;
@@ -58,7 +82,7 @@ int    ft_chained_args(t_data *l)
         new->next = NULL;
         if (l->list)
         {
-            new->prev = l->list;
+            new->prev = ft_lstlast(l->list);
             ft_lstlast(l->list)->next = new;
         }
         else
@@ -76,5 +100,7 @@ void    ft_parsing(t_data *l)
     l->params_split = ft_calloc(ft_words(l) + 1, sizeof(char *));
     ft_fill_split(l);
     ft_chained_args(l);
+    ft_verif_paranthese(l);
+    ft_free_paranthese(l->list);
     ft_look_dollar(l);
 }

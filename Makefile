@@ -56,7 +56,7 @@ $(LFT):
 
 $(EXECUTABLE): $(OBJ_FILES)
 	@$(CC) $(CFLAGS) $^ $(LIB) -lreadline -o $@ 
-	@echo -e "\033[32m✅ Done! Executable $(EXECUTABLE) is ready.\033[0m"
+	@echo "\033[32m✅ Done! Executable $(EXECUTABLE) is ready.\033[0m"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -65,13 +65,13 @@ clean:
 	@$(RM) -r $(OBJ_DIR)
 #	@make -s -C ./ft_printf/ clean
 	@make -s -C ./libft/ clean
-	@echo -e "\033[32m✅ Done! Object files removed.\033[0m"
+	@echo "\033[32m✅ Done! Object files removed.\033[0m"
 
 fclean: clean
 	@$(RM) $(EXECUTABLE)
 #	@make -s -C ./ft_printf/ fclean
 	@make -s -C ./libft/ fclean
-	@echo -e "\033[32m✅ Done! Executable $(EXECUTABLE) removed.\033[0m"
+	@echo "\033[32m✅ Done! Executable $(EXECUTABLE) removed.\033[0m"
 
 re: fclean all
 
