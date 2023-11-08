@@ -6,11 +6,34 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/07 17:04:39 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/08 17:30:33 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_chevron_cmp(t_params *params)
+{
+	if (ft_strcmp(params->str, ">>") == 0
+		|| ft_strcmp(params->str, ">") == 0
+		|| ft_strcmp(params->str, "<<") == 0
+		|| ft_strcmp(params->str, "<") == 0)
+		return (1);
+	return (0);
+}
+
+void	ft_increment(t_params **t)
+{
+	char	*ct;
+
+	ct = (*t)->str;
+	while ((*t))
+	{
+		if (ft_operator_cmp((*t)) && ft_strcmp((*t)->str, ct))
+			break ;
+		(*t) = (*t)->next;
+	}
+}
 
 int	ft_big_execute(t_data *l)
 {
@@ -25,9 +48,12 @@ int	ft_big_execute(t_data *l)
 		while (tmp)
 		{
 			ft_look_in_out_put(tmp, l);
-			if (ft_operator_cmp(tmp))
+			if (ft_chevron_cmp(tmp))
+				ft_increment(&tmp);
+			if (tmp && ft_operator_cmp(tmp))
 				tmp = tmp->next;
-			execute_command(l, tmp);
+			if (tmp)
+				execute_command(l, tmp);
 			while (tmp && !ft_operator_cmp(tmp))
 				tmp = tmp->next;
 		}

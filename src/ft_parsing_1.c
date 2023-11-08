@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/08 12:54:35 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/08 14:08:38 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void    ft_verif_paranthese(t_data *l)
     int         ct;
 
     tmp = l->list;
+    ct = 0;
     while (tmp)
     {
         if (ft_strcmp(tmp->str, "(") == 0)
@@ -103,5 +104,7 @@ void    ft_parsing(t_data *l)
     ft_verif_paranthese(l);
     ft_free_paranthese(l->list);
     ft_look_dollar(l);
-    execute_command_with_wildcards(l->list, l->envp);
+    while (l->list->prev)
+        l->list = l->list->prev;
+    //execute_command_with_wildcards(l->list, l->envp);
 }
