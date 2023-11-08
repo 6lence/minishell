@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/08 14:37:58 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/08 18:10:55 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,11 @@ void		ft_free_paranthese(t_params *params);
 /*  parsing_8 */
 void		ft_verif_tmp_var(t_params *tmp, t_data *l, int i, int b);
 int			ft_only_spaces(char *str);
+
+/* parsing_9 */
+void		ft_open_simple_out(t_params *tmp, char *ct, t_data *l);
+void		ft_open_simple_in(t_params *tmp, char *ct, t_data *l);
+void		ft_open_double_out(t_params *tmp, char *ct, t_data *l);
 
 /* utils */
 int			is_builtin(char *command);

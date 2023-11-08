@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:27:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/08 17:30:59 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/08 18:35:42 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_input_more(t_params *tmp, char *ct, t_data *l)
 	char	*str;
 
 	if (ft_strcmp(ct, "<") == 0)
-		l->tmp_in = open(tmp->str, O_RDONLY, 0644);
+		ft_open_simple_in(tmp, ct, l);
 	else if (ft_strcmp(ct, "<<") == 0)
 	{
 		tmp = tmp->next;
@@ -45,8 +45,7 @@ void	ft_input(t_params *list, t_data *l)
 	if (ft_strcmp(tmp->str, "<") == 0)
 	{
 		ct = "<";
-		tmp = tmp->next;
-		while (!ft_operator_cmp(tmp->next))
+		while (tmp->next && !ft_operator_cmp(tmp->next))
 			tmp = tmp->next;
 	}
 	else if (ft_strcmp(tmp->str, "<<") == 0)
@@ -57,30 +56,9 @@ void	ft_input(t_params *list, t_data *l)
 void	ft_output_more(t_params *tmp, char *ct, t_data *l)
 {
 	if (ft_strcmp(ct, ">") == 0)
-	{
-		tmp = tmp->next;
-		while (tmp)
-		{
-			if (ft_operator_cmp(tmp) && ft_strcmp(tmp->str, ct) != 0)
-				break;
-			else if (ft_operator_cmp(tmp))
-			{
-				if (tmp->next)
-					tmp = tmp->next;
-			}
-			else
-			{
-				l->tmp_out = open(tmp->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				if (tmp->next)
-					tmp = tmp->next;
-				else
-					break;
-			}
-		}
-	}
+		ft_open_simple_out(tmp, ct, l);
 	else if (ft_strcmp(ct, ">>") == 0)
-		l->tmp_out = open(tmp->next->str,
-				O_WRONLY | O_APPEND | O_CREAT, 0644);
+		ft_open_double_out(tmp, ct, l);
 }
 
 void	ft_output(t_params *list, t_data *l)
