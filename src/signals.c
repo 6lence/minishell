@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:16:37 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/09 10:28:16 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:13:24 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 t_data *get_global_data(void)
 {
-    static t_data *data = NULL;
+    static t_data *data;
+
+    data = NULL;
     if (data == NULL)
 	{
         data = (t_data *)malloc(sizeof(t_data));
@@ -32,7 +34,9 @@ t_data *get_global_data(void)
 
 void ft_cleanup(void)
 {
-    t_data *data = get_global_data();
+    t_data *data;
+
+    data = get_global_data();
     // Clean up any allocated resources within data here
     free(data);
     // Optionally, reset the global data to NULL, so that subsequent calls to get_global_data will initialize a new object
@@ -41,7 +45,9 @@ void ft_cleanup(void)
 
 void handle_sigint(int sig_num)
 {
-    t_data *data = get_global_data();
+    t_data *data;
+
+    data = get_global_data();
     if (sig_num == SIGINT && data != NULL)
     {
         data->sig.stop = 1;
@@ -56,6 +62,7 @@ void signal_ctrl_c(void)
     ctrl_c.sa_flags = SA_RESTART;
     sigemptyset(&ctrl_c.sa_mask);
     sigaction(SIGINT, &ctrl_c, NULL);
+    sigaction(SIGQUIT, &ctrl_c, NULL);
 }
 void handle_sigquit(int sig_num)
 {
@@ -78,12 +85,14 @@ void handle_eof(void) // Ctrl+D
 }
 void signal_ctrl_d(void)
 {
-    // The ctrl+D (EOF) handling would usually be in your main loop where you read input
+    // The ctrl+D (EOF) handling would usually be in main loop where read input
     // This function isn't necessarily a signal handler, but a routine called when EOF is detected
 }
 int main(void)
 {
-    t_data *data = get_global_data();
+    t_data *data;
+
+    data = get_global_data();
     signal_ctrl_c(); // Set up signal handler for ctrl+C
     signal_ctrl_back_slash(); // Set up signal handler for ctrl+\ .
     // Main loop for shell
@@ -116,5 +125,5 @@ int main(void)
 }
 
 /*
-gcc -Wall -Wextra -Werror src/signal_handling_c.c -lreadline
+gcc -Wall -Wextra -Werror src/signal_handling.c -lreadline
 */

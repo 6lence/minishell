@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/08 12:44:46 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/08 14:37:58 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ t_params	*ft_get_nth_param(t_params *list, int n);
 int			ft_unset(t_data *l);
 
 /* execute_priorities */
-t_params	*create_temp_command_node(char *cmd_str, int is_within_parens);
+t_params	*create_temp_command_node(char *cmd_str);
 int			contains_logical_operators(t_params *tmp);
 int			execute_operator(t_params *cmd);
 int			ft_execute_priorities(t_params *commands);
@@ -190,6 +190,9 @@ t_params	*ft_lst_elem(t_params *l, int pos);
 int			ft_lstsize(t_params *l);
 t_params	*ft_list_elem(t_params *l, int pos);
 
+/* ft_utils */
+char		*ft_strcat(char *s1, const char *s2);
+
 /*  childs  */
 void		ft_childs(t_data *l);
 
@@ -207,5 +210,16 @@ void		free_resources(char **args, char *cmd_no_paren, t_params *temp);
 t_params	*new_node(const char *cmd, char **args);
 void		delete_list(t_params *head);
 void		execute_command_with_wildcards(t_params *commands, char **envp);
+
+/* signals */
+t_data		*get_global_data(void);
+void		ft_cleanup(void);
+void		handle_sigint(int sig_num);
+void		signal_ctrl_c(void);
+void		handle_sigquit(int sig_num);
+void		signal_ctrl_back_slash(void);
+void		handle_eof(void);
+void		signal_ctrl_d(void);
+
 
 #endif

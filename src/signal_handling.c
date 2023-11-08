@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handling_c.c                                :+:      :+:    :+:   */
+/*   signal_handling.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:16:57 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/08 11:38:50 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/08 14:02:43 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
+
 
 t_data *get_global_data(void)
 {
@@ -46,6 +48,7 @@ void handle_sigint(int sig_num)
         write(1, "lala\n", 5);
     }
 }
+
 void signal_ctrl_c(void) //in main
 {
     struct sigaction ctrl_c;
@@ -55,13 +58,16 @@ void signal_ctrl_c(void) //in main
     sigaction(SIGINT, &ctrl_c, NULL);
     sigaction(SIGQUIT, &ctrl_c, NULL);
 }
-void cleanup(void)
+
+void ft_cleanup(void)
 {
     t_data *data = get_global_data();
     // Clean up any allocated resources within data here
-    // Then free data itself
     free(data);
+    // Optionally, reset the global data to NULL, so that subsequent calls to get_global_data will initialize a new object
+    data = NULL;
 }
+/*
 int main(void)
 {
     t_data *data = get_global_data();
@@ -79,20 +85,21 @@ int main(void)
         {
             // Handle end of file (Ctrl+D)
             printf("Exiting.\n");
-            cleanup();
+            ft_cleanup();
             exit(0);
         }
         printf("You entered: %s\n", line);
         free(line);
         if (strcmp(line, "exit") == 0)
         {
-            cleanup();
+            ft_cleanup();
             exit(0);
         }
     }
-    cleanup();
+    ft_cleanup();
     return 0;
 }
+*/
 /*
 gcc -Wall -Wextra -Werror src/signal.c -lreadline
 */

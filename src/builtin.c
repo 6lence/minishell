@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:21:48 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/07 11:34:46 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:06:56 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,14 @@ int	is_builtin(char *command)
 
 int execute_builtin(t_data *l, t_params *tmp)
 {
-	int result = 0;
-	char *command = tmp->str;
-	char **arguments = linked_list_to_array(tmp->next);
+	int result;
+	char *command;
+	char **arguments;
 
-	// Update the arguments in the t_data structure
+	result = 0;
+	command = tmp->str;
 	l->arguments = arguments;
+	arguments = linked_list_to_array(tmp->next);
 
 	if (ft_strcmp(command, "echo") == 0)
 		result = ft_echo(l);
@@ -49,7 +51,7 @@ int execute_builtin(t_data *l, t_params *tmp)
 		char* pwd = ft_pwd();
 		printf("%s\n", pwd);
 		free(pwd);
-		result = 0; //success
+		result = 0;
 	}
 	else if (ft_strcmp(command, "env") == 0)
 		result = ft_env(l); // If ft_env needs arguments
@@ -59,9 +61,7 @@ int execute_builtin(t_data *l, t_params *tmp)
 		result = ft_unset(l);
 	else if (ft_strcmp(command, "exit") == 0)
 		result = ft_exit(l);
-	// Free the allocated memory for arguments
 	free(arguments);
-	
 	return (result);
 }
 
@@ -71,32 +71,28 @@ char	**linked_list_to_array(t_params *tmp)
 	int count = 0;
 	t_params *current = tmp;
 	
-	// Step 1: Count nodes in linked list
+	//Count nodes in linked list
 	while (current != NULL) 
 	{
 		count++;
 		current = current->next;
 	}
-
-	// Step 2: Allocate memory for the array
+	//Allocate memory for the array
 	char **args = (char **)malloc(sizeof(char *) * (count + 1));
 	if (args == NULL) 
 	{
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
-
-	// Step 3: Assign strings to the array
+	//Assign strings to the array
 	current = tmp;
 	for (int i = 0; i < count; i++) 
 	{
 		args[i] = current->str;
 		current = current->next;
 	}
-
 	// Step 4: Ensure the array is NULL-terminated
 	args[count] = NULL;
-	
 	return args;
 }
 

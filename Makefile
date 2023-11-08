@@ -24,8 +24,10 @@ SRC_FILES :=	minishell.c \
 				ft_export.c \
 				ft_pwd.c \
 				ft_unset.c \
+				ft_utils.c \
 				execute_priorities.c \
 				ft_wildcard.c \
+				signals.c \
 				ft_childs.c
 
 OBJ_DIR := ./obj
