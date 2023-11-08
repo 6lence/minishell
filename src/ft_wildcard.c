@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:27:29 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/06 14:42:59 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/08 12:57:51 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,6 @@ void delete_list(t_params *head)
     }
 }
 
-/*
-- DIR is a datatype representing a directory stream in C. It is used to manage and
-handle directories as streams, allowing you to operate on the directory's content.
-- d is a pointer to a DIR type, and it holds the reference to the directory stream
-opened by the opendir() function.
-- When you call opendir(), it returns a pointer of type DIR that you can use to
-read the directory’s contents or close the directory later.
-
-- struct dirent is a structure type used to represent directory entries. It is used
-when reading from a directory stream, providing information about the files and
-subdirectories within.
-- dir is a pointer to a struct dirent, and it holds the reference to directory
-entries when you read them using readdir().
-- The readdir() function returns a pointer to a struct dirent representing the
-next directory entry in the directory stream. It returns NULL after the last
-directory entry.
-*/
 void execute_command_with_wildcards(t_params *commands, char **envp)
 {
     DIR *d;
@@ -115,31 +98,20 @@ void execute_command_with_wildcards(t_params *commands, char **envp)
     free(new_args); // Free the allocated memory
 }
 
-
-int main(void)
-{
-    char *args[] = {"ls src", ".c", NULL};
-
-    t_params *commands = new_node("/bin/ls", args);
-
-    char **envp = NULL; // or get the environment variables if needed
-
-    execute_command_with_wildcards(commands, envp);
-
-    delete_list(commands);
-
-    return 0;
-}
-
 /*
-int main(void) // Removed argc, argv, and envp
-{
-    char *cmd = "/bin/ls"; // Need to specify the absolute path
-    char *args[] = {"ls", "*.txt", NULL};
-    char **envp = NULL; // You can set envp to NULL or get the environment variables another way if needed
+- DIR is a datatype representing a directory stream in C. It is used to manage and
+handle directories as streams, allowing you to operate on the directory's content.
+- d is a pointer to a DIR type, and it holds the reference to the directory stream
+opened by the opendir() function.
+- When you call opendir(), it returns a pointer of type DIR that you can use to
+read the directory’s contents or close the directory later.
 
-    execute_command_with_wildcards(cmd, args, envp);
-
-    return 0;
-}
+- struct dirent is a structure type used to represent directory entries. It is used
+when reading from a directory stream, providing information about the files and
+subdirectories within.
+- dir is a pointer to a struct dirent, and it holds the reference to directory
+entries when you read them using readdir().
+- The readdir() function returns a pointer to a struct dirent representing the
+next directory entry in the directory stream. It returns NULL after the last
+directory entry.
 */

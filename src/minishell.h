@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/08 12:01:04 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/08 12:44:46 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,5 +202,10 @@ void		ft_free_split(char **str, int len);
 void		ft_free_split_2(char **split);
 void		ft_free_all(t_data *l);
 void		free_resources(char **args, char *cmd_no_paren, t_params *temp);
+
+/* ft_wildcard */
+t_params	*new_node(const char *cmd, char **args);
+void		delete_list(t_params *head);
+void		execute_command_with_wildcards(t_params *commands, char **envp);
 
 #endif

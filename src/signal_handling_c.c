@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:16:57 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/08 11:36:12 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/08 11:38:50 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,18 +82,14 @@ int main(void)
             cleanup();
             exit(0);
         }
-        // Example: act on the line
-        // You'd parse and execute the entered command here
         printf("You entered: %s\n", line);
         free(line);
-        // For testing, exit on a specific command (e.g., "exit")
         if (strcmp(line, "exit") == 0)
         {
             cleanup();
             exit(0);
         }
     }
-    // If break out of the loop, ensure to clean up
     cleanup();
     return 0;
 }

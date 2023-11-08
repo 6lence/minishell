@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_priorities.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/08 12:34:19 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/08 12:39:19 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ t_params *create_temp_command_node(char *cmd_str, int is_within_parens)
 
     printf("Creating node for: %s\n", cmd_str); // DEBUG
 
-    printf("\n\n\n\n %s\n\n\n\n", cmd_str);
-    // Check for logical operators
     if (ft_strcmp(cmd_str, "&&") == 0)
         temp->operator = AND;
     else if (ft_strcmp(cmd_str, "||") == 0)

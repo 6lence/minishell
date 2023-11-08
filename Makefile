@@ -25,6 +25,7 @@ SRC_FILES :=	minishell.c \
 				ft_pwd.c \
 				ft_unset.c \
 				execute_priorities.c \
+				ft_wildcard.c \
 				ft_childs.c
 
 OBJ_DIR := ./obj
