@@ -6,7 +6,7 @@
 #    By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/08 10:13:49 by ashalagi          #+#    #+#              #
-#    Updated: 2023/11/06 14:36:45 by ashalagi         ###   ########.fr        #
+#    Updated: 2023/11/08 13:46:27 by ashalagi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRC = ft_isalpha.c \
 	ft_memcmp.c \
 	ft_strnstr.c \
 	ft_strstr.c \
+	ft_strcpy.c \
 	ft_atoi.c \
 	ft_calloc.c \
 	ft_strdup.c \

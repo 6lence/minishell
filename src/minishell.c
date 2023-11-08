@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/08 17:30:33 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/08 17:33:53 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int	main(int ac, char **av, char **envp)
 	l->stop_main = 1;
 	l->in = dup(STDIN_FILENO);
 	l->out = dup(STDOUT_FILENO);
+	//signals
 	main_loop(l);
 	rl_clear_history();
 	free(l);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 11:21:48 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/07 11:34:46 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:17:30 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,14 @@ int	is_builtin(char *command)
 
 int execute_builtin(t_data *l, t_params *tmp)
 {
-	int result = 0;
+	int result;
 	char *command = tmp->str;
 	char **arguments = linked_list_to_array(tmp->next);
 
-	// Update the arguments in the t_data structure
+	result = 0;
+	command = tmp->str;
 	l->arguments = arguments;
+	
 
 	if (ft_strcmp(command, "echo") == 0)
 		result = ft_echo(l);
