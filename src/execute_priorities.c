@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/07 16:47:53 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/08 11:12:39 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #define AND 1
 #define OR 2
 #define PAREN 3
-
-#define OPEN_PAREN 4
-#define CLOSE_PAREN 5
+#define ERROR -1
+#define OPEN_PAREN '('
+#define CLOSE_PAREN ')'
 #define MAX_ARGS 64
 #define MAX_ARG_LENGTH 256
 
@@ -158,6 +158,145 @@ int execute_operator(t_params *cmd)
 int ft_execute_priorities(t_params *commands)
 {
     int status = 0;
+    t_params *current = commands;
+    char *cmd_str = NULL;
+
+    while (current != NULL)
+    {
+        printf("Current command/operator: %s\n", current->str); // DEBUG
+
+        if (current->operator == NONE)
+        { // If it's a command
+            t_params *temp_cmd_node;
+            if (current->next != NULL && current->next->operator == NONE)
+            { // Check if the next node is also a command part
+                cmd_str = malloc(strlen(current->str) + strlen(current->next->str) + 2);
+                sprintf(cmd_str, "%s %s", current->str, current->next->str);
+                temp_cmd_node = create_temp_command_node(cmd_str, 0);
+                free(cmd_str); // free the combined command string after creating the node
+            }
+            else
+            {
+                temp_cmd_node = create_temp_command_node(current->str, 0);
+            }
+
+            status = execute_operator(temp_cmd_node);
+            free(temp_cmd_node); // Free the temporary node
+
+            // Move to the next node after the command or combined command
+            current = (current->next != NULL && current->next->operator == NONE) ? current->next->next : current->next;
+        }
+        else if (current->operator == AND)
+        {
+            if (status != 0)
+            {
+                // If the previous command failed, skip until the next OR or NONE operator
+                while (current != NULL && current->operator == AND)
+                {
+                    current = current->next;
+                }
+            }
+            else // if the previous command succeeded
+            {
+                current = current->next; // skip until the next logical operator
+            }
+        }
+        else if (current->operator == OR)
+        {
+            if (status == 0)
+            {
+                // If the previous command was successful, skip until the next AND or NONE operator
+                while (current && current->operator != AND)
+                {
+                    current = current->next;
+                }
+            }
+            else
+            {
+                // If the previous command failed, proceed to the next command
+                current = current->next;
+            }
+        }
+        else
+        {
+            printf("Unknown operator/command: %s\n", current->str); // DEBUG: Indicate unrecognized operator/command
+            write(2, "Unknown operator: '", 19);
+            write(2, current->str, strlen(current->str));
+            write(2, "'.\n", 3);
+            return EXIT_FAILURE; // Or handle error differently
+        }
+    }
+    return status;
+}
+
+void assign_operator(t_params *node)
+{
+    if (strcmp(node->str, "&&") == 0)
+        node->operator = AND;
+    else if (strcmp(node->str, "||") == 0)
+        node->operator = OR;
+    else if (strcmp(node->str, "&") == 0)
+    {
+        write(STDERR_FILENO, "error, incorrect operator '&'\n", 30);
+        node->operator = ERROR;
+    }
+    else if (strcmp(node->str, "|") == 0)
+    {
+        write(STDERR_FILENO, "error, incorrect operator '|'\n", 30);
+        node->operator = ERROR;
+    }
+    else
+    {
+        node->operator = NONE;
+    }
+    
+    // DEBUG: Check operator assignment
+    printf("Node: %s, Operator: %d\n", node->str, node->operator);
+}
+
+void free_subcommand_args(char **args)
+{
+    if (args != NULL)
+    {
+        int i = 0;
+        while (args[i] != NULL)
+        {
+            free(args[i]); // Free each argument string
+            i++;
+        }
+        free(args); // Finally, free the array itself
+    }
+}
+
+void free_subcommands(t_params *sub_cmds)
+{
+    while (sub_cmds != NULL)
+    {
+        t_params *tmp = sub_cmds;
+        sub_cmds = sub_cmds->next; // Move to next command before freeing current
+
+        // Free the dynamically allocated members
+        if (tmp->str != NULL)
+        {
+            free(tmp->str);
+        }
+        if (tmp->cmd != NULL)
+        {
+            free(tmp->cmd);
+        }
+        
+        // Free the arguments array
+        free_subcommand_args(tmp->args);
+
+        // Finally free the t_params structure itself
+        free(tmp);
+    }
+}
+
+/*
+int ft_execute_priorities(t_params *commands)
+{
+    int status = 0;
     int paren_count = 0;
     t_params *current = commands;
     char *cmd_str = NULL;
@@ -205,14 +344,20 @@ int ft_execute_priorities(t_params *commands)
             printf("Parentheses found, processing enclosed commands.\n");
             while (current && paren_count > 0)
             {
-                printf("la\n");
                 if (current->operator == OPEN_PAREN)
                 {
-                    paren_count++;
+                    current = current->next;
+                    status = ft_execute_priorities(current); // Pass a pointer to the current node
+                    if (status != EXIT_SUCCESS)
+                    {
+                        return status;
+                    }
+                    continue; // Skip the rest of the loop and proceed with the next command
                 }
                 else if (current->operator == CLOSE_PAREN)
                 {
-                    paren_count--; // a matching CLOSE_PAREN found
+                    // Return to the caller function, effectively ending the recursion and going back one level
+                    return status;
                 }
                 if (paren_count > 0)
                 {
@@ -309,61 +454,4 @@ int ft_execute_priorities(t_params *commands)
     }
     return status;
 }
-
-void assign_operator(t_params *node)
-{
-    if (strcmp(node->str, "&&") == 0)
-    {
-        node->operator = AND;
-    }
-    else if (strcmp(node->str, "||") == 0)
-    {
-        node->operator = OR;
-    }
-    else
-    {
-        node->operator = NONE;
-    }
-    
-    // DEBUG: Check operator assignment
-    printf("Node: %s, Operator: %d\n", node->str, node->operator);
-}
-
-void free_subcommand_args(char **args)
-{
-    if (args != NULL)
-    {
-        int i = 0;
-        while (args[i] != NULL)
-        {
-            free(args[i]); // Free each argument string
-            i++;
-        }
-        free(args); // Finally, free the array itself
-    }
-}
-
-void free_subcommands(t_params *sub_cmds)
-{
-    while (sub_cmds != NULL)
-    {
-        t_params *tmp = sub_cmds;
-        sub_cmds = sub_cmds->next; // Move to next command before freeing current
-
-        // Free the dynamically allocated members
-        if (tmp->str != NULL)
-        {
-            free(tmp->str);
-        }
-        if (tmp->cmd != NULL)
-        {
-            free(tmp->cmd);
-        }
-        
-        // Free the arguments array
-        free_subcommand_args(tmp->args);
-
-        // Finally free the t_params structure itself
-        free(tmp);
-    }
-}
+*/

@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 12:16:57 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/06 10:49:55 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/08 11:36:12 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,23 +65,15 @@ void cleanup(void)
 int main(void)
 {
     t_data *data = get_global_data();
-    // initialization
-    // Initialize data->sig.stop and other necessary fields
-    // Set up signal handler
     signal_ctrl_c();
-    // Main loop for shell
+
     while (1)
     {
-        // Check the signal flag and act upon it
         if (data->sig.stop == 1)
         {
-            // Handle the SIGINT here, reset the flag
             data->sig.stop = 0;
-            // Example action: print a shell prompt
             write(1, "$ ", 2);
         }
-        // Wait for user input (simple example)
-        // You'd have your logic for reading and executing commands here
         char *line = readline("$ ");
         if (!line)
         {
