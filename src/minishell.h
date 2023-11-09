@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/08 18:10:55 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:50:10 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,6 @@ typedef struct s_var
 	struct s_var	*next;
 }					t_var;
 
-typedef struct s_signal
-{
-	int	stop;
-}		t_signal;
-
 typedef struct s_data
 {
 	char		**envp;
@@ -83,7 +78,6 @@ typedef struct s_data
 	int			old_fd[2];
 	t_params	*list;
 	t_var		*var;
-	t_signal	sig;
 }		t_data;
 
 /* minishell */

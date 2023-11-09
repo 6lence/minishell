@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 11:57:49 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:53:22 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ void	main_loop(t_data *l)
 
 int	main(int ac, char **av, char **envp)
 {
-	t_data	*l;
+	t_data				*l;
+	struct sigaction	s;
 
 	(void)av;
 	if (ac > 1)
@@ -108,7 +109,11 @@ int	main(int ac, char **av, char **envp)
 	l->stop_main = 1;
 	l->in = dup(STDIN_FILENO);
 	l->out = dup(STDOUT_FILENO);
-	//signals
+	sigemptyset(&s.sa_mask);
+	s.sa_sigaction = signal_handling;
+	s.sa_flags = SA_SIGINFO | SA_RESTART;
+	sigaction(SIGINT, &s, 0);
+	sigaction(SIGQUIT, &s, 0);
 	main_loop(l);
 	rl_clear_history();
 	free(l);
