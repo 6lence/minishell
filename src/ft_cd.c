@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 17:00:56 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/25 13:41:16 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 00:30:32 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,65 +150,3 @@ int	ft_cd(t_data *l)
     free(new_pwd);
     return (0);
 }
-
-/*
-int main()
-{
-    char *envp[] =
-	{
-        "HOME=/home/user",
-        "PWD=/home/user",
-        "VAR1=value1",
-        "VAR2=value2",
-        "VAR3=value3",
-        NULL
-    };
-
-    t_data data;
-    
-    // Calculate the number of environment variables
-    int env_count = 0;
-    while (envp[env_count] != NULL)
-	{
-        env_count++;
-    }
-    
-    // Allocate memory for the environment variables in data
-    data.envp = malloc(sizeof(char *) * (env_count + 1));
-    if (!data.envp)
-	{
-        fprintf(stderr, "Memory allocation error\n");
-        return 1;
-    }
-
-    // Copy the environment variables to data
-    for (int i = 0; i < env_count; i++)
-	{
-        data.envp[i] = ft_strdup(envp[i]);
-        if (!data.envp[i])
-		{ // Check for allocation errors
-            fprintf(stderr, "Memory allocation error\n");
-            return 1;
-        }
-    }
-    data.envp[env_count] = NULL; // Null-terminate the array
-
-    // Test arguments for the cd command
-    data.arguments = (char *[]){"cd", "/tmp", NULL};
-
-    // Execute the cd command
-    ft_cd(&data);
-
-    // Print the updated environment variables
-    print_env_variables(data.envp);
-
-    // Clean up
-    for (int i = 0; data.envp[i] != NULL; i++)
-	{
-        free(data.envp[i]);
-    }
-    free(data.envp);
-
-    return 0;
-}
-*/

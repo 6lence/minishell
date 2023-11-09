@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 10:38:07 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/09 11:54:32 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/10 00:30:22 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,3 @@ int	ft_env(t_data *l)
 	}
 	return (0);
 }
-
-/*
-int main(void)
-{
-    t_data data;
-
-    char *envp[] = {
-        "USER=root",
-        "HOME=/root",
-        "SHELL=/bin/bash",
-        NULL
-    };
-
-    data.envp = envp;
-    // initialize other fields of data as necessary
-
-    ft_env(&data);
-
-    return 0;
-}
-*/
