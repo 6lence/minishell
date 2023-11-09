@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 16:53:50 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:48:43 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,86 @@ int	ft_big_execute(t_data *l)
 int	init(t_data *l)
 {
 	l->params = readline("minishell-> ");
+	if (!l->params)
+		return (-1); // Ctrl+D was pressed, return a special code indicating EOF
+	if (ft_only_spaces(l->params))
+	{
+		free(l->params);
+		return (1);
+	}
+	add_history(l->params);
+	ft_parsing(l);
+	if (!l->list || !l->list->str || !l->list->str[0])
+	{
+		free(l->params);
+		return (0);
+	}
+	if (ft_lst_elem(l->list, 0))
+		l->dir = opendir(ft_lst_elem(l->list, 0)->str);
+	ft_pipe_presence(l);
+	l->commands = ft_count_command(l);
+	l->child_pos = 0;
+	l->child_pid = ft_calloc(l->commands, sizeof(int));
+	return (0);
+}
+
+void	main_loop(t_data *l)
+{
+	int init_status;
+
+	printf("\033[1;32mWelcome to minishell\033[0m\n");
+	while (l->stop_main)
+	{
+		init_status = init(l);
+		if (init_status == -1)
+		{
+			printf("Exiting...\n"); // Ctrl+D was pressed
+//			free ??
+			exit (0);
+		}
+		else if (init_status != 0)
+			continue ;
+		ft_big_execute(l);
+		ft_childs(l);
+		ft_free_all(l);
+	}
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_data				*l;
+//	struct sigaction	sa;
+
+	(void)av;
+	if (ac > 1)
+	{
+		perror("You cannot execute minishell with arguments.");
+		exit(EXIT_FAILURE);
+	}
+	l = ft_calloc(sizeof(t_data), 1);
+	l->envp = envp;
+	l->stop_main = 1;
+	l->in = dup(STDIN_FILENO);
+	l->out = dup(STDOUT_FILENO);
+	// sigemptyset(&sa.sa_mask);
+	// sa.sa_sigaction = signal_handling;
+	// sa.sa_flags = SA_SIGINFO | SA_RESTART;
+	// sigaction(SIGINT, &s, 0);
+	// sigaction(SIGQUIT, &s, 0);
+	setup_signal_handlers();
+	main_loop(l);
+	rl_clear_history();
+	close(l->in);
+	close(l->out);
+	free(l);
+	return (0);
+}
+
+/*
+//malloc ok in this function.
+int	init(t_data *l)
+{
+	l->params = readline("minishell-> ");
 	if (!l->params || ft_only_spaces(l->params))
 		return (1);
 	add_history(l->params);
@@ -103,30 +183,4 @@ void	main_loop(t_data *l)
 		ft_free_all(l);
 	}
 }
-
-int	main(int ac, char **av, char **envp)
-{
-	t_data				*l;
-	//struct sigaction	s;
-
-	(void)av;
-	if (ac > 1)
-	{
-		perror("You cannot execute minishell with arguments.");
-		exit(EXIT_FAILURE);
-	}
-	l = ft_calloc(sizeof(t_data), 1);
-	l->envp = envp;
-	l->stop_main = 1;
-	l->in = dup(STDIN_FILENO);
-	l->out = dup(STDOUT_FILENO);
-	// sigemptyset(&s.sa_mask);
-	// s.sa_sigaction = signal_handling;
-	// s.sa_flags = SA_SIGINFO | SA_RESTART;
-	// sigaction(SIGINT, &s, 0);
-	// sigaction(SIGQUIT, &s, 0);
-	main_loop(l);
-	rl_clear_history();
-	free(l);
-	return (0);
-}
+*/

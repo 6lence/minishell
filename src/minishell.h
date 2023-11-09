@@ -6,9 +6,10 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/09 17:04:38 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:48:11 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -222,14 +223,8 @@ void		delete_list(t_params *head);
 void		execute_command_with_wildcards(t_params *commands, char **envp);
 
 /* signals */
-t_data		*get_global_data(void);
-void		ft_cleanup(void);
-void		handle_sigint(int sig_num);
-void		signal_ctrl_c(void);
-void		handle_sigquit(int sig_num);
-void		signal_ctrl_back_slash(void);
-void		handle_eof(void);
-void		signal_ctrl_d(void);
-
+void		setup_signal_handlers(void);
+void		handle_sigint(int signum);
+void		handle_sigquit(int signum);
 
 #endif
