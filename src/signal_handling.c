@@ -13,7 +13,6 @@
 #include "minishell.h"
 #include <signal.h>
 
-
 t_data *get_global_data(void)
 {
     static t_data *data = NULL;
@@ -67,6 +66,7 @@ void ft_cleanup(void)
     // Optionally, reset the global data to NULL, so that subsequent calls to get_global_data will initialize a new object
     data = NULL;
 }
+
 /*
 int main(void)
 {
