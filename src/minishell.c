@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 12:53:22 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:53:50 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	ft_big_execute(t_data *l)
 {
 	t_params	*tmp;
 
+	l->tmp_in = l->in;
+	l->tmp_out = l->out;
 	if (l->pipe == 1)
 		ft_pipe(l);
 	else
@@ -47,7 +49,14 @@ int	ft_big_execute(t_data *l)
 		tmp = l->list;
 		while (tmp)
 		{
-			ft_look_in_out_put(tmp, l);
+			ft_look_in(tmp, l);
+			ft_look_out_put(tmp, l);
+			if (l->tmp_in < 0 || l->tmp_out < 0)
+			{
+				l->tmp_in = l->in;
+				l->tmp_out = l->out;
+				break ;
+			}
 			if (ft_chevron_cmp(tmp))
 				ft_increment(&tmp);
 			if (tmp && ft_operator_cmp(tmp))
@@ -56,6 +65,8 @@ int	ft_big_execute(t_data *l)
 				execute_command(l, tmp);
 			while (tmp && !ft_operator_cmp(tmp))
 				tmp = tmp->next;
+			if (tmp && ft_chevron_cmp(tmp))
+				ft_increment(&tmp);
 		}
 	}
 	return (0);
@@ -96,7 +107,7 @@ void	main_loop(t_data *l)
 int	main(int ac, char **av, char **envp)
 {
 	t_data				*l;
-	struct sigaction	s;
+	//struct sigaction	s;
 
 	(void)av;
 	if (ac > 1)
@@ -109,11 +120,11 @@ int	main(int ac, char **av, char **envp)
 	l->stop_main = 1;
 	l->in = dup(STDIN_FILENO);
 	l->out = dup(STDOUT_FILENO);
-	sigemptyset(&s.sa_mask);
-	s.sa_sigaction = signal_handling;
-	s.sa_flags = SA_SIGINFO | SA_RESTART;
-	sigaction(SIGINT, &s, 0);
-	sigaction(SIGQUIT, &s, 0);
+	// sigemptyset(&s.sa_mask);
+	// s.sa_sigaction = signal_handling;
+	// s.sa_flags = SA_SIGINFO | SA_RESTART;
+	// sigaction(SIGINT, &s, 0);
+	// sigaction(SIGQUIT, &s, 0);
 	main_loop(l);
 	rl_clear_history();
 	free(l);

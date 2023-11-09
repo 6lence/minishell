@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/09 12:50:10 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:04:38 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,11 @@ typedef struct s_var
 	struct s_var	*next;
 }					t_var;
 
+typedef struct s_signal
+{
+	int	stop;
+}		t_signal;
+
 typedef struct s_data
 {
 	char		**envp;
@@ -78,12 +83,15 @@ typedef struct s_data
 	int			old_fd[2];
 	t_params	*list;
 	t_var		*var;
+	t_signal	sig;
 }		t_data;
 
 /* minishell */
 void		show_parameters(const char *parameters);
 void		ft_pipe(t_data *l);
 char		*ft_access_verif(t_data *l, t_params *tmp);
+int			ft_chevron_cmp(t_params *params);
+void		ft_increment(t_params **t);
 
 /* parsing_1 */
 void		get_command_arguments(const char *input,
@@ -111,7 +119,7 @@ void		ft_fill_split(t_data *l);
 void		ft_look_dollar(t_data *l);
 
 /* parsing_6 */
-void		ft_look_in_out_put(t_params *tmp, t_data *l);
+void		ft_look_out_put(t_params *tmp, t_data *l);
 char		*ft_find_var(t_params *list, t_data *l);
 
 /*  parsing_7 */
@@ -126,6 +134,9 @@ int			ft_only_spaces(char *str);
 void		ft_open_simple_out(t_params *tmp, char *ct, t_data *l);
 void		ft_open_simple_in(t_params *tmp, char *ct, t_data *l);
 void		ft_open_double_out(t_params *tmp, char *ct, t_data *l);
+
+/* parsing_10 */
+void		ft_look_in(t_params *tmp, t_data *l);
 
 /* utils */
 int			is_builtin(char *command);

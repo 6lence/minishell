@@ -10,6 +10,7 @@ SRC_FILES :=	minishell.c \
 				ft_parsing_7.c \
 				ft_parsing_8.c \
 				ft_parsing_9.c \
+				ft_parsing_10.c \
 				ft_errors.c \
 				ft_lstutils.c \
 				ft_listutils_2.c \

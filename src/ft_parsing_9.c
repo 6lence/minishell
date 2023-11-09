@@ -6,18 +6,11 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:40:07 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 11:20:00 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 15:06:26 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_open_simple_in(t_params *tmp, char *ct, t_data *l)
-{
-	dprintf(2, "%s\n", tmp->str);
-	(void)ct;
-	l->tmp_in = open(tmp->str, O_RDONLY, 0644);
-}
 
 void	ft_open_simple_out(t_params *tmp, char *ct, t_data *l)
 {
