@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 20:49:03 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 22:04:39 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,37 +143,3 @@ int	main(int ac, char **av, char **envp)
 	free(l);
 	return (0);
 }
-
-/*
-//malloc ok in this function.
-int	init(t_data *l)
-{
-	l->params = readline("minishell-> ");
-	if (!l->params || ft_only_spaces(l->params))
-		return (1);
-	add_history(l->params);
-	ft_parsing(l);
-	if (!l->list || !l->list->str || !l->list->str[0])
-		return (0);
-	if (ft_lst_elem(l->list, 0))
-		l->dir = opendir(ft_lst_elem(l->list, 0)->str);
-	ft_pipe_presence(l);
-	l->commands = ft_count_command(l);
-	l->child_pos = 0;
-	l->child_pid = ft_calloc(l->commands, sizeof(int));
-	return (0);
-}
-
-void	main_loop(t_data *l)
-{
-	printf("\033[1;32mWelcome to minishell\033[0m\n");
-	while (l->stop_main)
-	{
-		if (init(l) != 0)
-			continue ;
-		ft_big_execute(l);
-		ft_childs(l);
-		ft_free_all(l);
-	}
-}
-*/
