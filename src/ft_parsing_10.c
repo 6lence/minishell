@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_10.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:07:30 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 16:54:51 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:47:08 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_input_more(t_params *tmp, t_data *l)
 	tmp = tmp->next;
 	ft_putstr_fd("heredoc> ", l->out);
 	str = get_next_line(0);
-	if(pipe(l->new_fd) < 0)
+	if (pipe(l->new_fd) < 0)
 		return (perror("error: fatal\n"));
 	while (str && ft_strcmp(ft_substr(str, 0, ft_strlen(str) - 1), tmp->str))
 	{

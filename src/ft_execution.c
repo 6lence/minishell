@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 17:01:55 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:10:37 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,29 +77,12 @@ void	ft_exec_builtin(t_data *l, t_params *tmp)
 
 void	execute_command(t_data *l, t_params *tmp)
 {
-	pid_t	child_pid;
-	int		ct;
+	pid_t		child_pid;
+	int			ct;
 
 	if (pipe(l->old_fd) < 0)
 		return (perror("error: fatal\n"));
-	// t_params *current = tmp;
-	// while (current != NULL)
-    // {
-    //     assign_operator(current);
-    //     current = current->next;
-    // }
-
-    // // Check if the command contains logical operators
-    // if (contains_logical_operators(tmp))
-    // {
-	// 	int status = ft_execute_priorities(tmp);
-    //     if (status != 0)
-    //     {
-    //         char *status_str = ft_itoa(status);
-    //         free(status_str); // Free the allocated string
-    //     }
-    //     return;
-    // }
+	ft_execute_part_1(tmp);
 	ct = is_builtin(tmp->str) && l->tmp_out == l->out;
 	if (ct && !l->pipe)
 		execute_builtin(l, tmp);
@@ -110,20 +93,5 @@ void	execute_command(t_data *l, t_params *tmp)
 	if (!ct && !child_pid)
 		ft_child(l, tmp);
 	else
-	{
-		if (l->commands)
-			l->child_pid[l->child_pos++] = child_pid;
-		if (l->pipe_nb >= 1)
-			dup2(l->old_fd[0], 0);
-		else
-			dup2(l->tmp_in, 0);
-		if (l->tmp_in != l->in)
-		{
-			close(l->tmp_in);
-			dup2(l->in, 0);
-		}
-		close(l->old_fd[0]);
-		close(l->old_fd[1]);
-		l->pipe_nb--;
-	}
+		ft_parent(l, child_pid);
 }

@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 17:48:43 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:49:03 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_chevron_cmp(t_params *params)
-{
-	if (ft_strcmp(params->str, ">>") == 0
-		|| ft_strcmp(params->str, ">") == 0
-		|| ft_strcmp(params->str, "<<") == 0
-		|| ft_strcmp(params->str, "<") == 0)
-		return (1);
-	return (0);
-}
 
 void	ft_increment(t_params **t)
 {
@@ -35,40 +25,43 @@ void	ft_increment(t_params **t)
 	}
 }
 
-int	ft_big_execute(t_data *l)
+void	ft_simple_execute(t_data *l)
 {
 	t_params	*tmp;
 
+	l->pos = 0;
+	tmp = l->list;
+	while (tmp)
+	{
+		ft_look_in(tmp, l);
+		ft_look_out_put(tmp, l);
+		if (l->tmp_in < 0 || l->tmp_out < 0)
+		{
+			l->tmp_in = l->in;
+			l->tmp_out = l->out;
+			break ;
+		}
+		if (ft_operator_cmp(tmp))
+			ft_increment(&tmp);
+		if (tmp && ft_operator_cmp(tmp))
+			tmp = tmp->next;
+		if (tmp)
+			execute_command(l, tmp);
+		while (tmp && !ft_operator_cmp(tmp))
+			tmp = tmp->next;
+		if (tmp && ft_operator_cmp(tmp))
+			ft_increment(&tmp);
+	}
+}
+
+int	ft_big_execute(t_data *l)
+{
 	l->tmp_in = l->in;
 	l->tmp_out = l->out;
 	if (l->pipe == 1)
 		ft_pipe(l);
 	else
-	{
-		l->pos = 0;
-		tmp = l->list;
-		while (tmp)
-		{
-			ft_look_in(tmp, l);
-			ft_look_out_put(tmp, l);
-			if (l->tmp_in < 0 || l->tmp_out < 0)
-			{
-				l->tmp_in = l->in;
-				l->tmp_out = l->out;
-				break ;
-			}
-			if (ft_chevron_cmp(tmp))
-				ft_increment(&tmp);
-			if (tmp && ft_operator_cmp(tmp))
-				tmp = tmp->next;
-			if (tmp)
-				execute_command(l, tmp);
-			while (tmp && !ft_operator_cmp(tmp))
-				tmp = tmp->next;
-			if (tmp && ft_chevron_cmp(tmp))
-				ft_increment(&tmp);
-		}
-	}
+		ft_simple_execute(l);
 	return (0);
 }
 

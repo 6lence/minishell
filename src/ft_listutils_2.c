@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_listutils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:30:31 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/10/25 13:40:00 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:11:01 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_params	*ft_list_elem(t_params *l, int pos)
 	t_params	*tmp;
 	int			i;
 
-	if (!l) // Check if the list is empty
+	if (!l)
 	{
 		printf("Error: List is empty.\n");
 		return (NULL);
@@ -41,13 +41,13 @@ t_params	*ft_list_elem(t_params *l, int pos)
 	i = 0;
 	while (i < pos)
 	{
-		if (!tmp->next) // Check if next element exists
+		if (!tmp->next)
 		{
 			printf("Error: Position out of range.\n");
 			return (NULL);
 		}
 		tmp = tmp->next;
-		i++; // Increment the counter
+		i++;
 	}
 	return (tmp);
 }

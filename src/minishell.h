@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/09 17:48:11 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:53:40 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,16 @@ void		ft_open_double_out(t_params *tmp, char *ct, t_data *l);
 /* parsing_10 */
 void		ft_look_in(t_params *tmp, t_data *l);
 
+/* parsing_11 */
+void		ft_words_2(t_data *l, int *i, int *words);
+void		ft_words_1(t_data *l, int *i, int *words);
+
 /* utils */
 int			is_builtin(char *command);
 int			execute_builtin(t_data *l, t_params *tmp);
 char		**linked_list_to_array(t_params *tmp);
+void		ft_parent(t_data *l, pid_t child_pid);
+void		ft_execute_part_1(t_params *tmp);
 
 /* utils_2 */
 char		**ft_absolute_path(t_data *l);
@@ -180,6 +186,11 @@ char		**ft_getenvvar(t_data *data, const char *name);
 int			ft_unsetenv(t_data *data, const char *name);
 t_params	*ft_get_nth_param(t_params *list, int n);
 int			ft_unset(t_data *l);
+
+/* ft_unset_2 */
+void		ft_exit_code(int *err_flag, t_data *l);
+void		ft_is_not_proper_variable(char *key, int *error_flag);
+void		ft_is_not_proper_env(t_params *element, int *error_flag);
 
 /* execute_priorities */
 t_params	*create_temp_command_node(char *cmd_str);

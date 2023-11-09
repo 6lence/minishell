@@ -11,12 +11,14 @@ SRC_FILES :=	minishell.c \
 				ft_parsing_8.c \
 				ft_parsing_9.c \
 				ft_parsing_10.c \
+				ft_parsing_11.c \
 				ft_errors.c \
 				ft_lstutils.c \
 				ft_listutils_2.c \
 				ft_execute_pipe.c \
 				ft_execution.c \
 				ft_execution_2.c \
+				ft_execution_3.c \
 				ft_free.c \
 				builtin.c \
 				ft_cd.c \
@@ -26,6 +28,7 @@ SRC_FILES :=	minishell.c \
 				ft_export.c \
 				ft_pwd.c \
 				ft_unset.c \
+				ft_unset_2.c \
 				ft_utils.c \
 				execute_priorities.c \
 				ft_wildcard.c \

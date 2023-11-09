@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_9.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:40:07 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 15:06:26 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:47:01 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_open_double_out(t_params *tmp, char *ct, t_data *l)
 		else
 		{
 			l->tmp_out = open(tmp->str,
-				O_WRONLY | O_APPEND | O_CREAT, 0644);
+					O_WRONLY | O_APPEND | O_CREAT, 0644);
 			if (tmp->next)
 				tmp = tmp->next;
 			else

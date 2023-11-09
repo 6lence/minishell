@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_5.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 13:21:41 by mescobar          #+#    #+#             */
-/*   Updated: 2023/10/31 14:36:36 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:16:33 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*ft_find_2(char *var, t_data *l)
 	{
 		line = ft_pathcmp(l->envp[i], var);
 		if (line != NULL)
-			break;
+			break ;
 		i++;
 	}
 	free(var);
