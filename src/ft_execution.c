@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/08 14:56:26 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:22:37 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,14 @@ void	ft_exec_builtin(t_data *l, t_params *tmp)
 		dup2(l->old_fd[1], 1);
 	else
 		dup2(l->tmp_out, 1);
-	if (l->tmp_out != l->out)
-		close(l->tmp_out);
 	close(l->old_fd[1]);
 	close(l->old_fd[0]);
 	execute_builtin(l, tmp);
+	if (l->tmp_out != l->out)
+	{
+		close(l->tmp_out);
+		dup2(l->out, 1);
+	}
 	ft_free_all(l);
 	exit(EXIT_SUCCESS);
 }
@@ -94,7 +97,7 @@ void	execute_command(t_data *l, t_params *tmp)
     //     }
     //     return;
     // }
-	ct = is_builtin(tmp->str);
+	ct = is_builtin(tmp->str) && l->tmp_out == l->out;
 	if (ct && !l->pipe)
 		execute_builtin(l, tmp);
 	child_pid = fork();
@@ -111,37 +114,13 @@ void	execute_command(t_data *l, t_params *tmp)
 			dup2(l->old_fd[0], 0);
 		else
 			dup2(l->tmp_in, 0);
+		if (l->tmp_in != l->in)
+		{
+			close(l->tmp_in);
+			dup2(l->in, 0);
+		}
 		close(l->old_fd[0]);
 		close(l->old_fd[1]);
 		l->pipe_nb--;
 	}
 }
-
-/*
-// Function to execute a command with its arguments
-void	execute_command(t_data *l, t_params *tmp)
-{
-	pid_t		child_pid;
-	char		**args;
-
-	child_pid = fork();
-	if (child_pid == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	if (child_pid == 0)
-	{
-		if (ft_access_verif(l, tmp) < 0 && tmp->str != NULL)
-		{
-			dup2(l->out, 1);
-			ft_printf("Command '%s' not found.\n",
-				 tmp->str);
-				return ;
-		}
-		args = ft_arguments(tmp);
-		execve(l->path, args, l->envp);
-	}
-	wait(NULL);
-}
-*/

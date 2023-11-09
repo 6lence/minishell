@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:01:17 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/08 17:34:39 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:07:53 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,11 @@ int	ft_access(t_params *params, t_data *l)
 	if (access(params->str, 0) == 0)
 		return (1);
 	path = ft_search_path("PATH", l);
+	if (!path)
+	{
+		printf("Command: %s: not found.\n", params->str);
+		return (0);
+	}
 	command = ft_strjoin("/", params->str);
 	return (ft_join_access(path, command));
 }
@@ -111,7 +116,9 @@ int	ft_count_command(t_data *l)
 	res = 0;
 	while (tmp)
 	{
-		if (ft_access(tmp, l) == 1)
+		if (is_builtin(tmp->str))
+			res++;
+		else if (ft_access(tmp, l) == 1)
 			res++;
 		while (tmp->next && !ft_operator_cmp(tmp))
 			tmp = tmp->next;

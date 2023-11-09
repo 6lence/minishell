@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:29:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/02 10:36:44 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:06:27 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ char    **ft_search_path(char *str, t_data *l)
             break ;
         i++;
     }
+    if (!line)
+        return (NULL);
     tmp = ft_split(line, ':');
     return (tmp);
 }
