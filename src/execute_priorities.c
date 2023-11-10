@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 09:43:44 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 12:31:24 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,38 +28,26 @@ t_params *create_temp_command_node(char *cmd_str)
     temp->next = NULL;
     temp->cmd = NULL;
     temp->args = NULL;
-
-//    printf("Creating node for: %s\n", cmd_str); // DEBUG
-
     if (ft_strcmp(cmd_str, "&&") == 0)
         temp->operator = AND;
     else if (ft_strcmp(cmd_str, "||") == 0)
         temp->operator = OR;
-    else // treat as command with arguments
+    else
     {
         char **args = ft_split(cmd_str, ' ');
         int i = 0;
-
-        if (args[i] != NULL) // Check if there is at least a command
+        if (args[i] != NULL)
         {
-//            printf("DEBUG: Setting CMD: %s\n", args[i]);
             temp->cmd = ft_strdup(args[i++]);
-//            printf("DEBUG: CMD set in node: %s\n", temp->cmd);
-
-            // Allocate and initialize arguments including the cmd as the first argument
             temp->args = (char **)malloc(sizeof(char *) * MAX_ARGS);
             temp->args[0] = ft_strdup(temp->cmd);
-
-            // Copy the rest of the arguments
             int j = 1;
             while (args[i] != NULL && j < MAX_ARGS - 1)
             {
                 temp->args[j++] = ft_strdup(args[i++]);
             }
-            temp->args[j] = NULL; // Null terminate the args array
+            temp->args[j] = NULL;
         }
-
-        // Free the memory allocated by ft_split
         i = 0;
         while (args[i] != NULL)
         {
@@ -73,30 +61,18 @@ t_params *create_temp_command_node(char *cmd_str)
 int contains_logical_operators(t_params *tmp)
 {
 //    t_params *current = tmp;
-
-//    printf("Starting to search for logical operators and parentheses...\n"); // DEBUG: Indicating the start of the search
-
     while (tmp != NULL)
     {
-        // // DEBUG: Detailed information about the current node
-        // printf("Current Node Information:\n");
-        // printf("  - String: %s\n", tmp->str);
-        // printf("  - Position: %d\n", tmp->pos);
-        // printf("  - Operator: %d\n", tmp->operator);
 
         if (tmp->operator != NONE)
         {
-//            printf("Logical operator found! Operator type: %d in command: %s\n", tmp->operator, tmp->str); // DEBUG: Indicating found logical operator
-            return 1;
+            return(1);
         }
         tmp = tmp->next;
     }
-
-//    printf("No logical operators found in the provided commands.\n"); // DEBUG: Indicating no logical operators were found
     return 0;
 }
 
-// same fuction as in ft_logial_and
 int execute_operator(t_params *cmd)
 {
     pid_t pid;
@@ -197,21 +173,14 @@ int ft_execute_priorities(t_params *commands)
         {
             if (status == 0)
             {
-                // If the previous command was successful, skip until the next AND or NONE operator
                 while (current && current->operator != AND)
-                {
                     current = current->next;
-                }
             }
             else
-            {
-                // If the previous command failed, proceed to the next command
                 current = current->next;
-            }
         }
         else
         {
-//            printf("Unknown operator/command: %s\n", current->str); // DEBUG: Indicate unrecognized operator/command
             write(2, "Unknown operator: '", 19);
             write(2, current->str, strlen(current->str));
             write(2, "'.\n", 3);
@@ -232,55 +201,6 @@ void assign_operator(t_params *node)
         write(STDERR_FILENO, "error, incorrect operator '&'\n", 30);
         node->operator = ERROR;
     }
-    else if (strcmp(node->str, "|") == 0)
-    {
-        write(STDERR_FILENO, "error, incorrect operator '|'\n", 30);
-        node->operator = ERROR;
-    }
     else
-    {
         node->operator = NONE;
-    }
-    
-    // DEBUG: Check operator assignment
-//    printf("Node: %s, Operator: %d\n", node->str, node->operator);
-}
-
-void free_subcommand_args(char **args)
-{
-    if (args != NULL)
-    {
-        int i = 0;
-        while (args[i] != NULL)
-        {
-            free(args[i]); // Free each argument string
-            i++;
-        }
-        free(args); // Finally, free the array itself
-    }
-}
-
-void free_subcommands(t_params *sub_cmds)
-{
-    while (sub_cmds != NULL)
-    {
-        t_params *tmp = sub_cmds;
-        sub_cmds = sub_cmds->next; // Move to next command before freeing current
-
-        // Free the dynamically allocated members
-        if (tmp->str != NULL)
-        {
-            free(tmp->str);
-        }
-        if (tmp->cmd != NULL)
-        {
-            free(tmp->cmd);
-        }
-        
-        // Free the arguments array
-        free_subcommand_args(tmp->args);
-
-        // Finally free the t_params structure itself
-        free(tmp);
-    }
 }
