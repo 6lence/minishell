@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 14:49:14 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 16:09:41 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,11 @@ int			ft_execute_priorities(t_params *commands);
 void		assign_operator(t_params *node);
 void		free_subcommand_args(char **args);
 void		free_subcommands(t_params *sub_cmds);
+void		ft_non_operator(char *cmd_str, t_params *temp, int a);
+void		ft_current_operator_none(t_params **current,	int *status,
+				 char *cmd_str);
+void		ft_current_operator_and(t_params **current, int status);
+void		ft_current_operator_or(t_params **current, int status);
 
 /* lstutils */
 t_params	*ft_lstlast(t_params *l);

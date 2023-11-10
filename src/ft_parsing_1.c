@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/10 13:24:34 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:02:06 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,3 +106,13 @@ void	ft_parsing(t_data *l)
 	while (l->list->prev)
 		l->list = l->list->prev;
 }
+
+
+/*
+
+dollars parsing
+	echo $?
+	USER free
+exit: arguments
+
+*/
