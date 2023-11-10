@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_priorities.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 09:43:44 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 11:51:13 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,11 +230,6 @@ void assign_operator(t_params *node)
     else if (strcmp(node->str, "&") == 0)
     {
         write(STDERR_FILENO, "error, incorrect operator '&'\n", 30);
-        node->operator = ERROR;
-    }
-    else if (strcmp(node->str, "|") == 0)
-    {
-        write(STDERR_FILENO, "error, incorrect operator '|'\n", 30);
         node->operator = ERROR;
     }
     else

@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/10 11:31:27 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/10 12:01:48 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	ft_child(t_data *l, t_params *tmp)
 	if (l->path)
 	{
 		args = ft_arguments(tmp);
-		dprintf(2, "out: %d\n", dup(1));
 		execve(l->path, args, l->envp);
 	}
 	printf("Command %s: not found\n", tmp->str);
@@ -60,13 +59,13 @@ void	ft_child(t_data *l, t_params *tmp)
 
 void	ft_in_out(t_data *l)
 {
-	dprintf(2, "%d\n", l->pipe_nb);
 	if (l->pipe_nb >= 1)
 		dup2(l->old_fd[1], 1);
 	else
 	{
 		dup2(l->tmp_out, 1);
-		dup2(l->tmp_in, 0);
+		if (l->tmp_in != l->in)
+			dup2(l->tmp_in, 0);
 	}
 	close(l->old_fd[1]);
 	close(l->old_fd[0]);
