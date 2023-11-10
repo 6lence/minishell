@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 22:04:39 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/10 09:10:39 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	main_loop(t_data *l)
 		if (init_status == -1)
 		{
 			printf("Exiting...\n"); // Ctrl+D was pressed
-//			free ??
+//			ft_clean_up(l);
 			exit (0);
 		}
 		else if (init_status != 0)

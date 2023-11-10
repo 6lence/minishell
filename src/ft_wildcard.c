@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:27:29 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/08 12:57:51 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 10:49:48 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,83 +19,84 @@
 #include <unistd.h>
 #include <dirent.h>
 
-t_params *new_node(const char *cmd, char **args)
+t_params	*new_node(const char *cmd, char **args)
 {
-    t_params *new_node = malloc(sizeof(t_params));
-    new_node->cmd = ft_strdup(cmd);
-    new_node->args = args;
-    new_node->next = NULL;
-    return new_node;
+	t_params	*new_node;
+
+	new_node = malloc(sizeof(t_params));
+	new_node->cmd = ft_strdup(cmd);
+	new_node->args = args;
+	new_node->next = NULL;
+	return (new_node);
 }
 
-void delete_list(t_params *head)
+void	delete_list(t_params *head)
 {
-    t_params *tmp;
-    while (head != NULL)
-    {
-        tmp = head;
-        head = head->next;
-        free(tmp->cmd);
-        free(tmp);
-    }
+	t_params	*tmp;
+
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp->cmd);
+		free(tmp);
+	}
 }
 
-void execute_command_with_wildcards(t_params *commands, char **envp)
+void	execute_command_with_wildcards(t_params *commands, char **envp)
 {
-    DIR *d;
-    struct dirent *dir;
-    const char **new_args;
-    t_params *current;
+	DIR				*d;
+	struct dirent	*dir;
+	const char		**new_args;
+	t_params		*current;
 
-    d = opendir(".");
-    if (d == NULL)
-    {
-        perror("opendir");
-        exit(EXIT_FAILURE);
-    }
-
-    new_args = malloc(3 * sizeof(char *));
-    if (new_args == NULL)
-    {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
-    current = commands;
-    while (current != NULL)
-    {
-        pid_t pid = fork();
-        if (pid == 0) // Child process
-        {
-            while ((dir = readdir(d)) != NULL)
-            {
-                if (ft_strstr(dir->d_name, current->args[1] + 1))
-                {
-                    new_args[0] = current->cmd;
-                    new_args[1] = dir->d_name;
-                    new_args[2] = NULL;
-
-                    execve(current->cmd, (char *const *)new_args, envp);
-                    perror("execve");
-                    exit(EXIT_FAILURE);
-                }
-            }
-            closedir(d);
-            free(new_args); // Free the allocated memory
-            exit(EXIT_SUCCESS);
-        }
-        else if (pid < 0) // Fork failed
-        {
-            perror("fork");
-            exit(EXIT_FAILURE);
-        }
-        else // Parent process
-        {
-            int status;
-            waitpid(pid, &status, 0);
-        }
-        current = current->next;
-    }
-    free(new_args); // Free the allocated memory
+	d = opendir(".");
+	if (d == NULL)
+	{
+		perror("opendir");
+		exit(EXIT_FAILURE);
+	}
+	new_args = malloc(3 * sizeof(char *));
+	if (new_args == NULL)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+	current = commands;
+	while (current != NULL)
+	{
+		pid_t	pid = fork();
+		if (pid == 0)
+		{
+			while ((dir = readdir(d)) != NULL)
+			{
+				if (ft_strstr(dir->d_name, current->args[1] + 1))
+				{
+					new_args[0] = current->cmd;
+					new_args[1] = dir->d_name;
+					new_args[2] = NULL;
+					execve(current->cmd, (char *const *)new_args, envp);
+					perror("execve");
+					exit(EXIT_FAILURE);
+				}
+			}
+			closedir(d);
+			free(new_args);
+			exit(EXIT_SUCCESS);
+		}
+		else if (pid < 0)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		else
+		{
+			int	status;
+			waitpid(pid, &status, 0);
+		}
+		current = current->next;
+	}
+	free(new_args);
 }
 
 /*
