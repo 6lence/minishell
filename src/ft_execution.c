@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/10 13:34:25 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 13:57:36 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	ft_in_out(t_data *l)
 	else
 	{
 		dup2(l->tmp_out, 1);
-		dup2(l->tmp_in, 0);
+		if (l->tmp_in != l->in)
+			dup2(l->tmp_in, 0);
 	}
 	close(l->old_fd[1]);
 	close(l->old_fd[0]);
