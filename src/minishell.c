@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/10 14:41:29 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:01:48 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int	main(int ac, char **av, char **envp)
 	// sa.sa_flags = SA_SIGINFO | SA_RESTART;
 	// sigaction(SIGINT, &s, 0);
 	// sigaction(SIGQUIT, &s, 0);
-	setup_signal_handlers();
+//	setup_signal_handlers();
 	main_loop(l);
 	rl_clear_history();
 	close(l->in);

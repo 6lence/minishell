@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 14:54:01 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:01:33 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,6 +237,7 @@ void		ft_clean_up(t_data *l);
 t_params	*new_node(const char *cmd, char **args);
 void		delete_list(t_params *head);
 void		execute_command_with_wildcards(t_params *commands, char **envp);
+int			ft_is_wildcard(t_params *params, char **env);
 
 /* signals */
 void		setup_signal_handlers(void);

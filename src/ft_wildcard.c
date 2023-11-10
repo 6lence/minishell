@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:27:29 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 10:49:48 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 13:40:52 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,29 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <dirent.h>
+
+int ft_is_wildcard(t_params *params, char **env)
+{
+	t_params    *tmp;
+	int         i;
+	int         res;
+
+	(void)env;
+	res = 0;
+	tmp = params;
+	while (tmp)
+	{
+		i = 0;
+		while (tmp->str[i])
+		{
+			if (tmp->str[i] == '*')
+				res = 1;
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	return (res);
+}
 
 t_params	*new_node(const char *cmd, char **args)
 {

@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/10 13:55:10 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:02:06 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ void	ft_parsing(t_data *l)
 	ft_look_dollar(l);
 	while (l->list->prev)
 		l->list = l->list->prev;
-	execute_command_with_wildcards(l->list, l->envp);
 }
 
 

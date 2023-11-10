@@ -6,11 +6,13 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:16:37 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/09 14:33:30 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 13:19:19 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+pid_t global_child_pid = -1;
 
 void setup_signal_handlers(void)
 {
@@ -18,12 +20,17 @@ void setup_signal_handlers(void)
 
 	sa.sa_handler = handle_sigint; // Set the handler for SIGINT
 	sigemptyset(&sa.sa_mask);      // Clear all signals from the signal mask
-	sa.sa_flags = SA_RESTART;      // To make sure syscalls are restarted if interrupted
+	sa.sa_flags = SA_SIGINFO | SA_RESTART;      // To make sure syscalls are restarted if interrupted
 	sigaction(SIGINT, &sa, NULL);  // Assign the handler for SIGINT
 
-	sa.sa_handler = SIG_IGN; // Set the handler for SIGQUIT
+	sa.sa_handler = handle_sigquit; //SIG_IGN; // Set the handler for SIGQUIT
 	sigaction(SIGQUIT, &sa, NULL);  // Assign the handler for SIGQUIT
 }
+
+	// sa.sa_sigaction = signal_handling;
+	
+	// sigaction(SIGINT, &s, 0);
+	// sigaction(SIGQUIT, &s, 0);
 
 // The SIGINT signal handler
 void handle_sigint(int signum)
