@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution_3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 20:53:03 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/10 00:31:57 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/10 11:31:48 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_execute_part_1(t_params *tmp)
+int	ft_execute_part_1(t_params *tmp)
 {
 	t_params	*current;
 	char		*status_str;
@@ -32,8 +32,9 @@ void	ft_execute_part_1(t_params *tmp)
 			status_str = ft_itoa(status);
 			free(status_str);
 		}
-		return ;
+		return (1);
 	}
+	return (0);
 }
 
 void	ft_parent(t_data *l, pid_t child_pid)

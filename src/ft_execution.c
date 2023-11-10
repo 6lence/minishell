@@ -6,7 +6,7 @@
 /*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/10 11:30:10 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/10 11:31:27 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ void	execute_command(t_data *l, t_params *tmp)
 
 	if (pipe(l->old_fd) < 0)
 		return (perror("error: fatal\n"));
-	ft_execute_part_1(tmp);
+	if (ft_execute_part_1(tmp) == 1)
+		return ;
 	ct = is_builtin(tmp->str) && l->tmp_out == l->out;
 	if (ct && !l->pipe)
 		execute_builtin(l, tmp);

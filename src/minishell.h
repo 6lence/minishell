@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 10:51:42 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 11:31:43 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int			is_builtin(char *command);
 int			execute_builtin(t_data *l, t_params *tmp);
 char		**linked_list_to_array(t_params *tmp);
 void		ft_parent(t_data *l, pid_t child_pid);
-void		ft_execute_part_1(t_params *tmp);
+int			ft_execute_part_1(t_params *tmp);
 
 /* utils_2 */
 char		**ft_absolute_path(t_data *l);
