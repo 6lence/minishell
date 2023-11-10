@@ -31,6 +31,7 @@ SRC_FILES :=	minishell.c \
 				ft_unset_2.c \
 				ft_utils.c \
 				execute_priorities.c \
+				execute_priorities_2.c \
 				ft_wildcard.c \
 				signals.c \
 				ft_childs.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 12:34:37 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 21:14:47 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/10 13:55:10 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,3 +107,13 @@ void	ft_parsing(t_data *l)
 		l->list = l->list->prev;
 	execute_command_with_wildcards(l->list, l->envp);
 }
+
+
+/*
+
+dollars parsing
+	echo $?
+	USER free
+exit: arguments
+
+*/
