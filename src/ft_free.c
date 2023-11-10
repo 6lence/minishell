@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 17:13:35 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/07 14:43:26 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/10 09:07:00 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,14 @@ void	ft_free_all(t_data *l)
 	if (l->child_pid)
 		free(l->child_pid);
 	l = NULL;
+}
+
+void ft_clean_up(t_data *l)
+{
+    if (l->params)
+        free(l->params);
+    if (l->child_pid)
+        free(l->child_pid);
+    if (l->dir)
+        closedir(l->dir);
 }

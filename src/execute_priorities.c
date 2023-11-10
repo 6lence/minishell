@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/08 13:57:47 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 09:43:44 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_params *create_temp_command_node(char *cmd_str)
     temp->cmd = NULL;
     temp->args = NULL;
 
-    printf("Creating node for: %s\n", cmd_str); // DEBUG
+//    printf("Creating node for: %s\n", cmd_str); // DEBUG
 
     if (ft_strcmp(cmd_str, "&&") == 0)
         temp->operator = AND;
@@ -42,9 +42,9 @@ t_params *create_temp_command_node(char *cmd_str)
 
         if (args[i] != NULL) // Check if there is at least a command
         {
-            printf("DEBUG: Setting CMD: %s\n", args[i]);
+//            printf("DEBUG: Setting CMD: %s\n", args[i]);
             temp->cmd = ft_strdup(args[i++]);
-            printf("DEBUG: CMD set in node: %s\n", temp->cmd);
+//            printf("DEBUG: CMD set in node: %s\n", temp->cmd);
 
             // Allocate and initialize arguments including the cmd as the first argument
             temp->args = (char **)malloc(sizeof(char *) * MAX_ARGS);
@@ -74,25 +74,25 @@ int contains_logical_operators(t_params *tmp)
 {
 //    t_params *current = tmp;
 
-    printf("Starting to search for logical operators and parentheses...\n"); // DEBUG: Indicating the start of the search
+//    printf("Starting to search for logical operators and parentheses...\n"); // DEBUG: Indicating the start of the search
 
     while (tmp != NULL)
     {
-        // DEBUG: Detailed information about the current node
-        printf("Current Node Information:\n");
-        printf("  - String: %s\n", tmp->str);
-        printf("  - Position: %d\n", tmp->pos);
-        printf("  - Operator: %d\n", tmp->operator);
+        // // DEBUG: Detailed information about the current node
+        // printf("Current Node Information:\n");
+        // printf("  - String: %s\n", tmp->str);
+        // printf("  - Position: %d\n", tmp->pos);
+        // printf("  - Operator: %d\n", tmp->operator);
 
         if (tmp->operator != NONE)
         {
-            printf("Logical operator found! Operator type: %d in command: %s\n", tmp->operator, tmp->str); // DEBUG: Indicating found logical operator
+//            printf("Logical operator found! Operator type: %d in command: %s\n", tmp->operator, tmp->str); // DEBUG: Indicating found logical operator
             return 1;
         }
         tmp = tmp->next;
     }
 
-    printf("No logical operators found in the provided commands.\n"); // DEBUG: Indicating no logical operators were found
+//    printf("No logical operators found in the provided commands.\n"); // DEBUG: Indicating no logical operators were found
     return 0;
 }
 
@@ -108,7 +108,7 @@ int execute_operator(t_params *cmd)
         return EXIT_FAILURE;
     }
 
-    printf("Executing command: %s\n", cmd->cmd); // Debugging print
+//    printf("Executing command: %s\n", cmd->cmd); // Debugging print
 
     if ((pid = fork()) == -1)
     {
@@ -135,7 +135,7 @@ int execute_operator(t_params *cmd)
         }
     }
     
-    printf("Command '%s' exited with status: %d\n", cmd->cmd, status); // Output each command's exit status
+//    printf("Command '%s' exited with status: %d\n", cmd->cmd, status); // Output each command's exit status
     return status;
 }
 
@@ -148,13 +148,13 @@ int ft_execute_priorities(t_params *commands)
 
     while (current != NULL)
     {
-        printf("Current command/operator: %s\n", current->str); // DEBUG
+//        printf("Current command/operator: %s\n", current->str); // DEBUG
 
         if (current->operator == NONE)
-        { // If it's a command
+        {
             t_params *temp_cmd_node;
             if (current->next != NULL && current->next->operator == NONE)
-            { // Check if the next node is also a command part
+            {
                 total_length = ft_strlen(current->str) + ft_strlen(current->next->str) + 2;
                 cmd_str = malloc(total_length);
                 if (cmd_str == NULL)
@@ -174,9 +174,8 @@ int ft_execute_priorities(t_params *commands)
             }
 
             status = execute_operator(temp_cmd_node);
-            free(temp_cmd_node); // Free the temporary node
+            free(temp_cmd_node);
 
-            // Move to the next node after the command or combined command
             current = (current->next != NULL && current->next->operator == NONE) ? current->next->next : current->next;
         }
         else if (current->operator == AND)
@@ -212,11 +211,11 @@ int ft_execute_priorities(t_params *commands)
         }
         else
         {
-            printf("Unknown operator/command: %s\n", current->str); // DEBUG: Indicate unrecognized operator/command
+//            printf("Unknown operator/command: %s\n", current->str); // DEBUG: Indicate unrecognized operator/command
             write(2, "Unknown operator: '", 19);
             write(2, current->str, strlen(current->str));
             write(2, "'.\n", 3);
-            return EXIT_FAILURE; // Or handle error differently
+            return EXIT_FAILURE;
         }
     }
     return status;
@@ -244,7 +243,7 @@ void assign_operator(t_params *node)
     }
     
     // DEBUG: Check operator assignment
-    printf("Node: %s, Operator: %d\n", node->str, node->operator);
+//    printf("Node: %s, Operator: %d\n", node->str, node->operator);
 }
 
 void free_subcommand_args(char **args)

@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/09 21:53:40 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/10 10:51:42 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -42,7 +41,7 @@ typedef struct s_params
 	struct s_params		*next;
 	char				*cmd;
 	int					operator;
-    char				**args;
+	char				**args;
 }						t_params;
 
 typedef struct s_var
@@ -227,6 +226,7 @@ void		ft_free_split(char **str, int len);
 void		ft_free_split_2(char **split);
 void		ft_free_all(t_data *l);
 void		free_resources(char **args, char *cmd_no_paren, t_params *temp);
+void		ft_clean_up(t_data *l);
 
 /* ft_wildcard */
 t_params	*new_node(const char *cmd, char **args);
