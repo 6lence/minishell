@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 13:34:03 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:49:14 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,12 @@ void		ft_clean_up(t_data *l);
 t_params	*new_node(const char *cmd, char **args);
 void		delete_list(t_params *head);
 void		execute_command_with_wildcards(t_params *commands, char **envp);
+void		execute_command_with_wildcards_recursive(t_params *current, char **envp, DIR *d);
 int			ft_is_wildcard(t_params *params, char **env);
+void		count_arguments(char **args, int *count);
+void		assign_arguments(char **args, char **new_args, DIR *d, int index, int arg_count);
+void		execute_child_process(const char *cmd, char **args, char **envp, DIR *d);
+int			matches_wildcard(const char *str, const char *pattern);
 
 /* signals */
 void		setup_signal_handlers(void);

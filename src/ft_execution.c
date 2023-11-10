@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/10 13:57:36 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:27:55 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ void	execute_command(t_data *l, t_params *tmp)
 		return (perror("error: fatal\n"));
 	if (ft_execute_part_1(tmp) == 1)
 		return ;
-	if (ft_is_wildcard(l->list, l->envp))
-		return (execute_command_with_wildcards(l->list, l->envp));
+	if (ft_is_wildcard(tmp, l->envp))
+		return (execute_command_with_wildcards(tmp, l->envp));
 	ct = is_builtin(tmp->str) && l->tmp_out == l->out;
 	if (ct && !l->pipe)
 		execute_builtin(l, tmp);
