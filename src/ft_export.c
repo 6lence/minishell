@@ -6,20 +6,11 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 10:28:30 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:35:01 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_print_env(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		printf("%s\n", str[i++]);
-}
 
 static int	valid_env_name(char *arg)
 {
@@ -39,16 +30,30 @@ static int	valid_env_name(char *arg)
 	return (1);
 }
 
-int	array_length(char **array)
+int	add_or_update_env_2(t_data *data, char *new_env_entry)
 {
-	int	length;
+//	int		i;
+	int		j;
+	char	**new_envp;
 
-	length = 0;
-	while (array[length])
+//	i = 0;
+	j = 0;
+	new_envp = (char **)malloc(sizeof(char *) * (array_length(data->envp) + 2));
+	if (!new_envp)
 	{
-		length++;
+		free(new_env_entry);
+		return (-1);
 	}
-	return (length);
+	while (data->envp[j])
+	{
+		new_envp[j] = data->envp[j];
+		j++;
+	}
+	new_envp[j] = new_env_entry;
+	new_envp[j + 1] = NULL;
+	free(data->envp);
+	data->envp = new_envp;
+	return (0);
 }
 
 int	add_or_update_env(t_data *data, char *key, char *value)
@@ -76,22 +81,7 @@ int	add_or_update_env(t_data *data, char *key, char *value)
 		}
 		i++;
 	}
-	i = 0;
-	char	**new_envp = (char **)malloc(sizeof(char *) * (array_length(data->envp) + 2));
-	if (!new_envp)
-	{
-		return (-1);
-	}
-	int	j = 0;
-	while (data->envp[j])
-	{
-		new_envp[j] = data->envp[j];
-		j++;
-	}
-	new_envp[j] = new_env_entry;
-	new_envp[j + 1] = NULL;
-	data->envp = new_envp;
-	return (0);
+	return (add_or_update_env_2(data, new_env_entry));
 }
 
 int	ft_export(t_data *l)

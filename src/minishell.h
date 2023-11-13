@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 16:09:41 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:36:18 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include <termios.h>
 
 # include "../libft/libft.h"
+#define DEBUG_PRINT(x) do { printf("Debug: "); printf x; printf("\n"); } while (0)
 
 typedef struct s_params
 {
@@ -142,10 +143,13 @@ void		ft_look_in(t_params *tmp, t_data *l);
 void		ft_words_2(t_data *l, int *i, int *words);
 void		ft_words_1(t_data *l, int *i, int *words);
 
-/* utils */
+/* builtin */
 int			is_builtin(char *command);
 int			execute_builtin(t_data *l, t_params *tmp);
+int			execute_builtin_2(t_data *l, t_params *tmp);
 char		**linked_list_to_array(t_params *tmp);
+
+/* utils */
 void		ft_parent(t_data *l, pid_t child_pid);
 int			ft_execute_part_1(t_params *tmp);
 
@@ -175,6 +179,8 @@ int			ft_exit(t_data *l);
 int			ft_export(t_data *l);
 int			array_length(char **array);
 int			add_or_update_env(t_data *data, char *key, char *value);
+int			add_or_update_env_2(t_data *data, char *new_env_entry);
+void		ft_print_env(char **str);
 
 /* pwd */
 char		*ft_pwd(void);

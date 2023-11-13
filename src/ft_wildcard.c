@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:27:29 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 15:55:29 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/13 08:30:58 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@ int ft_is_wildcard(t_params *params, char **env)
 {
 	t_params    *tmp;
 	int         i;
-	int         res;
 
 	(void)env;
-	res = 0;
 	tmp = params;
 	while (tmp)
 	{
@@ -27,12 +25,12 @@ int ft_is_wildcard(t_params *params, char **env)
 		while (tmp->str[i])
 		{
 			if (tmp->str[i] == '*')
-				res = 1;
+				return (1);
 			i++;
 		}
 		tmp = tmp->next;
 	}
-	return (res);
+	return (0);
 }
 
 t_params	*new_node(const char *cmd, char **args)
@@ -49,8 +47,9 @@ t_params	*new_node(const char *cmd, char **args)
 void execute_command_with_wildcards(t_params *commands, char **envp)
 {
     DIR *d;
-    t_params *current = commands;
+//    t_params *current = commands;
 
+    printf("Debug: Processing command '%s'\n", commands->cmd); // Debug print
     d = opendir(".");
     if (d == NULL)
     {
@@ -58,9 +57,9 @@ void execute_command_with_wildcards(t_params *commands, char **envp)
         exit(EXIT_FAILURE);
     }
 
-    if (current != NULL)
+    if (commands != NULL)
     {
-        execute_command_with_wildcards_recursive(current, envp, d);
+        execute_command_with_wildcards_recursive(commands, envp, d);
     }
 
     closedir(d);

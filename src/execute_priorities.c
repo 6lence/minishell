@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_priorities.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 15:01:10 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/13 14:35:26 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #define MAX_ARGS 64
 #define MAX_ARG_LENGTH 256
 
-t_params *create_temp_command_node(char *cmd_str)
+t_params	*create_temp_command_node(char *cmd_str)
 {
 	t_params	*temp;
 
@@ -38,7 +38,7 @@ t_params *create_temp_command_node(char *cmd_str)
 	return (temp);
 }
 
-int contains_logical_operators(t_params *tmp)
+int	contains_logical_operators(t_params *tmp)
 {
 	while (tmp != NULL)
 	{
@@ -49,14 +49,14 @@ int contains_logical_operators(t_params *tmp)
 	return (0);
 }
 
-int execute_operator(t_params *cmd)
+int	execute_operator(t_params *cmd)
 {
-	pid_t pid;
-	int status;
+	pid_t	pid;
+	int		status;
 
 	if (cmd->cmd == NULL)
 	{
-		fprintf(stderr, "Null command encountered.\n");
+		ft_putstr_fd("Null command encountered.\n", 2);
 		return (EXIT_FAILURE);
 	}
 	pid = fork();
@@ -74,10 +74,10 @@ int execute_operator(t_params *cmd)
 		else
 			status = EXIT_FAILURE;
 	}
-	return status;
+	return (status);
 }
 
-int ft_execute_priorities(t_params *commands)
+int	ft_execute_priorities(t_params *commands)
 {
 	int			status;
 	t_params	*current;
@@ -99,13 +99,13 @@ int ft_execute_priorities(t_params *commands)
 			write(2, "Unknown operator: '", 19);
 			write(2, current->str, strlen(current->str));
 			write(2, "'.\n", 3);
-			return EXIT_FAILURE;
+			return (EXIT_FAILURE);
 		}
 	}
-	return status;
+	return (status);
 }
 
-void assign_operator(t_params *node)
+void	assign_operator(t_params *node)
 {
 	if (strcmp(node->str, "&&") == 0)
 		node->operator = AND;
@@ -118,35 +118,4 @@ void assign_operator(t_params *node)
 	}
 	else
 		node->operator = NONE;
-}
-
-void free_subcommand_args(char **args)
-{
-	if (args != NULL)
-	{
-		int i = 0;
-		while (args[i] != NULL)
-		{
-			free(args[i]);
-			i++;
-		}
-		free(args);
-	}
-}
-
-void free_subcommands(t_params *sub_cmds)
-{
-	t_params *tmp;
-	
-	while (sub_cmds != NULL)
-	{
-		tmp = sub_cmds;
-		sub_cmds = sub_cmds->next;
-		if (tmp->str != NULL)
-			free(tmp->str);
-		if (tmp->cmd != NULL)
-			free(tmp->cmd);
-		free_subcommand_args(tmp->args);
-		free(tmp);
-	}
 }

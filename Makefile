@@ -22,16 +22,19 @@ SRC_FILES :=	minishell.c \
 				ft_free.c \
 				builtin.c \
 				ft_cd.c \
+				ft_cd_2.c \
 				ft_echo.c \
 				ft_env.c \
 				ft_exit.c \
 				ft_export.c \
+				ft_export_2.c \
 				ft_pwd.c \
 				ft_unset.c \
 				ft_unset_2.c \
 				ft_utils.c \
 				execute_priorities.c \
 				execute_priorities_2.c \
+				execute_priorities_3.c \
 				ft_wildcard.c \
 				signals.c \
 				ft_childs.c

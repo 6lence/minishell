@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_priorities_2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 13:46:05 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/10 14:59:37 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/13 14:45:53 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	ft_no_curr_no_next(char *cmd_str, t_params **current,
 {
 	size_t	total_length;
 
-	total_length = ft_strlen((*current)->str) + ft_strlen((*current)->next->str) + 2;
+	total_length = ft_strlen((*current)->str) + \
+			ft_strlen((*current)->next->str) + 2;
 	cmd_str = malloc(total_length);
 	if (cmd_str == NULL)
 	{
@@ -45,9 +46,10 @@ void	ft_current_operator_none(t_params **current, int *status, char *cmd_str)
 		temp_cmd_node = create_temp_command_node((*current)->str);
 	*status = execute_operator(temp_cmd_node);
 	free(temp_cmd_node);
-	(*current) = ((*current)->next != NULL 
-				&& (*current)->next->operator == NONE) 
-				? (*current)->next->next : (*current)->next;
+	if ((*current)->next != NULL && (*current)->next->operator == NONE)
+		*current = (*current)->next->next;
+	else
+		*current = (*current)->next;
 }
 
 void	ft_current_operator_and(t_params **current, int status)

@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:14:04 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 10:04:35 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:19:25 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,7 @@ int	ft_exit(t_data *l)
 		l->exit_code = exit_code;
 	}
 	else
-	{
 		l->exit_code = 0;
-	}
 	l->stop_main = 0;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:16:37 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/10 13:19:19 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/13 13:08:47 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void setup_signal_handlers(void)
 	sa.sa_flags = SA_SIGINFO | SA_RESTART;      // To make sure syscalls are restarted if interrupted
 	sigaction(SIGINT, &sa, NULL);  // Assign the handler for SIGINT
 
-	sa.sa_handler = handle_sigquit; //SIG_IGN; // Set the handler for SIGQUIT
+	sa.sa_handler = SIG_IGN; //handle_sigquit // Set the handler for SIGQUIT
 	sigaction(SIGQUIT, &sa, NULL);  // Assign the handler for SIGQUIT
 }
 
