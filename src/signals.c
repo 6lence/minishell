@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:16:37 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/13 13:08:47 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/14 10:50:13 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void setup_signal_handlers(void)
 }
 
 	// sa.sa_sigaction = signal_handling;
-	
+
 	// sigaction(SIGINT, &s, 0);
 	// sigaction(SIGQUIT, &s, 0);
 

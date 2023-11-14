@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 13:46:05 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/13 14:45:53 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/14 14:17:39 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	ft_current_operator_none(t_params **current, int *status, char *cmd_str)
 	else
 		temp_cmd_node = create_temp_command_node((*current)->str);
 	*status = execute_operator(temp_cmd_node);
-	free(temp_cmd_node);
+	free_t_params(temp_cmd_node);
+//	free(temp_cmd_node);
 	if ((*current)->next != NULL && (*current)->next->operator == NONE)
 		*current = (*current)->next->next;
 	else

@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/13 15:36:18 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/14 14:18:24 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,7 @@ void		ft_current_operator_none(t_params **current,	int *status,
 				 char *cmd_str);
 void		ft_current_operator_and(t_params **current, int status);
 void		ft_current_operator_or(t_params **current, int status);
+void		free_t_params(t_params *node);
 
 /* lstutils */
 t_params	*ft_lstlast(t_params *l);

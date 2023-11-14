@@ -6,11 +6,33 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:33:07 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/13 14:33:46 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/14 14:31:48 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void free_t_params(t_params *node)
+{
+	int i;
+
+	i = 0;
+	if (node)
+	{
+		free(node->str);
+		free(node->cmd);
+		if (node->args)
+		{
+			while (node->args[i] != NULL)
+			{
+				free(node->args[i]);
+				i++;
+			}
+			free(node->args);
+		}
+		free(node);
+	}
+}
 
 void	free_subcommand_args(char **args)
 {

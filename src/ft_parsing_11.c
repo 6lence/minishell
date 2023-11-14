@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_11.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 20:56:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 21:03:49 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/14 09:05:45 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_quotes(t_data *l, int *i, int c)
 
 void	ft_words_2(t_data *l, int *i, int *words)
 {
-	while (l->params[*i] && !((l->params[*i] < 7 
+	while (l->params[*i] && !((l->params[*i] < 7
 				|| l->params[*i] > 13) && l->params[*i] != ' '))
 	{
 		if (l->params[*i] == ')' || l->params[*i] == '(')
@@ -35,7 +35,7 @@ void	ft_words_2(t_data *l, int *i, int *words)
 
 void	ft_words_1(t_data *l, int *i, int *words)
 {
-	while (l->params[*i] && (l->params[*i] < 7 
+	while (l->params[*i] && (l->params[*i] < 7
 			|| l->params[*i] > 13) && l->params[*i] != ' ')
 	{
 		if (l->params[*i] == ')' || l->params[*i] == '(')
