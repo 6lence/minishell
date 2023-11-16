@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:16:37 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/14 10:50:13 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/15 08:41:45 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void setup_signal_handlers(void)
 // The SIGINT signal handler
 void handle_sigint(int signum)
 {
-    (void)signum; // Unused parameter
-    write(STDOUT_FILENO, "\n", 1); // Write a newline character
-    rl_on_new_line();              // Tell readline to move to a new line
-    rl_replace_line("", 0);        // Clear the current input
-    rl_redisplay();                // Redisplay the prompt
+	(void)signum; // Unused parameter
+	write(STDOUT_FILENO, "\n", 1); // Write a newline character
+	rl_on_new_line();              // Tell readline to move to a new line
+	rl_replace_line("", 0);        // Clear the current input
+	rl_redisplay();                // Redisplay the prompt
 }
 
 // The SIGQUIT signal handler (does nothing)

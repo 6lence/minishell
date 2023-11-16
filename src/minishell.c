@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/14 15:43:43 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/15 11:20:04 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	init(t_data *l)
 	l->params = readline("minishell-> ");
 	if (!l->params)
 	{
-//		DEBUG_PRINT(("EOF detected - Ctrl+D was pressed."));
+		DEBUG_PRINT(("EOF detected - Ctrl+D was pressed."));
 		return (-1); // Ctrl+D was pressed, return a special code indicating EOF
 	}
 	if (ft_only_spaces(l->params))
@@ -119,27 +119,28 @@ void	main_loop(t_data *l)
 	printf("\033[1;32mWelcome to minishell\033[0m\n");
 	while (l->stop_main)
 	{
-//		DEBUG_PRINT(("Starting a new iteration of the main loop..."));
+		DEBUG_PRINT(("Starting a new iteration of the main loop..."));
 		init_status = init(l);
+		DEBUG_PRINT(("Return value from init: %d", init_status));
 		if (init_status == -1)
 		{
-//			DEBUG_PRINT(("Exiting the shell..."));
-//			printf("l = %p\n", l);
+			DEBUG_PRINT(("EOF detected - Preparing to exit the shell..."));
 			printf("Exiting...\n"); // Ctrl+D was pressed
-//			ft_clean_up(l);
+			DEBUG_PRINT(("Calling exit(0)..."));
 			exit (0);
 		}
 		else if (init_status != 0)
 		{
-//			DEBUG_PRINT(("Continuing to the next iteration due to init status: %d", init_status));
+			DEBUG_PRINT(("Continuing to the next iteration due to init status: %d", init_status));
 			continue ;
 		}
-//		DEBUG_PRINT(("Executing commands..."));
+		DEBUG_PRINT(("Executing commands..."));
 		ft_big_execute(l);
 		ft_childs(l);
 		ft_free_all(l);
-//		DEBUG_PRINT(("Main loop iteration complete."));
+		DEBUG_PRINT(("Main loop iteration complete."));
 	}
+	DEBUG_PRINT(("Main loop restarted unexpectedly"));
 }
 
 int	main(int ac, char **av, char **envp)

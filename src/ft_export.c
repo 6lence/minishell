@@ -6,37 +6,17 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/14 15:36:39 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/15 10:42:17 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	valid_env_name(char *arg)
-{
-	int		i;
-
-	if (!arg || arg[0] == '=')
-		return (0);
-	if (!ft_isalpha(arg[0]) && arg[0] != '_')
-		return (0);
-	i = 1;
-	while (arg[i])
-	{
-		if (!ft_isalnum(arg[i]) && arg[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 int	add_or_update_env_2(t_data *data, char *new_env_entry)
 {
-//	int		i;
 	int		j;
 	char	**new_envp;
 
-//	i = 0;
 	j = 0;
 	new_envp = (char **)malloc(sizeof(char *) * (array_length(data->envp) + 2));
 	if (!new_envp)
@@ -84,6 +64,79 @@ int	add_or_update_env(t_data *data, char *key, char *value)
 	return (add_or_update_env_2(data, new_env_entry));
 }
 
+int	ft_export(t_data *l)
+{
+	t_params	*element;
+	int			pos;
+
+	pos = l->pos + 1;
+	if (pos >= ft_lstsize(l->list))
+	{
+		ft_print_env(l->envp);
+		return (0);
+	}
+	element = ft_list_elem(l->list, pos);
+	if (!element)
+	{
+		ft_print_env(l->envp);
+		return (0);
+	}
+	if (!valid_env_name(element->str))
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(element->str, 2);
+		ft_putendl_fd("': not a valid identifier", 2);
+		return (-1);
+	}
+	return (ft_export_parse_key_value(l, element));
+}
+
+int	ft_export_parse_key_value(t_data *l, t_params *element)
+{
+	char		*equal_sign;
+	char		*key;
+	char		*value;
+
+	equal_sign = ft_strchr(element->str, '=');
+	if (equal_sign)
+	{
+		*equal_sign = '\0';
+		key = element->str;
+		value = equal_sign + 1;
+	}
+	else
+	{
+		key = element->str;
+		value = NULL;
+	}
+	return (ft_export_final(l, key, value));
+}
+
+int	ft_export_final(t_data *l, char *key, char *value)
+{
+	int	status;
+
+	if (!valid_env_name(key))
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		if (key != NULL)
+			ft_putstr_fd(key, 2);
+		else
+		{
+			ft_putstr_fd("", 2);
+		}
+		ft_putendl_fd("': not a valid identifier", 2);
+		return (-1);
+	}
+	status = add_or_update_env(l, key, value);
+	if (status != 0)
+	{
+		printf ("Error status");
+	}
+	return (0);
+}
+
+/*
 int	ft_export(t_data *l)
 {
 	t_params	*element;
@@ -142,6 +195,7 @@ int	ft_export(t_data *l)
 	}
 	return (0);
 }
+*/
 
 /*
 static void free_envp(char **envp)

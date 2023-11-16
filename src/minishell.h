@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/14 14:18:24 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/15 11:02:29 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,29 @@ void		ft_words_1(t_data *l, int *i, int *words);
 
 /* builtin */
 int			is_builtin(char *command);
-int			execute_builtin(t_data *l, t_params *tmp);
 int			execute_builtin_2(t_data *l, t_params *tmp);
+int			execute_builtin(t_data *l, t_params *tmp);
+void		linked_list_to_array_2(t_params *current, char **args);
 char		**linked_list_to_array(t_params *tmp);
+
+/* execute_priorities */
+t_params	*create_temp_command_node(char *cmd_str);
+int			contains_logical_operators(t_params *tmp);
+int			execute_operator(t_params *cmd);
+int			ft_execute_priorities(t_params *commands);
+void		assign_operator(t_params *node);
+
+/* execute_priorities_2 */
+void		ft_current_operator_none(t_params **current,	int *status,
+				char *cmd_str);
+void		ft_current_operator_and(t_params **current, int status);
+void		ft_current_operator_or(t_params **current, int status);
+void		ft_non_operator(char *cmd_str, t_params *temp, int a);
+
+/* execute_priorities_3 */
+void		free_t_params(t_params *node);
+void		free_subcommand_args(char **args);
+void		free_subcommands(t_params *sub_cmds);
 
 /* utils */
 void		ft_parent(t_data *l, pid_t child_pid);
@@ -158,12 +178,14 @@ char		**ft_absolute_path(t_data *l);
 char		**ft_arguments(t_params *params);
 
 /* ft_cd */
-void		print_env_variables(char **envp);
 int			find_env_variable(char **envp, const char *var_name);
 void		add_env_variable(char ***envp, char *argument);
 void		handle_env_variable(char ***envp,
 				const char *var_name, char *argument);
 int			ft_cd(t_data *l);
+
+/* ft_cd_2 */
+void		print_env_variables(char **envp);
 
 /* ft_echo */
 int			ft_echo(t_data *l);
@@ -176,11 +198,16 @@ int			ft_count_arguments(char **arguments);
 int			ft_exit(t_data *l);
 
 /* ft_export */
-int			ft_export(t_data *l);
-int			array_length(char **array);
-int			add_or_update_env(t_data *data, char *key, char *value);
 int			add_or_update_env_2(t_data *data, char *new_env_entry);
+int			add_or_update_env(t_data *data, char *key, char *value);
+int			ft_export(t_data *l);
+int			ft_export_parse_key_value(t_data *l, t_params *element);
+int			ft_export_final(t_data *l, char *key, char *value);
+
+/* ft_export_2 */
 void		ft_print_env(char **str);
+int			array_length(char **array);
+int			valid_env_name(char *arg);
 
 /* pwd */
 char		*ft_pwd(void);
@@ -196,21 +223,6 @@ int			ft_unset(t_data *l);
 void		ft_exit_code(int *err_flag, t_data *l);
 void		ft_is_not_proper_variable(char *key, int *error_flag);
 void		ft_is_not_proper_env(t_params *element, int *error_flag);
-
-/* execute_priorities */
-t_params	*create_temp_command_node(char *cmd_str);
-int			contains_logical_operators(t_params *tmp);
-int			execute_operator(t_params *cmd);
-int			ft_execute_priorities(t_params *commands);
-void		assign_operator(t_params *node);
-void		free_subcommand_args(char **args);
-void		free_subcommands(t_params *sub_cmds);
-void		ft_non_operator(char *cmd_str, t_params *temp, int a);
-void		ft_current_operator_none(t_params **current,	int *status,
-				 char *cmd_str);
-void		ft_current_operator_and(t_params **current, int status);
-void		ft_current_operator_or(t_params **current, int status);
-void		free_t_params(t_params *node);
 
 /* lstutils */
 t_params	*ft_lstlast(t_params *l);
@@ -241,15 +253,17 @@ void		free_resources(char **args, char *cmd_no_paren, t_params *temp);
 void		ft_clean_up(t_data *l);
 
 /* ft_wildcard */
-t_params	*new_node(const char *cmd, char **args);
-void		delete_list(t_params *head);
-void		execute_command_with_wildcards(t_params *commands, char **envp);
-void		execute_command_with_wildcards_recursive(t_params *current, char **envp, DIR *d);
 int			ft_is_wildcard(t_params *params, char **env);
+t_params	*new_node(const char *cmd, char **args);
+void		execute_command_with_wildcards(t_params *commands, char **envp);
+void		execute_command_with_wildcards_recursive(t_params *current,
+				char **envp, DIR *d);
 void		count_arguments(char **args, int *count);
 void		assign_arguments(char **args, char **new_args, DIR *d, int index, int arg_count);
-void		execute_child_process(const char *cmd, char **args, char **envp, DIR *d);
+void		execute_child_process(const char *cmd, char **args,
+				char **envp, DIR *d);
 int			matches_wildcard(const char *str, const char *pattern);
+void		delete_list(t_params *head);
 
 /* signals */
 void		setup_signal_handlers(void);
