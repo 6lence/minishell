@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/14 11:37:34 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/16 15:38:38 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	execute_command(t_data *l, t_params *tmp)
 	if (ft_is_wildcard(tmp, l->envp))
 	{
 		DEBUG_PRINT(("DEBUG: wilcard detected"));
-		return (execute_command_with_wildcards(tmp, l->envp));
+		return (execute_command_with_wildcards_loop(tmp, l->envp));
 	}
 	ct = is_builtin(tmp->str) && l->tmp_out == l->out;
 	if (ct && !l->pipe)
@@ -98,4 +98,6 @@ void	execute_command(t_data *l, t_params *tmp)
 	}
 	else
 		ft_parent(l, child_pid);
+	if (!child_pid)
+		exit(0);
 }

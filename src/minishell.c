@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/15 11:20:04 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/16 10:58:26 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,29 +66,18 @@ int	ft_big_execute(t_data *l)
 	l->tmp_out = l->out;
 	DEBUG_PRINT(("Input file descriptor saved as %d, Output file descriptor saved as %d", l->tmp_in, l->tmp_out));
 	if (l->pipe == 1)
-	{
-//		DEBUG_PRINT(("Pipe detected, calling ft_pipe"));
 		ft_pipe(l);
-	}
 	else
-	{
-//		DEBUG_PRINT(("No pipe detected, calling ft_simple_execute"));
 		ft_simple_execute(l);
-	}
-//	DEBUG_PRINT(("Exiting ft_big_execute"));
 	return (0);
 }
 
 //malloc ok in this function.
 int	init(t_data *l)
 {
-//	DEBUG_PRINT(("Calling readline for input..."));
 	l->params = readline("minishell-> ");
 	if (!l->params)
-	{
-		DEBUG_PRINT(("EOF detected - Ctrl+D was pressed."));
-		return (-1); // Ctrl+D was pressed, return a special code indicating EOF
-	}
+		return (-1);
 	if (ft_only_spaces(l->params))
 	{
 		free(l->params);
@@ -102,7 +91,6 @@ int	init(t_data *l)
 		free(l->params);
 		return (0);
 	}
-//	DEBUG_PRINT(("Checking for commands..."));
 	if (ft_lst_elem(l->list, 0))
 		l->dir = opendir(ft_lst_elem(l->list, 0)->str);
 	ft_pipe_presence(l);
@@ -124,9 +112,7 @@ void	main_loop(t_data *l)
 		DEBUG_PRINT(("Return value from init: %d", init_status));
 		if (init_status == -1)
 		{
-			DEBUG_PRINT(("EOF detected - Preparing to exit the shell..."));
 			printf("Exiting...\n"); // Ctrl+D was pressed
-			DEBUG_PRINT(("Calling exit(0)..."));
 			exit (0);
 		}
 		else if (init_status != 0)

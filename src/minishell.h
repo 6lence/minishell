@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/15 11:02:29 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/16 15:31:58 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,11 +255,13 @@ void		ft_clean_up(t_data *l);
 /* ft_wildcard */
 int			ft_is_wildcard(t_params *params, char **env);
 t_params	*new_node(const char *cmd, char **args);
-void		execute_command_with_wildcards(t_params *commands, char **envp);
-void		execute_command_with_wildcards_recursive(t_params *current,
-				char **envp, DIR *d);
-void		count_arguments(char **args, int *count);
-void		assign_arguments(char **args, char **new_args, DIR *d, int index, int arg_count);
+void	execute_command_with_wildcards_loop(t_params *commands, char **envp);
+//void		execute_command_with_wildcards(t_params *commands, char **envp);
+//void		execute_command_with_wildcards_recursive(t_params *current,
+//				char **envp, DIR *d);
+void		count_arguments(t_params *current, int *count, char **file_list);
+int			ft_in_2(const char *str, char c);
+void		assign_arguments(t_params *l, char **new_args, DIR *d, int index, int arg_count);
 void		execute_child_process(const char *cmd, char **args,
 				char **envp, DIR *d);
 int			matches_wildcard(const char *str, const char *pattern);

@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:27:29 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/15 11:02:20 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/16 15:31:12 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,58 @@ t_params	*new_node(const char *cmd, char **args)
 	return (new_node);
 }
 
+void execute_command_with_wildcards_loop(t_params *commands, char **envp) {
+    DIR *d = opendir(".");
+    if (d == NULL) {
+        perror("opendir");
+        exit(EXIT_FAILURE);
+    }
+
+    char **file_list = NULL;
+    int file_count = 0;
+    struct dirent *dir;
+
+    // Read directory entries once and store in file_list
+    while ((dir = readdir(d)) != NULL) {
+        file_list = ft_realloc(file_list, sizeof(char *) * (file_count + 1));
+        file_list[file_count++] = ft_strdup(dir->d_name);
+    }
+
+    // Loop through each command
+    for (t_params *current = commands; current != NULL; current = current->next) {
+        printf("Debug: Processing command '%s'\n", current->str ? current->str : "NULL");
+
+        int arg_count = 0;
+        count_arguments(current, &arg_count, file_list);
+        printf("Debug: Found %d arguments for command '%s'\n", arg_count, current->str);
+
+        char **new_args = malloc((arg_count + 1) * sizeof(char *));
+        if (new_args == NULL) {
+            perror("malloc");
+            exit(EXIT_FAILURE);
+        }
+
+        assign_arguments(current, new_args, d, 0, arg_count);
+        printf("Debug: Executing command '%s' with arguments:\n", current->str);
+
+        execute_child_process(current->str, new_args, envp, d);
+
+        free(new_args);
+    }
+
+    // Free file_list after processing all commands
+    for (int i = 0; i < file_count; i++) {
+        free(file_list[i]);
+    }
+    free(file_list);
+    closedir(d);
+}
+
+/*
 void	execute_command_with_wildcards(t_params *commands, char **envp)
 {
 	DIR	*d;
 
-	if (commands != NULL) //Debug begin
-	{
-        printf("Debug: Processing command in execute_command_with_wildcards - cmd: '%s'\n", commands->cmd);
-    }
-	else
-	{
-        printf("Debug: Command is NULL in execute_command_with_wildcards\n"); //Debug end
-    }
 	d = opendir(".");
 	if (d == NULL)
 	{
@@ -72,59 +112,132 @@ void	execute_command_with_wildcards_recursive(t_params *current, \
 				char **envp, DIR *d)
 {
 	char	**new_args;
+	char	**file_list;
 	int		arg_count;
+	int		file_count;
+	int		i;
+	struct	dirent *dir;
 
+	file_count = 0;
+	file_list = NULL;
+	i = 0;
+
+	if (!current)
+		return ;
+	printf("Debug: Entering execute_command_with_wildcards_recursive\n");
+	while ((dir = readdir(d)) != NULL)
+	{
+		file_list = ft_realloc(file_list, sizeof(char *) * (file_count + 1));
+		file_list[file_count++] = ft_strdup(dir->d_name);
+	}
+	printf("Debug: file_list populated with %d files\n", file_count);
+	//call count_arguments
 	arg_count = 0;
-	if (current->cmd != NULL)
-		printf("Debug: Processing command '%s'\n", current->cmd); // Debug print
+	if (current->str)
+		printf("Debug: Processing command '%s'\n", current->str);
 	else
 		printf("Debug: Current command is NULL\n");
-	count_arguments(current->args, &arg_count);
-	printf("Debug: Found %d arguments for command '%s'\n", arg_count, current->cmd); // Debug print
+	printf("Debug: Calling count_arguments\n");
+	count_arguments(current, &arg_count, file_list);
+	printf("Debug: count_arguments returned with count: %d\n", arg_count);
+	printf("Debug: Found %d arguments for command '%s'\n", arg_count, current->str);
+
 	new_args = malloc((arg_count + 1) * sizeof(char *));
 	if (new_args == NULL)
 	{
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
-	assign_arguments(current->args, new_args, d, 0, arg_count);
-    printf("Debug: Executing command '%s' with arguments:\n", current->cmd);
-    for (int i = 0; i < arg_count; i++) //debug
-    {
-        printf(" - arg[%d]: '%s'\n", i, new_args[i]); //debug
+
+	assign_arguments(current, new_args, d, 0, arg_count);
+	printf("Debug: Executing command '%s' with arguments:\n", current->str);
+	while (i < file_count)
+	{
+        free(file_list[i]);
+		i++;
     }
-	execute_child_process(current->cmd, (char**)new_args, envp, d);
+    free(file_list);
 	free(new_args);
 	if (current->next != NULL)
+	{
+		printf("Debug: Recursively calling execute_command_with_wildcards_recursive for next command\n");
 		execute_command_with_wildcards_recursive(current->next, envp, d);
-}
-
-void count_arguments(char **args, int *count)
-{
-	DEBUG_PRINT(("Counting arguments..."));
-	if (args[*count] != NULL)
-	{
-		(*count)++;
-		count_arguments(args, count);
 	}
+	printf("Debug: Exiting execute_command_with_wildcards_recursive\n");
+}
+*/
+
+int	ft_in_2(const char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
-void assign_arguments(char **args, char **new_args, DIR *d, int index, int arg_count)
+void count_arguments(t_params *current, int *count, char **file_list)
 {
-	struct dirent *dir;
+	t_params	*tmp;
+	int			i;
 
-	if (index < arg_count)
+	tmp = current;
+	i = 0;
+
+	printf("Debug: Entering count_arguments\n");  // Debug
+
+	if (file_list == NULL)
 	{
-		printf("Debug: Assigning argument '%s'\n", args[index]); // Debug
-		if (index == 1 && ft_strchr(args[index], '*'))
+		printf("Debug: file_list is NULL\n");  // check for NULL file_list
+    	return;
+	} //end debug
+
+	while (tmp)
+	{
+		printf("Debug: Processing tmp->str: %s\n", tmp->str ? tmp->str : "NULL");
+		if (tmp->str && ft_in_2(tmp->str, '*'))
+		{
+			while (file_list[i] != NULL)
+			{
+				printf("Debug: Checking file_list[%d]: %s against %s\n", i, file_list[i], tmp->str);
+				if (matches_wildcard(tmp->str, file_list[i]))
+				{
+					(*count)++;
+					printf("Debug: Matched. Incrementing count to %d\n", *count);
+				}
+				i++;
+			}
+		}
+		else if (tmp->str)
+		{
+			(*count)++;
+			printf("Debug: No wildcard. Incrementing count to %d\n", *count);
+		}
+		tmp = tmp->next;
+	}
+	printf("Debug: Exiting count_arguments. Total count: %d\n", *count);
+}
+
+void assign_arguments(t_params *l, char **new_args, DIR *d, int index, int arg_count)
+{
+	struct dirent	*dir;
+
+	if (l && index < arg_count)
+	{
+		printf("Debug: Assigning argument '%s'\n", l->str); // Debug
+		if (index == 1 && ft_strchr(l->str, '*'))
 		{
 			// Handle wildcard
-			printf("Debug: Argument '%s' contains a wildcard\n", args[index]); // Debug
-			rewinddir(d); // Reset the directory stream
+			printf("Debug: Argument '%s' contains a wildcard\n", l->str); // Debug
 			while ((dir = readdir(d)) != NULL)
 			{
-				printf("Debug: Checking if '%s' matches '%s'\n", dir->d_name, args[index]); // Debug print
-				if (matches_wildcard(args[index], dir->d_name))
+				printf("Debug: Checking if '%s' matches '%s'\n", dir->d_name, l->str); // Debug print
+				if (matches_wildcard(l->str, dir->d_name))
 				{
 					printf("Debug: Match found: %s\n", dir->d_name); // Debug print
 					new_args[index] = dir->d_name;
@@ -133,23 +246,18 @@ void assign_arguments(char **args, char **new_args, DIR *d, int index, int arg_c
 			}
 			if (dir == NULL) // No match found
 			{
-				printf("Debug: No match found for wildcard '%s'\n", args[index]); // Debug print
-				new_args[index] = args[index]; // Keep original arg if no match
+				printf("Debug: No match found for wildcard '%s'\n", l->str); // Debug print
+				new_args[index] = l->str; // Keep original arg if no match
 			}
 		}
 		else
-		{
-			new_args[index] = args[index];
-		}
+			new_args[index] = l->str;
 		printf("Debug: Assigned argument '%s' to new_args[%d]\n", new_args[index], index); // Debug
-		assign_arguments(args, new_args, d, index + 1, arg_count); // Recursively call for next index
+		assign_arguments(l->next, new_args, d, index + 1, arg_count); // Corrected recursive call
 	}
 	else
-	{
 		new_args[arg_count] = NULL;
-	}
 }
-
 void	execute_child_process(const char *cmd, char **args, char **envp, DIR *d)
 {
 	int	status;
@@ -192,7 +300,7 @@ int	matches_wildcard(const char *str, const char *pattern)
 			pattern_backup = pattern;
 			str_backup = str + 1;
 		}
-		else if (*pattern == '?' || *pattern == *str)
+		else if (*pattern == '?' || *pattern == *str) // ? used to represent any single character
 		{
 			// Advance both pointers if they are equal or it's a single character wildcard
 			pattern++;
@@ -219,6 +327,93 @@ int	matches_wildcard(const char *str, const char *pattern)
 	// If we're at the end of the pattern, it's a match
 	return (*pattern == '\0');
 }
+
+/*
+void	execute_command_with_wildcards_recursive(t_params *current, \
+				char **envp, DIR *d)
+{
+	char	**new_args;
+	char	**file_list;
+	int		arg_count;
+	int		file_count;
+	int		i;
+	struct	dirent *dir;
+
+	file_count = 0;
+	file_list = NULL;
+	i = 0;
+
+	printf("Debug: Entering execute_command_with_wildcards_recursive\n");
+	while ((dir = readdir(d)) != NULL)
+	{
+		file_list = ft_realloc(file_list, sizeof(char *) * (file_count + 1));
+		file_list[file_count++] = ft_strdup(dir->d_name);
+	}
+	printf("Debug: file_list populated with %d files\n", file_count);
+	//call count_arguments
+	arg_count = 0;
+	if (current->str)
+		printf("Debug: Processing command '%s'\n", current->str);
+	else
+		printf("Debug: Current command is NULL\n");
+	printf("Debug: Calling count_arguments\n");
+	count_arguments(current, &arg_count, file_list);
+	printf("Debug: count_arguments returned with count: %d\n", arg_count);
+	printf("Debug: Found %d arguments for command '%s'\n", arg_count, current->str);
+
+	new_args = malloc((arg_count + 1) * sizeof(char *));
+	if (new_args == NULL)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+
+	assign_arguments(current, new_args, d, 0, arg_count);
+	printf("Debug: Executing command '%s' with arguments:\n", current->str);
+	while (i < file_count)
+	{
+        free(file_list[i]);
+		i++;
+    }
+    free(file_list);
+	free(new_args);
+	if (current->next != NULL)
+	{
+		printf("Debug: Recursively calling execute_command_with_wildcards_recursive for next command\n");
+		execute_command_with_wildcards_recursive(current->next, envp, d);
+	}
+	printf("Debug: Exiting execute_command_with_wildcards_recursive\n");
+}
+
+*/
+
+// char	**get_directory_files(int *file_count)
+// {
+// 	DIR				*d;
+// 	struct dirent	*dir;
+// 	char			**filenames;
+// 	int				count;
+
+// 	filenames = NULL;
+// 	count = 0;
+
+//     d = opendir(".");
+//     if (!d)
+// 	{
+//         perror("opendir");
+//         return NULL;
+//     }
+
+//     while ((dir = readdir(d)) != NULL)
+// 	{
+//         filenames = realloc(filenames, sizeof(char *) * (count + 1));
+//         filenames[count++] = strdup(dir->d_name);
+//     }
+
+//     closedir(d);
+//     *file_count = count;
+//     return filenames;
+// }
 
 /*
 void	execute_command_with_wildcards(t_params *commands, char **envp)
