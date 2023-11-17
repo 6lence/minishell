@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/17 17:13:51 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 22:35:22 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,11 @@ void	execute_command(t_data *l, t_params *tmp)
 		return ;
 	ct = is_builtin(tmp->str) && l->tmp_out == l->out;
 	if (ct && !l->pipe)
-		execute_builtin(l, tmp);
+		return ((void)execute_builtin(l, tmp));
 	child_pid = fork();
 	globale = 1;
 	if (ct && !child_pid && l->pipe)
-	{
-		ft_exec_builtin(l, tmp);
-		return ;
-	}
+		return ((void)ft_exec_builtin(l, tmp));
 	if (!ct && !child_pid)
 	{
 		ft_in_out(l);
@@ -100,6 +97,4 @@ void	execute_command(t_data *l, t_params *tmp)
 	}
 	else
 		ft_parent(l, child_pid);
-	if (!child_pid)
-		exit(0);
 }

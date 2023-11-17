@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 12:16:21 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/17 14:22:13 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/17 22:51:53 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ char	**ft_arguments(t_params *params, t_data *l)
 
 	tmp = params;
 	if (ft_is_wildcard(tmp, l->envp))
-		return (execute_command_with_wildcards_loop(tmp));
+	{
+		res = execute_command_with_wildcards_loop(tmp);
+		return (res);
+	}
 	res = ft_calloc(ft_res_len(params) + 1, sizeof(char *));
 	k = 0;
 	while (tmp && !ft_operator_cmp(tmp))
