@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_wildcard.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
+/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:27:29 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 10:20:41 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 14:22:12 by mescobar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,20 @@ int	ft_wild_in(char *str1, char *str2, size_t n)
 	return (0);
 }
 
+int	ft_in_wild(char *str, char s)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == s)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	**ft_verify(t_params *l, char **file_list)
 {
 	int		i;
@@ -81,23 +95,31 @@ char	**ft_verify(t_params *l, char **file_list)
 	i = 0;
 	len = 0;
 	tmp = l;
+	while (tmp && !ft_in_wild(tmp->str, '*'))
+		tmp = tmp->next;
 	while (file_list[i])
 	{
-		if (ft_wild_in(tmp->str, file_list[i], ft_strlen(l->str)))
+		if (ft_wild_in(tmp->str, file_list[i], ft_strlen(tmp->str)))
 			len++;
 		i++;
 	}
-	res = ft_calloc(sizeof(char *), len + ft_res_len(l) + 1);
+	res = ft_calloc(sizeof(char *), len + ft_res_len(l));
 	i = 0;
 	len = 0;
-	while (file_list[i])
+	while (l && !ft_in_wild(l->str, '*') && !ft_operator_cmp(l))
 	{
 		if (access(l->str, 0) == 0 && len == 0)
-			res[len++] = ft_divide_path(tmp->str);
-		else if(ft_wild_in(l->str, file_list[i], ft_strlen(l->str)))
+			res[len++] = ft_divide_path(l->str);
+		else
+			res[len++] = ft_strdup(l->str);
+		l = l->next;
+	}
+	i = 0;
+	while (file_list[i])
+	{
+		if (ft_wild_in(tmp->str, file_list[i], ft_strlen(tmp->str)))
 			res[len++] = ft_strdup(file_list[i]);
 		free(file_list[i]);
-		l = l->next;
 		i++;
 	}
 	free(file_list);

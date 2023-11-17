@@ -1,19 +1,5 @@
-ft_printf
-libft
-Makefile
-minishell
-obj
-src
-test
-total 296
-drwxr-xr-x 7 mescobar 2022_perpignan   4096 Nov 10 12:05 .
-drwxr-xr-x 8 mescobar 2022_perpignan   4096 Nov  6 09:23 ..
-drwxr-xr-x 3 mescobar 2022_perpignan   4096 Nov  6 09:23 ft_printf
-drwxr-xr-x 8 mescobar 2022_perpignan   4096 Nov 10 11:32 .git
-drwxr-xr-x 2 mescobar 2022_perpignan   4096 Nov 10 12:05 libft
--rwxr-xr-x 1 mescobar 2022_perpignan   1814 Nov 10 11:24 Makefile
--rwxr-xr-x 1 mescobar 2022_perpignan 127512 Nov 10 12:05 minishell
--rwxr-xr-x 1 mescobar 2022_perpignan 131640 Nov 10 11:51 .nfs000000000c6e0b74000000f9
-drwxr-xr-x 2 mescobar 2022_perpignan   4096 Nov 10 12:05 obj
-drwxr-xr-x 2 mescobar 2022_perpignan   4096 Nov 10 11:27 src
--rw-r--r-- 1 mescobar 2022_perpignan     48 Nov 10 12:16 test
+a echo
+-1 | 0
+a " "
+-1 | 1
+" "
