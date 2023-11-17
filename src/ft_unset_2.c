@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 21:26:35 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 21:55:06 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:54:03 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,14 @@ void	ft_is_not_proper_env(t_params *element, int *error_flag)
 	err_msg = ft_strjoin("unset: invalid argument: ", element->str);
 	ft_putendl_fd(err_msg, STDERR_FILENO);
 	free(err_msg);
+}
+
+t_params	*ft_get_nth_param(t_params *list, int n)
+{
+	t_params	*current;
+
+	current = list;
+	while (current && current->pos != n)
+		current = current->next;
+	return (current);
 }

@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 10:20:38 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 12:47:01 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,7 @@ int			ft_env(t_data *l);
 /* ft_exit */
 int			ft_count_arguments(char **arguments);
 int			ft_exit(t_data *l);
+void		ft_arg_count(t_params *arguments, t_data *l);
 
 /* ft_export */
 int			add_or_update_env_2(t_data *data, char *new_env_entry);
@@ -220,6 +221,7 @@ char		**ft_getenvvar(t_data *data, const char *name);
 int			ft_unsetenv(t_data *data, const char *name);
 t_params	*ft_get_nth_param(t_params *list, int n);
 int			ft_unset(t_data *l);
+void		ft_unsetenv_2(t_data *data, char **new_envp, char **target);
 
 /* ft_unset_2 */
 void		ft_exit_code(int *err_flag, t_data *l);
@@ -258,9 +260,6 @@ void		ft_clean_up(t_data *l);
 int			ft_is_wildcard(t_params *params, char **env);
 t_params	*new_node(const char *cmd, char **args);
 char		**execute_command_with_wildcards_loop(t_params *commands);
-//void		execute_command_with_wildcards(t_params *commands, char **envp);
-//void		execute_command_with_wildcards_recursive(t_params *current,
-//				char **envp, DIR *d);
 void		count_arguments(t_params *current, int *count, char **file_list);
 int			ft_in_2(const char *str, char c);
 void		assign_arguments(t_params *l, char **new_args, DIR *d, int index, int arg_count);

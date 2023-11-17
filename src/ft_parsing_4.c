@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_4.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:15:56 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 21:16:22 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:26:52 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ char	*ft_char_to_char(char c)
 
 void	ft_while_spaces(t_data *l, int *i)
 {
-	while (l->params[*i] && 
-		!((l->params[*i] < 7 || l->params[*i] > 13)
+	while (l->params[*i] \
+		&& !((l->params[*i] < 7 || l->params[*i] > 13)
 			&& l->params[*i] != ' '))
 		*i = *i + 1;
 }
@@ -40,12 +40,12 @@ void	ft_while_spaces(t_data *l, int *i)
 void	ft_go(t_data *l, int *i, int *end)
 {
 	*end = 0;
-	while (l->params[*i + *end] && 
-		(l->params[*i + *end] < 7 || l->params[*i + *end] > 13)
+	while (l->params[*i + *end] \
+		&& (l->params[*i + *end] < 7 || l->params[*i + *end] > 13)
 		&& l->params[*i + *end] != ' ')
 	{
 		if (l->params[*i + 1 + *end] == '(' || l->params[*i + 1 + *end] == ')'
-			|| l->params[*i + *end] == '(' || l->params[*i +  *end] == ')')
+			|| l->params[*i + *end] == '(' || l->params[*i + *end] == ')')
 		{
 			*end = *end + 1;
 			return ;

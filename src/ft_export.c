@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/15 10:42:17 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:23:23 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	add_or_update_env_2(t_data *data, char *new_env_entry)
 	new_envp[j] = new_env_entry;
 	new_envp[j + 1] = NULL;
 	data->envp = new_envp;
-//	free(data->envp);
 	return (0);
 }
 

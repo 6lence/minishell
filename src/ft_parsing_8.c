@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_8.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 11:48:40 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/05 16:17:12 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:28:14 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	ft_only_spaces(char *str)
 	int	i;
 
 	i = 0;
-	while ((str[i] < 14 && str[i] > 6) 
+	while ((str[i] < 14 && str[i] > 6)
 		|| str[i] == ' ' || str[i] == '\n')
 		i++;
 	if (i == (int)ft_strlen(str))

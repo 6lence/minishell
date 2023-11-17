@@ -6,15 +6,15 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:33:07 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/14 14:31:48 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:56:06 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void free_t_params(t_params *node)
+void	free_t_params(t_params *node)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (node)

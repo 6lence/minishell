@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:15:03 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/09 21:55:05 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:53:42 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,25 +53,11 @@ char	**ft_getenvvar(t_data *data, const char *name)
 	return (NULL);
 }
 
-int	ft_unsetenv(t_data *data, const char *name)
+void	ft_unsetenv_2(t_data *data, char **new_envp, char **target)
 {
-	char	**target;
-	char	**new_envp;
 	int		i;
 	int		j;
 
-	printf("Debug: Unsetting env var: %s\n", name);
-	if (!name || !data || !data->envp)
-		return (-1);
-	target = ft_getenvvar(data, name);
-	if (!target)
-		return (0);
-	i = 0;
-	while (data->envp[i])
-		++i;
-	new_envp = (char **)malloc(sizeof(char *) * i);
-	if (!new_envp)
-		return (-1);
 	i = 0;
 	j = 0;
 	while (data->envp[i])
@@ -88,17 +74,29 @@ int	ft_unsetenv(t_data *data, const char *name)
 	}
 	data->envp = new_envp;
 	data->envp_allocated = 1;
-	return (0);
 }
 
-t_params	*ft_get_nth_param(t_params *list, int n)
+int	ft_unsetenv(t_data *data, const char *name)
 {
-	t_params	*current;
+	char	**target;
+	char	**new_envp;
+	int		i;
 
-	current = list;
-	while (current && current->pos != n)
-		current = current->next;
-	return (current);
+	if (!name || !data || !data->envp)
+		return (-1);
+	target = ft_getenvvar(data, name);
+	if (!target)
+		return (0);
+	i = 0;
+	while (data->envp[i])
+		++i;
+	new_envp = (char **)malloc(sizeof(char *) * i);
+	if (!new_envp)
+		return (-1);
+	data->envp = new_envp;
+	data->envp_allocated = 1;
+	ft_unsetenv_2(data, new_envp, target);
+	return (0);
 }
 
 int	ft_unset(t_data *l)

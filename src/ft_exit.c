@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:14:04 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/13 15:19:25 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:21:42 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,22 @@ int	ft_count_arguments(char **arguments)
 	return (count);
 }
 
+void	ft_arg_count(t_params *arguments, t_data *l)
+{
+	int	exit_code;
+
+	arguments = arguments->next;
+	exit_code = ft_atoi(arguments->str);
+	if (exit_code == 0 && ft_strcmp(arguments->str, "0") != 0)
+	{
+		ft_putstr_fd("exit: numeric argument required\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
+	l->exit_code = exit_code;
+}
+
 int	ft_exit(t_data *l)
 {
-	int			exit_code;
 	int			arg_count;
 	t_params	*arguments;
 
@@ -38,16 +51,7 @@ int	ft_exit(t_data *l)
 		exit(EXIT_FAILURE);
 	}
 	if (arg_count > 1)
-	{
-		arguments = arguments->next;
-		exit_code = ft_atoi(arguments->str);
-		if (exit_code == 0 && ft_strcmp(arguments->str, "0") != 0)
-		{
-			ft_putstr_fd("exit: numeric argument required\n", STDERR_FILENO);
-			exit(EXIT_FAILURE);
-		}
-		l->exit_code = exit_code;
-	}
+		ft_arg_count(arguments, l);
 	else
 		l->exit_code = 0;
 	l->stop_main = 0;
