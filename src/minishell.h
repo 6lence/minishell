@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 15:42:16 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:14:51 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_params
 	char				*cmd;
 	int					operator;
 	char				**args;
+	struct s_data		*l;
 }						t_params;
 
 typedef struct s_var
@@ -155,13 +156,13 @@ char		**linked_list_to_array(t_params *tmp);
 /* execute_priorities */
 t_params	*create_temp_command_node(char *cmd_str);
 int			contains_logical_operators(t_params *tmp);
-int			execute_operator(t_params *cmd);
-int			ft_execute_priorities(t_params *commands);
+int			execute_operator(t_params *cmd, t_data *l);
+int			ft_execute_priorities(t_params *commands, t_data *l);
 void		assign_operator(t_params *node);
 
 /* execute_priorities_2 */
 void		ft_current_operator_none(t_params **current,	int *status,
-				char *cmd_str);
+				char *cmd_str, t_data *l);
 void		ft_current_operator_and(t_params **current, int status);
 void		ft_current_operator_or(t_params **current, int status);
 void		ft_non_operator(char *cmd_str, t_params *temp, int a);
@@ -173,7 +174,7 @@ void		free_subcommands(t_params *sub_cmds);
 
 /* utils */
 void		ft_parent(t_data *l, pid_t child_pid);
-int			ft_execute_part_1(t_params *tmp);
+int			ft_execute_part_1(t_params *tmp, t_data *l);
 
 /* utils_2 */
 char		**ft_absolute_path(t_data *l);

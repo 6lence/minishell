@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution_3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 20:53:03 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/10 11:31:48 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:13:23 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_execute_part_1(t_params *tmp)
+int	ft_execute_part_1(t_params *tmp, t_data *l)
 {
 	t_params	*current;
 	char		*status_str;
@@ -26,7 +26,7 @@ int	ft_execute_part_1(t_params *tmp)
 	}
 	if (contains_logical_operators(tmp))
 	{
-		status = ft_execute_priorities(tmp);
+		status = ft_execute_priorities(tmp, l);
 		if (status != 0)
 		{
 			status_str = ft_itoa(status);

@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/13 14:35:26 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:24:47 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,12 @@ int	contains_logical_operators(t_params *tmp)
 	return (0);
 }
 
-int	execute_operator(t_params *cmd)
+int	execute_operator(t_params *cmd, t_data *l)
 {
 	pid_t	pid;
 	int		status;
 
+	(void)l;
 	if (cmd->cmd == NULL)
 	{
 		ft_putstr_fd("Null command encountered.\n", 2);
@@ -77,7 +78,7 @@ int	execute_operator(t_params *cmd)
 	return (status);
 }
 
-int	ft_execute_priorities(t_params *commands)
+int	ft_execute_priorities(t_params *commands, t_data *l)
 {
 	int			status;
 	t_params	*current;
@@ -89,7 +90,7 @@ int	ft_execute_priorities(t_params *commands)
 	while (current != NULL)
 	{
 		if (current->operator == NONE)
-			ft_current_operator_none(&current, &status, cmd_str);
+			ft_current_operator_none(&current, &status, cmd_str, l);
 		else if (current->operator == AND)
 			ft_current_operator_and(&current, status);
 		else if (current->operator == OR)

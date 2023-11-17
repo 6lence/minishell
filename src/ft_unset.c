@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:15:03 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 15:35:56 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:00:43 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ char	**ft_getenvvar(t_data *data, const char *name)
 		j = 0;
 		while (name[j] && data->envp[i][j] && name[j] == data->envp[i][j])
 			++j;
-		if (data->envp[i][j] == '=' && j == name_len)
+		if ((data->envp[i][j] == '=' && j == name_len)
+			|| !name[j])
 			return (&data->envp[i]);
 		++i;
 	}
@@ -65,11 +66,6 @@ void	ft_unsetenv_2(t_data *data, char **new_envp, char **target)
 		++i;
 	}
 	new_envp[j] = NULL;
-	if (data->envp_allocated)
-	{
-		free(data->envp);
-		data->envp_allocated = 0;
-	}
 	data->envp = new_envp;
 	data->envp_allocated = 1;
 }
@@ -83,6 +79,7 @@ int	ft_unsetenv(t_data *data, const char *name)
 	if (!name || !data || !data->envp)
 		return (-1);
 	target = ft_getenvvar(data, name);
+	i = 0;
 	if (!target)
 		return (0);
 	i = 0;
@@ -91,8 +88,6 @@ int	ft_unsetenv(t_data *data, const char *name)
 	new_envp = (char **)malloc(sizeof(char *) * i);
 	if (!new_envp)
 		return (-1);
-	data->envp = new_envp;
-	data->envp_allocated = 1;
 	ft_unsetenv_2(data, new_envp, target);
 	return (0);
 }

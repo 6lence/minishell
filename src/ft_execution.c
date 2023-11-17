@@ -6,11 +6,13 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/17 15:22:27 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:13:51 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int globale;
 
 int	ft_pipe_here(char *str)
 {
@@ -79,14 +81,18 @@ void	execute_command(t_data *l, t_params *tmp)
 
 	if (pipe(l->old_fd) < 0)
 		return (perror("error: fatal\n"));
-	if (ft_execute_part_1(tmp) == 1)
+	if (ft_execute_part_1(tmp, l) == 1)
 		return ;
 	ct = is_builtin(tmp->str) && l->tmp_out == l->out;
 	if (ct && !l->pipe)
 		execute_builtin(l, tmp);
 	child_pid = fork();
+	globale = 1;
 	if (ct && !child_pid && l->pipe)
+	{
 		ft_exec_builtin(l, tmp);
+		return ;
+	}
 	if (!ct && !child_pid)
 	{
 		ft_in_out(l);
