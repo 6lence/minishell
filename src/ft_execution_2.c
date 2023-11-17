@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execution_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 12:16:21 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 21:47:12 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:20:40 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,16 @@ char	*ft_divide_path(char *str)
 	return (ft_substr(str, i, ft_strlen(str)));
 }
 
-char	**ft_arguments(t_params *params)
+char	**ft_arguments(t_params *params, t_data *l)
 {
 	t_params	*tmp;
 	char		**res;
 	int			k;
 
 	tmp = params;
+	(void)l;
+	if (ft_is_wildcard(tmp, l->envp))
+		return (execute_command_with_wildcards_loop(tmp));
 	res = ft_calloc(ft_res_len(params) + 1, sizeof(char *));
 	k = 0;
 	while (tmp && !ft_operator_cmp(tmp))

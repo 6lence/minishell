@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/16 15:31:58 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:20:38 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void		ft_pipe(t_data *l);
 char		*ft_access_verif(t_data *l, t_params *tmp);
 int			ft_chevron_cmp(t_params *params);
 void		ft_increment(t_params **t);
+char		*ft_divide_path(char *str);
+int			ft_res_len(t_params *params);
 
 /* parsing_1 */
 void		get_command_arguments(const char *input,
@@ -175,7 +177,7 @@ int			ft_execute_part_1(t_params *tmp);
 
 /* utils_2 */
 char		**ft_absolute_path(t_data *l);
-char		**ft_arguments(t_params *params);
+char		**ft_arguments(t_params *params, t_data *l);
 
 /* ft_cd */
 int			find_env_variable(char **envp, const char *var_name);
@@ -255,7 +257,7 @@ void		ft_clean_up(t_data *l);
 /* ft_wildcard */
 int			ft_is_wildcard(t_params *params, char **env);
 t_params	*new_node(const char *cmd, char **args);
-void	execute_command_with_wildcards_loop(t_params *commands, char **envp);
+char		**execute_command_with_wildcards_loop(t_params *commands);
 //void		execute_command_with_wildcards(t_params *commands, char **envp);
 //void		execute_command_with_wildcards_recursive(t_params *current,
 //				char **envp, DIR *d);

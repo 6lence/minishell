@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/16 15:38:38 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 10:07:23 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_child(t_data *l, t_params *tmp)
 	l->path = ft_access_verif(l, tmp);
 	if (l->path)
 	{
-		args = ft_arguments(tmp);
+		args = ft_arguments(tmp, l);
 		execve(l->path, args, l->envp);
 	}
 	printf("Command %s: not found\n", tmp->str);
@@ -80,11 +80,6 @@ void	execute_command(t_data *l, t_params *tmp)
 		return (perror("error: fatal\n"));
 	if (ft_execute_part_1(tmp) == 1)
 		return ;
-	if (ft_is_wildcard(tmp, l->envp))
-	{
-		DEBUG_PRINT(("DEBUG: wilcard detected"));
-		return (execute_command_with_wildcards_loop(tmp, l->envp));
-	}
 	ct = is_builtin(tmp->str) && l->tmp_out == l->out;
 	if (ct && !l->pipe)
 		execute_builtin(l, tmp);
