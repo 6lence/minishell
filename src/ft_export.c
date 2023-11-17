@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 11:23:23 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:45:58 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ int	add_or_update_env(t_data *data, char *key, char *value)
 	char	*tmp;
 
 	i = 0;
-	new_env_entry = ft_strjoin(key, "=");
+	if (ft_in_equal(key, '='))
+		new_env_entry = ft_strjoin(key, "=");
+	else
+		new_env_entry = ft_strdup(key);
 	if (value)
 	{
 		tmp = new_env_entry;
@@ -121,17 +124,13 @@ int	ft_export_final(t_data *l, char *key, char *value)
 		if (key != NULL)
 			ft_putstr_fd(key, 2);
 		else
-		{
 			ft_putstr_fd("", 2);
-		}
 		ft_putendl_fd("': not a valid identifier", 2);
 		return (-1);
 	}
 	status = add_or_update_env(l, key, value);
 	if (status != 0)
-	{
 		printf ("Error status");
-	}
 	return (0);
 }
 

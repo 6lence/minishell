@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_5.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 13:21:41 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 21:16:33 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:19:12 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@ int	ft_verif(char *s)
 {
 	int	i;
 	int	ct;
+	int	sq;
 
 	i = 0;
+	sq = 0;
 	while (s[i])
 	{
 		ct = 0;
+		if(s[i] == 39)
+			sq++;
 		if (s[i] == 34)
 		{
 			i++;
@@ -33,6 +37,8 @@ int	ft_verif(char *s)
 				i++;
 			}
 		}
+		else if (s[i] == '$' && !sq)
+			return (1);
 		i++;
 	}
 	return (0);
@@ -82,10 +88,22 @@ void	ft_change(t_params *list, t_data *l)
 	i = 0;
 	while (list->str[i] != '$')
 		i++;
-	new = ft_substr(list->str, 0, i - 1);
-	new = ft_strjoin(new, ft_find_var(list, l));
-	free(list->str);
-	list->str = new;
+	if (list->str[i + 1] != '?')
+	{
+		new = ft_substr(list->str, 0, i);
+		new = ft_strjoin(new, ft_find_var(list, l));
+		list->str = new;
+	}
+	else if (list->str[i + 1] == '?')
+	{
+		new = ft_substr(list->str, 0, i);
+		if (l->status)
+			new = ft_strjoin(new, ft_itoa(l->status));
+		else
+			new = ft_strjoin(new, "0");
+		list->str = new;
+		l->status = 0;
+	}
 }
 
 void	ft_look_dollar(t_data *l)

@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:33:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/17 10:07:23 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:22:27 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	ft_child(t_data *l, t_params *tmp)
 		execve(l->path, args, l->envp);
 	}
 	printf("Command %s: not found\n", tmp->str);
+	l->commands = 0;
 }
 
 void	ft_in_out(t_data *l)

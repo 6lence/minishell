@@ -6,11 +6,25 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:31:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/15 10:42:40 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:42:02 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_in_equal(char *str, char s)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == s)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 void	ft_print_env(char **str)
 {
@@ -18,7 +32,7 @@ void	ft_print_env(char **str)
 
 	i = 0;
 	while (str[i])
-		printf("%s\n", str[i++]);
+		printf("declare -x %s\n", str[i++]);
 }
 
 int	array_length(char **array)

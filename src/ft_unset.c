@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:15:03 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 11:53:42 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:35:56 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	is_proper_env(const char *env_name)
 {
 	int	i;
 
-	printf("Debug: Checking env_name: %s\n", env_name);
 	if (env_name == NULL || env_name[0] == '\0')
 		return (0);
 	i = 0;
@@ -36,7 +35,6 @@ char	**ft_getenvvar(t_data *data, const char *name)
 	int	j;
 	int	name_len;
 
-	printf("Debug: Getting env var: %s\n", name);
 	if (!name || !data || !data->envp)
 		return (NULL);
 	i = 0;

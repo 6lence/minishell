@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 12:47:01 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:42:16 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 # include <termios.h>
 
 # include "../libft/libft.h"
-#define DEBUG_PRINT(x) do { printf("Debug: "); printf x; printf("\n"); } while (0)
 
 typedef struct s_params
 {
@@ -61,6 +60,7 @@ typedef struct s_data
 	char		**envp;
 	int			envp_allocated;
 	int			stop_main;
+	int			status;
 	char		**env_vars;
 	char		*params;
 	char		**params_split;
@@ -211,6 +211,7 @@ int			ft_export_final(t_data *l, char *key, char *value);
 void		ft_print_env(char **str);
 int			array_length(char **array);
 int			valid_env_name(char *arg);
+int		ft_in_equal(char *str, char s);
 
 /* pwd */
 char		*ft_pwd(void);
@@ -258,15 +259,8 @@ void		ft_clean_up(t_data *l);
 
 /* ft_wildcard */
 int			ft_is_wildcard(t_params *params, char **env);
-t_params	*new_node(const char *cmd, char **args);
 char		**execute_command_with_wildcards_loop(t_params *commands);
-void		count_arguments(t_params *current, int *count, char **file_list);
 int			ft_in_2(const char *str, char c);
-void		assign_arguments(t_params *l, char **new_args, DIR *d, int index, int arg_count);
-void		execute_child_process(const char *cmd, char **args,
-				char **envp, DIR *d);
-int			matches_wildcard(const char *str, const char *pattern);
-void		delete_list(t_params *head);
 
 /* signals */
 void		setup_signal_handlers(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parsing_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:29:54 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/09 21:16:04 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:08:32 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ char	*ft_find_var(t_params *list, t_data *l)
 	while (list->str[i] != '$')
 		i++;
 	ct = 1;
-	while (list->str[i + ct] != ' ' && list->str[i + ct] != 34
+	while (list->str[i + ct]
+		&& list->str[i + ct] != ' ' && list->str[i + ct] != 34
 		&& (list->str[i + ct] < 7 || list->str[i + ct] > 13))
 		ct++;
 	var = ft_substr(list->str, i + 1, ct - 1);
