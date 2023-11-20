@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:31:47 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/20 11:19:28 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:13:09 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,13 @@ int	valid_env_name(char *arg)
 		i++;
 	}
 	return (1);
+}
+
+void	ft_value(char *new_env, char *value)
+{
+	char	*tmp;
+
+	tmp = new_env;
+	new_env = ft_strjoin(new_env, value);
+	free(tmp);
 }

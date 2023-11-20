@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 17:00:56 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/13 15:43:18 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 16:05:14 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ int	find_env_variable(char **envp, const char *var_name)
 		if (ft_strncmp(envp[index], var_name, \
 				ft_strlen(var_name)) == 0 \
 					&& envp[index][ft_strlen(var_name)] == '=')
-		{
 			return (index);
-		}
 		index++;
 	}
 	return (-1);
@@ -37,10 +35,8 @@ void	add_env_variable(char ***envp, char *argument)
 
 	envp_len = 0;
 	while ((*envp)[envp_len] != NULL)
-	{
 		envp_len++;
-	}
-	new_envp = (char **)ft_realloc(*envp, (envp_len + 2) * sizeof(char *));
+	new_envp = ft_realloc(*envp, (envp_len + 2) * sizeof(char *));
 	if (!new_envp)
 	{
 		ft_putstr_fd("Memory allocation error\n", 2);
@@ -48,6 +44,7 @@ void	add_env_variable(char ***envp, char *argument)
 	}
 	new_envp[envp_len] = ft_strdup(argument);
 	new_envp[envp_len + 1] = NULL;
+	free(*envp);
 	*envp = new_envp;
 }
 
@@ -57,7 +54,10 @@ void	handle_env_variable(char ***envp, const char *var_name, char *argument)
 
 	index = find_env_variable(*envp, var_name);
 	if (index != -1)
+	{
+		free((*envp)[index]);
 		(*envp)[index] = ft_strdup(argument);
+	}
 	else
 		add_env_variable(envp, argument);
 }

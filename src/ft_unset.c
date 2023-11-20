@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:15:03 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/20 14:24:12 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:14:14 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	ft_unsetenv_2(t_data *data, char **new_envp, char **target)
 		++i;
 	}
 	new_envp[j] = NULL;
+	free(data->envp);
 	data->envp = new_envp;
 }
 

@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/20 14:12:46 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:28:12 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,7 @@ void		free_subcommands(t_params *sub_cmds);
 /* utils */
 void		ft_parent(t_data *l, pid_t child_pid);
 int			ft_execute_part_1(t_params *tmp, t_data *l);
+char		**strrdup(char **strr);
 
 /* utils_2 */
 char		**ft_absolute_path(t_data *l);
@@ -214,6 +215,7 @@ void		ft_print_env(char **str);
 int			array_length(char **array);
 int			valid_env_name(char *arg);
 int			ft_in_equal(char *str, char s);
+void		ft_value(char *new_env, char *value);
 
 /* pwd */
 char		*ft_pwd(void);
@@ -269,6 +271,7 @@ int			ft_in_2(const char *str, char c);
 int			ft_is_wildcard(t_params *params, char **env);
 int			ft_wild_in(char *str1, char *str2, size_t n);
 int			ft_in_wild(char *str, char s);
+void		ft_dir(char **res, int *i, t_params *commands);
 
 /* signals */
 void		setup_signal_handlers(void);

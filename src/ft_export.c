@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/20 14:24:16 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:14:13 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	add_or_update_env_2(t_data *data, char *new_env_entry)
 	}
 	new_envp[j] = new_env_entry;
 	new_envp[j + 1] = NULL;
+	free(data->envp);
 	data->envp = new_envp;
 	return (0);
 }
@@ -39,19 +40,14 @@ int	add_or_update_env(t_data *data, char *key, char *value, int equal)
 {
 	int		i;
 	char	*new_env_entry;
-	char	*tmp;
 
-	i = 0;
 	if (equal)
 		new_env_entry = ft_strjoin(key, "=");
 	else
 		new_env_entry = ft_strdup(key);
 	if (value)
-	{
-		tmp = new_env_entry;
-		new_env_entry = ft_strjoin(new_env_entry, value);
-		free(tmp);
-	}
+		ft_value(new_env_entry, value);
+	i = 0;
 	while (data->envp[i])
 	{
 		if (ft_strncmp(data->envp[i], key, ft_strlen(key)) == 0 \

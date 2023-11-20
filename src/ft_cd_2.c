@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:12:38 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/13 15:41:13 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:58:17 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ void	print_env_variables(char **envp)
 	{
 		env_variable = envp[index];
 		if (ft_strchr(env_variable, '='))
-		{
 			printf("%s\n", env_variable);
-		}
 		index++;
 	}
 }

@@ -6,11 +6,45 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:27:29 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/20 10:26:44 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:27:17 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	char_len(char **file_list, t_params *tmp)
+{
+	int	len;
+	int	i;
+
+	len = 0;
+	i = 0;
+	while (file_list[i])
+	{
+		if (ft_wild_in(tmp->str, file_list[i], ft_strlen(tmp->str)))
+			len++;
+		i++;
+	}
+	return (len);
+}
+
+char	**ft_vargs(t_params *l, char **file_list, t_params *tmp)
+{
+	char	**res;
+	int		len;
+
+	res = ft_calloc(sizeof(char *), char_len(file_list, tmp) + ft_res_len(l));
+	len = 0;
+	while (l && !ft_in_wild(l->str, '*') && !ft_operator_cmp(l))
+	{
+		if (access(l->str, 0) == 0 && len == 0)
+			res[len++] = ft_divide_path(l->str);
+		else
+			res[len++] = ft_strdup(l->str);
+		l = l->next;
+	}
+	return (res);
+}
 
 char	**ft_verify(t_params *l, char **file_list)
 {
@@ -24,25 +58,7 @@ char	**ft_verify(t_params *l, char **file_list)
 	tmp = l;
 	while (tmp && !ft_in_wild(tmp->str, '*') && !ft_operator_cmp(tmp))
 		tmp = tmp->next;
-	while (file_list[i])
-	{
-		if (ft_wild_in(tmp->str, file_list[i], ft_strlen(tmp->str)))
-			len++;
-		i++;
-	}
-	printf("ouais\n");
-	printf("%d\n", len);
-	res = ft_calloc(sizeof(char *), len + ft_res_len(l));
-	i = 0;
-	len = 0;
-	while (l && !ft_in_wild(l->str, '*') && !ft_operator_cmp(l))
-	{
-		if (access(l->str, 0) == 0 && len == 0)
-			res[len++] = ft_divide_path(l->str);
-		else
-			res[len++] = ft_strdup(l->str);
-		l = l->next;
-	}
+	res = ft_vargs(l, file_list, tmp);
 	i = 0;
 	while (file_list[i])
 	{
@@ -82,8 +98,6 @@ int	ft_file_nb(t_params	*command)
 
 char	**execute_command_with_wildcards_loop(t_params *commands)
 {
-	DIR				*d;
-	struct dirent	*dir;
 	char			**res;
 	int				i;
 
@@ -98,15 +112,7 @@ char	**execute_command_with_wildcards_loop(t_params *commands)
 			res[i++] = ft_strdup(commands->str);
 		commands = commands->next;
 	}
-	d = opendir(".");
-	dir = readdir(d);
-	while (dir)
-	{
-		if (ft_wild_in(commands->str, dir->d_name, ft_strlen(commands->str)))
-			res[i++] = ft_strdup(dir->d_name);
-		dir = readdir(d);
-	}
-	closedir(d);
+	ft_dir(res, &i, commands);
 	res[i] = NULL;
 	return (res);
 }

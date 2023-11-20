@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 10:09:11 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/20 10:31:25 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 16:02:39 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,21 @@ int	ft_in_wild(char *str, char s)
 		i++;
 	}
 	return (0);
+}
+
+void	ft_dir(char **res, int *i, t_params *commands)
+{
+	DIR				*d;
+	struct dirent	*dir;
+
+	d = opendir(".");
+	dir = readdir(d);
+	while (dir)
+	{
+		if (ft_wild_in(commands->str, dir->d_name, ft_strlen(commands->str))
+			|| !ft_strcmp(commands->str, "*"))
+			res[(*i)++] = ft_strdup(dir->d_name);
+		dir = readdir(d);
+	}
+	closedir(d);
 }
