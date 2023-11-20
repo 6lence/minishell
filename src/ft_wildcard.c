@@ -3,75 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_wildcard.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mescobar <mescobar42@student.42perpigna    +#+  +:+       +#+        */
+/*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 09:27:29 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 22:55:44 by mescobar         ###   ########.fr       */
+/*   Updated: 2023/11/20 10:26:44 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_is_wildcard(t_params *params, char **env)
-{
-	t_params	*tmp;
-	int			i;
-
-	(void)env;
-	tmp = params;
-	while (tmp)
-	{
-		i = 0;
-		while (tmp->str[i])
-		{
-			if (tmp->str[i] == '*')
-				return (1);
-			i++;
-		}
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-int	ft_wild_in(char *str1, char *str2, size_t n)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	while (str2[i])
-	{
-		if (str1[j] == '*')
-			j++;
-		if (str2[i + j] == str1[j])
-		{
-			j++;
-			if (j == n)
-				return (1);
-		}
-		else
-		{
-			i++;
-			j = 0;
-		}
-	}
-	return (0);
-}
-
-int	ft_in_wild(char *str, char s)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == s)
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 char	**ft_verify(t_params *l, char **file_list)
 {
@@ -125,7 +64,7 @@ int	ft_file_nb(t_params	*command)
 	i = 0;
 	d = opendir(".");
 	dir = readdir(d);
-	while (tmp && !ft_in_wild(tmp->str, '*') 
+	while (tmp && !ft_in_wild(tmp->str, '*')
 		&& !ft_operator_cmp(tmp))
 	{
 		tmp = tmp->next;
@@ -170,18 +109,4 @@ char	**execute_command_with_wildcards_loop(t_params *commands)
 	closedir(d);
 	res[i] = NULL;
 	return (res);
-}
-
-int	ft_in_2(const char *str, char c)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
 }

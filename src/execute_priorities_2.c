@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 13:46:05 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/17 17:24:10 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:57:34 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	ft_no_curr_no_next(char *cmd_str, t_params **current,
 	free(cmd_str);
 }
 
-void	ft_current_operator_none(t_params **current, int *status, char *cmd_str, t_data *l)
+void	ft_current_operator_none(t_params **current, int *status, \
+				char *cmd_str, t_data *l)
 {
 	t_params	*temp_cmd_node;
 
@@ -46,7 +47,6 @@ void	ft_current_operator_none(t_params **current, int *status, char *cmd_str, t_
 		temp_cmd_node = create_temp_command_node((*current)->str);
 	*status = execute_operator(temp_cmd_node, l);
 	free_t_params(temp_cmd_node);
-//	free(temp_cmd_node);
 	if ((*current)->next != NULL && (*current)->next->operator == NONE)
 		*current = (*current)->next->next;
 	else

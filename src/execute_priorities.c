@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 17:24:47 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 07:55:29 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	execute_operator(t_params *cmd, t_data *l)
 	pid = fork();
 	if (pid == 0)
 	{
-		execvp(cmd->cmd, cmd->args);
 		perror("execvp error");
 		exit(EXIT_FAILURE);
 	}

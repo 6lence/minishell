@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 16:47:11 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 11:33:59 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ int	add_or_update_env_2(t_data *data, char *new_env_entry)
 	return (0);
 }
 
-int	add_or_update_env(t_data *data, char *key, char *value)
+int	add_or_update_env(t_data *data, char *key, char *value, int equal)
 {
 	int		i;
 	char	*new_env_entry;
 	char	*tmp;
 
 	i = 0;
-	if (ft_in_equal(key, '='))
+	if (equal)
 		new_env_entry = ft_strjoin(key, "=");
 	else
 		new_env_entry = ft_strdup(key);
@@ -98,6 +98,7 @@ int	ft_export_parse_key_value(t_data *l, t_params *element)
 	char		*equal_sign;
 	char		*key;
 	char		*value;
+	int			eq;
 
 	equal_sign = ft_strchr(element->str, '=');
 	if (equal_sign)
@@ -105,16 +106,18 @@ int	ft_export_parse_key_value(t_data *l, t_params *element)
 		*equal_sign = '\0';
 		key = element->str;
 		value = equal_sign + 1;
+		eq = 1;
 	}
 	else
 	{
 		key = element->str;
 		value = NULL;
+		eq = 0;
 	}
-	return (ft_export_final(l, key, value));
+	return (ft_export_final(l, key, value, eq));
 }
 
-int	ft_export_final(t_data *l, char *key, char *value)
+int	ft_export_final(t_data *l, char *key, char *value, int eq)
 {
 	int	status;
 
@@ -128,9 +131,9 @@ int	ft_export_final(t_data *l, char *key, char *value)
 		ft_putendl_fd("': not a valid identifier", 2);
 		return (-1);
 	}
-	status = add_or_update_env(l, key, value);
+	status = add_or_update_env(l, key, value, eq);
 	if (status != 0)
-		printf ("Error status");
+		ft_putstr_fd("Error status", 2);
 	return (0);
 }
 

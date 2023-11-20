@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 20:53:03 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/17 17:13:23 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 08:35:05 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,17 @@ void	ft_parent(t_data *l, pid_t child_pid)
 	close(l->old_fd[0]);
 	close(l->old_fd[1]);
 	l->pipe_nb--;
+}
+
+void	ft_increment(t_params **t)
+{
+	char	*ct;
+
+	ct = (*t)->str;
+	while ((*t))
+	{
+		if (ft_operator_cmp((*t)) && ft_strcmp((*t)->str, ct))
+			break ;
+		(*t) = (*t)->next;
+	}
 }

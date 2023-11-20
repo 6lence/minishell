@@ -6,26 +6,13 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/17 17:10:56 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 10:05:47 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int globale;
-
-void	ft_increment(t_params **t)
-{
-	char	*ct;
-
-	ct = (*t)->str;
-	while ((*t))
-	{
-		if (ft_operator_cmp((*t)) && ft_strcmp((*t)->str, ct))
-			break ;
-		(*t) = (*t)->next;
-	}
-}
+int	g_globale;
 
 void	ft_simple_execute(t_data *l)
 {
@@ -70,7 +57,7 @@ int	ft_big_execute(t_data *l)
 //malloc ok in this function.
 int	init(t_data *l)
 {
-	globale = 0;
+	g_globale = 0;
 	l->params = readline("minishell-> ");
 	if (!l->params)
 		return (-1);

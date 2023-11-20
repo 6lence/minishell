@@ -6,15 +6,13 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:16:37 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 16:23:59 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 10:06:49 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int globale;
-
-//pid_t global_child_pid = -1;
+extern int	g_globale;
 
 void	setup_signal_handlers(void)
 {
@@ -38,7 +36,7 @@ void	handle_sigint(int signum)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	status = 0;
-	if (globale == 0)
+	if (g_globale == 0)
 		rl_redisplay();
 	else
 		waitpid(-1, &status, 0);

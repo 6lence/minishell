@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 17:14:51 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 11:21:55 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,16 +203,16 @@ void		ft_arg_count(t_params *arguments, t_data *l);
 
 /* ft_export */
 int			add_or_update_env_2(t_data *data, char *new_env_entry);
-int			add_or_update_env(t_data *data, char *key, char *value);
+int			add_or_update_env(t_data *data, char *key, char *value, int equal);
 int			ft_export(t_data *l);
 int			ft_export_parse_key_value(t_data *l, t_params *element);
-int			ft_export_final(t_data *l, char *key, char *value);
+int			ft_export_final(t_data *l, char *key, char *value, int eq);
 
 /* ft_export_2 */
 void		ft_print_env(char **str);
 int			array_length(char **array);
 int			valid_env_name(char *arg);
-int		ft_in_equal(char *str, char s);
+int			ft_in_equal(char *str, char s);
 
 /* pwd */
 char		*ft_pwd(void);
@@ -259,9 +259,15 @@ void		free_resources(char **args, char *cmd_no_paren, t_params *temp);
 void		ft_clean_up(t_data *l);
 
 /* ft_wildcard */
-int			ft_is_wildcard(t_params *params, char **env);
 char		**execute_command_with_wildcards_loop(t_params *commands);
+int			ft_file_nb(t_params	*command);
+char		**ft_verify(t_params *l, char **file_list);
+
+/* ft_wildcard_2 */
 int			ft_in_2(const char *str, char c);
+int			ft_is_wildcard(t_params *params, char **env);
+int			ft_wild_in(char *str1, char *str2, size_t n);
+int			ft_in_wild(char *str, char s);
 
 /* signals */
 void		setup_signal_handlers(void);

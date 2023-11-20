@@ -36,6 +36,7 @@ SRC_FILES :=	minishell.c \
 				execute_priorities_2.c \
 				execute_priorities_3.c \
 				ft_wildcard.c \
+				ft_wildcard_2.c \
 				signals.c \
 				ft_childs.c
 
@@ -67,7 +68,7 @@ $(LFT):
 	@make -s -C ./libft/ all
 
 $(EXECUTABLE): $(OBJ_FILES)
-	@$(CC) $(CFLAGS) $^ $(LIB) -lreadline -o $@ 
+	@$(CC) $(CFLAGS) $^ $(LIB) -lreadline -o $@
 	@echo "\033[32m✅ Done! Executable $(EXECUTABLE) is ready.\033[0m"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
