@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 13:44:40 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/20 07:55:29 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:29:01 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	execute_operator(t_params *cmd, t_data *l)
 	pid = fork();
 	if (pid == 0)
 	{
+		execvp(cmd->cmd, cmd->args);
 		perror("execvp error");
 		exit(EXIT_FAILURE);
 	}
@@ -97,7 +98,7 @@ int	ft_execute_priorities(t_params *commands, t_data *l)
 		else
 		{
 			write(2, "Unknown operator: '", 19);
-			write(2, current->str, strlen(current->str));
+			write(2, current->str, ft_strlen(current->str));
 			write(2, "'.\n", 3);
 			return (EXIT_FAILURE);
 		}
@@ -107,11 +108,11 @@ int	ft_execute_priorities(t_params *commands, t_data *l)
 
 void	assign_operator(t_params *node)
 {
-	if (strcmp(node->str, "&&") == 0)
+	if (ft_strcmp(node->str, "&&") == 0)
 		node->operator = AND;
-	else if (strcmp(node->str, "||") == 0)
+	else if (ft_strcmp(node->str, "||") == 0)
 		node->operator = OR;
-	else if (strcmp(node->str, "&") == 0)
+	else if (ft_strcmp(node->str, "&") == 0)
 	{
 		write(STDERR_FILENO, "error, incorrect operator '&'\n", 30);
 		node->operator = ERROR;

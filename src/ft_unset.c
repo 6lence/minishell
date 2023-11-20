@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:15:03 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/17 17:00:43 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:24:12 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,12 @@ void	ft_unsetenv_2(t_data *data, char **new_envp, char **target)
 	{
 		if (&data->envp[i] != target)
 			new_envp[j++] = data->envp[i];
+		else
+			free(data->envp[i]);
 		++i;
 	}
 	new_envp[j] = NULL;
 	data->envp = new_envp;
-	data->envp_allocated = 1;
 }
 
 int	ft_unsetenv(t_data *data, const char *name)
@@ -85,7 +86,7 @@ int	ft_unsetenv(t_data *data, const char *name)
 	i = 0;
 	while (data->envp[i])
 		++i;
-	new_envp = (char **)malloc(sizeof(char *) * i);
+	new_envp = malloc(sizeof(char *) * i);
 	if (!new_envp)
 		return (-1);
 	ft_unsetenv_2(data, new_envp, target);

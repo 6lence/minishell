@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:26:34 by mescobar          #+#    #+#             */
-/*   Updated: 2023/11/20 10:05:47 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:36:59 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	l = ft_calloc(sizeof(t_data), 1);
 	l->envp = envp;
+	l->exp_var = 0;
 	l->stop_main = 1;
 	l->in = dup(STDIN_FILENO);
 	l->out = dup(STDOUT_FILENO);

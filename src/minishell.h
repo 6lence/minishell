@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:14:23 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/20 11:21:55 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:12:46 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_data
 	int			tmp_out;
 	int			*child_pid;
 	int			child_pos;
+	int			exp_var;
 	int			new_fd[2];
 	int			old_fd[2];
 	t_params	*list;

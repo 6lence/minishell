@@ -6,7 +6,7 @@
 /*   By: ashalagi <<marvin@42.fr>>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 15:42:50 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/11/20 11:33:59 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:24:16 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	add_or_update_env_2(t_data *data, char *new_env_entry)
 	char	**new_envp;
 
 	j = 0;
-	new_envp = (char **)malloc(sizeof(char *) * (array_length(data->envp) + 2));
+	new_envp = malloc(sizeof(char *) * (array_length(data->envp) + 2));
 	if (!new_envp)
 	{
 		free(new_env_entry);
